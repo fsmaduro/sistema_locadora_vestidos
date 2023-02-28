@@ -1,0 +1,3305 @@
+object Dados: TDados
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 474
+  Width = 503
+  object IBDatabase: TIBDatabase
+    DatabaseName = 'D:\bd\AMVSYSTEM.FDB'
+    Params.Strings = (
+      'user_name=SYSDBA'
+      'password=masterkey')
+    LoginPrompt = False
+    DefaultTransaction = IBTransaction
+    AfterConnect = IBDatabaseAfterConnect
+    Left = 25
+    Top = 8
+  end
+  object IBTransaction: TIBTransaction
+    DefaultDatabase = IBDatabase
+    Params.Strings = (
+      'read_committed'
+      'rec_version'
+      'nowait')
+    AutoStopAction = saCommitRetaining
+    Left = 24
+    Top = 64
+  end
+  object Geral: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    Left = 80
+    Top = 8
+  end
+  object qryLog: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    AfterPost = qryLogAfterPost
+    OnNewRecord = qryLogNewRecord
+    SQL.Strings = (
+      'select *  from TABLOG')
+    UpdateObject = udpLog
+    Left = 136
+    Top = 8
+    object qryLogCODIGOUSUARIO: TIntegerField
+      FieldName = 'CODIGOUSUARIO'
+      Origin = '"TABLOG"."CODIGOUSUARIO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryLogDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABLOG"."DATA"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryLogHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABLOG"."HORA"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryLogID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'TABLOG.ID'
+      Required = True
+    end
+    object qryLogTEXTO: TMemoField
+      FieldName = 'TEXTO'
+      Origin = '"TABLOG"."TEXTO"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+  end
+  object udpLog: TIBUpdateSQL
+    RefreshSQL.Strings = (
+      'Select '
+      '  CODIGOUSUARIO,'
+      '  DATA,'
+      '  HORA,'
+      '  TEXTO,'
+      '  ID'
+      'from TABLOG '
+      'where'
+      '  CODIGOUSUARIO = :CODIGOUSUARIO and'
+      '  DATA = :DATA and'
+      '  HORA = :HORA and'
+      '  ID = :ID')
+    ModifySQL.Strings = (
+      'update TABLOG'
+      'set'
+      '  CODIGOUSUARIO = :CODIGOUSUARIO,'
+      '  DATA = :DATA,'
+      '  HORA = :HORA,'
+      '  TEXTO = :TEXTO,'
+      '  ID = :ID'
+      'where'
+      '  CODIGOUSUARIO = :OLD_CODIGOUSUARIO and'
+      '  DATA = :OLD_DATA and'
+      '  HORA = :OLD_HORA and'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into TABLOG'
+      '  (CODIGOUSUARIO, DATA, HORA, TEXTO, ID)'
+      'values'
+      '  (:CODIGOUSUARIO, :DATA, :HORA, :TEXTO, :ID)')
+    DeleteSQL.Strings = (
+      'delete from TABLOG'
+      'where'
+      '  CODIGOUSUARIO = :OLD_CODIGOUSUARIO and'
+      '  DATA = :OLD_DATA and'
+      '  HORA = :OLD_HORA and'
+      '  ID = :OLD_ID')
+    Left = 136
+    Top = 56
+  end
+  object dtsLog: TDataSource
+    DataSet = qryLog
+    Left = 136
+    Top = 104
+  end
+  object qryRelatorios: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    SQL.Strings = (
+      'Select CODIGO, NOMELIVRO from TABMATERIALDIDADITO')
+    Left = 200
+    Top = 8
+  end
+  object qryComunidade: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    BeforeOpen = qryComunidadeBeforeOpen
+    SQL.Strings = (
+      'Select first 1'
+      '   E.NOMECOMUNIDADE,'
+      '   E.NOMEPAROQUIA,'
+      '   E.NOMEDIOCESE,'
+      '   E.URLLOGO,'
+      '   E.CNPJ,'
+      '  (CASE WHEN C.ENDERECO IS NOT NULL THEN C.ENDERECO END || '
+      '   CASE WHEN E.NUMERO IS NOT NULL THEN'
+      '     CASE WHEN C.ENDERECO IS NOT NULL THEN '#39' - '#39' END ||E.NUMERO'
+      '   END ||'
+      '   CASE WHEN E.COMPLEMENTO IS NOT NULL THEN'
+      
+        '     CASE WHEN (E.NUMERO IS NOT NULL) or (C.ENDERECO IS NOT NULL' +
+        ' ) THEN '#39' - '#39' END ||E.COMPLEMENTO'
+      '   END) AS ENDERECO1,'
+      '   '
+      '  (CASE WHEN C.BAIRRO IS NOT NULL THEN C.BAIRRO END ||'
+      '   CASE WHEN M.NOME IS NOT NULL THEN'
+      '     CASE WHEN C.BAIRRO IS NOT NULL THEN '#39' - '#39' END ||M.NOME'
+      '   END ||'
+      '   CASE WHEN M.UF IS NOT NULL THEN'
+      '     CASE WHEN M.NOME IS NOT NULL THEN '#39' / '#39' ELSE'
+      '       CASE WHEN C.BAIRRO IS NOT NULL THEN '#39' - '#39' END'
+      '     END ||M.UF'
+      '   END ||'
+      '   CASE WHEN E.CEP IS NOT NULL THEN'
+      '      CASE WHEN (M.UF IS NOT NULL)'
+      '             or (M.NOME IS NOT NULL)'
+      
+        '             or (C.BAIRRO IS NOT NULL) THEN '#39' - CEP.: '#39' ELSE '#39' C' +
+        'EP.: '#39' END ||E.CEP'
+      '   END) AS ENDERECO2,'
+      '   '
+      '  (CASE WHEN E.TELA IS NOT NULL THEN E.TELA END ||'
+      '   CASE WHEN E.TELB IS NOT NULL THEN'
+      '     CASE WHEN E.TELA IS NOT NULL THEN '#39' - '#39' END ||E.TELB'
+      '   END ||'
+      '   CASE WHEN E.TELC IS NOT NULL THEN'
+      
+        '     CASE WHEN (E.TELA IS NOT NULL) or (E.TELB IS NOT NULL) THEN' +
+        ' '#39' - '#39' END ||E.TELC'
+      '   END) AS TELEFONES,'
+      '   '
+      
+        '  (CASE WHEN E.EMAIL IS NOT NULL THEN '#39'Email: '#39' || E.EMAIL END |' +
+        '|'
+      
+        '   CASE WHEN E.SITE IS NOT NULL THEN '#39' Site: '#39' || E.SITE END) AS' +
+        ' EMAILSITE'
+      '   '
+      ' FROM TABCOMUNIDADE E'
+      ' LEFT JOIN TABCEP C ON E.CEP = C.CEP'
+      ' LEFT JOIN tabmunicipios M ON C.CODIGOMUNICIPIO = M.CODIGO'
+      ''
+      'where 1=1'
+      ''
+      ''
+      ''
+      ''
+      ''
+      '')
+    Left = 298
+    Top = 8
+    object qryComunidadeNOMECOMUNIDADE: TIBStringField
+      FieldName = 'NOMECOMUNIDADE'
+      Origin = '"TABCOMUNIDADE"."NOMECOMUNIDADE"'
+      Size = 100
+    end
+    object qryComunidadeNOMEPAROQUIA: TIBStringField
+      FieldName = 'NOMEPAROQUIA'
+      Origin = '"TABCOMUNIDADE"."NOMEPAROQUIA"'
+      Size = 100
+    end
+    object qryComunidadeNOMEDIOCESE: TIBStringField
+      FieldName = 'NOMEDIOCESE'
+      Origin = '"TABCOMUNIDADE"."NOMEDIOCESE"'
+      Size = 100
+    end
+    object qryComunidadeURLLOGO: TMemoField
+      FieldName = 'URLLOGO'
+      Origin = '"TABCOMUNIDADE"."URLLOGO"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object qryComunidadeENDERECO1: TIBStringField
+      FieldName = 'ENDERECO1'
+      ProviderFlags = []
+      Size = 86
+    end
+    object qryComunidadeENDERECO2: TIBStringField
+      FieldName = 'ENDERECO2'
+      ProviderFlags = []
+      Size = 107
+    end
+    object qryComunidadeTELEFONES: TIBStringField
+      FieldName = 'TELEFONES'
+      ProviderFlags = []
+      Size = 51
+    end
+    object qryComunidadeEMAILSITE: TIBStringField
+      FieldName = 'EMAILSITE'
+      ProviderFlags = []
+      Size = 114
+    end
+    object qryComunidadeCNPJ: TIBStringField
+      FieldName = 'CNPJ'
+      Origin = '"TABCOMUNIDADE"."CNPJ"'
+    end
+  end
+  object qryRelParcFinanceiro: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    OnCalcFields = qryRelParcFinanceiroCalcFields
+    SQL.Strings = (
+      'select a.nome as NomeAluno,'
+      '       t.nometurma,'
+      '       a.NomeResponsavel,'
+      '       pf.vencimento,'
+      '       pf.valor,'
+      '       lp.valorpago,'
+      '       lp.CODIGOPARCELARENEGOCIACAO,'
+      '       pf.codigo as Parcela,'
+      '       f.codigo as Financeiro,'
+      '       f.tipo,'
+      '       pf.ParcelaOriginal,'
+      '       pf.DescricaoFPG,'
+      '       pf.NUMEROCHEQUE'
+      'FROM tabfinanceiro f'
+      
+        'left join tabmatricularturma mt on mt.codigo = f.CODIGOMATRICULA' +
+        'MD'
+      'left join tabturmas t on t.codigo = mt.codigoturma'
+      'left join tabalunos a on a.codigo = mt.codigoaluno'
+      'left join tabparcfinanceiro pf on pf.codigofinanceiro = f.codigo'
+      
+        'left join tabliquidarparcfinanceiro lp on lp.codigofinanceiro = ' +
+        'f.codigo and lp.codigoparcela = pf.codigo'
+      'where'
+      '  F.CODIGOMATRICULAMD IS NOT NULL'
+      '  and f.tipo = 1'
+      '--Filtro1'
+      '  AND LP.VALORPAGO + LP.VALORACRECIMO >= PF.VALOR'
+      'union'
+      'select a.nome as NomeAluno,'
+      '       t.nometurma,'
+      '       a.NomeResponsavel,'
+      '       pf.vencimento,'
+      '       pf.valor,'
+      '       lp.valorpago,'
+      '       lp.CODIGOPARCELARENEGOCIACAO,'
+      '       pf.codigo as Parcela,'
+      '       f.codigo as Financeiro,'
+      '       f.tipo,'
+      '       pf.ParcelaOriginal,'
+      '       pf.DescricaoFPG,'
+      '       pf.NUMEROCHEQUE'
+      'FROM tabfinanceiro f'
+      
+        'left join tablancmaterialdidatico md on md.codigo = f.CODIGOMATR' +
+        'ICULAMD'
+      'left join tabturmas t on t.codigo = md.codigoturma'
+      'left join tabalunos a on a.codigo = md.codigoaluno'
+      'left join tabparcfinanceiro pf on pf.codigofinanceiro = f.codigo'
+      
+        'left join tabliquidarparcfinanceiro lp on lp.codigofinanceiro = ' +
+        'f.codigo and lp.codigoparcela = pf.codigo'
+      'where 1=1'
+      '  AND F.CODIGOMATRICULAMD IS NOT NULL'
+      '  and f.tipo = 2'
+      '--Filtro2'
+      '  AND LP.VALORPAGO + LP.VALORACRECIMO >= PF.VALOR'
+      'order by'
+      '   2,1,10,8')
+    Left = 40
+    Top = 128
+    object qryRelParcFinanceiroNOMEALUNO: TIBStringField
+      FieldName = 'NOMEALUNO'
+      Origin = 'TABALUNOS.NOME'
+      Size = 50
+    end
+    object qryRelParcFinanceiroNOMETURMA: TIBStringField
+      FieldName = 'NOMETURMA'
+      Origin = 'TABTURMAS.NOMETURMA'
+      Size = 30
+    end
+    object qryRelParcFinanceiroNOMERESPONSAVEL: TIBStringField
+      FieldName = 'NOMERESPONSAVEL'
+      Origin = 'TABALUNOS.NOMERESPONSAVEL'
+      Size = 50
+    end
+    object qryRelParcFinanceiroVENCIMENTO: TDateField
+      FieldName = 'VENCIMENTO'
+      Origin = 'TABPARCFINANCEIRO.VENCIMENTO'
+      DisplayFormat = 'dd/mm/yyyy'
+      EditMask = 'dd/mm/yyyy'
+    end
+    object qryRelParcFinanceiroVALOR: TIBBCDField
+      FieldName = 'VALOR'
+      Origin = 'TABPARCFINANCEIRO.VALOR'
+      DisplayFormat = 'R$ #,##0.00'
+      EditFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelParcFinanceiroVALORPAGO: TIBBCDField
+      FieldName = 'VALORPAGO'
+      Origin = 'TABLIQUIDARPARCFINANCEIRO.VALORPAGO'
+      DisplayFormat = 'R$ #,##0.00'
+      EditFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryRelParcFinanceiroCODIGOPARCELARENEGOCIACAO: TIntegerField
+      FieldName = 'CODIGOPARCELARENEGOCIACAO'
+      Origin = 'TABLIQUIDARPARCFINANCEIRO.CODIGOPARCELARENEGOCIACAO'
+    end
+    object qryRelParcFinanceiroPARCELA: TIntegerField
+      FieldName = 'PARCELA'
+      Origin = 'TABPARCFINANCEIRO.CODIGO'
+    end
+    object qryRelParcFinanceiroFINANCEIRO: TIntegerField
+      FieldName = 'FINANCEIRO'
+      Origin = 'TABFINANCEIRO.CODIGO'
+      Required = True
+    end
+    object qryRelParcFinanceiroTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TABFINANCEIRO.TIPO'
+    end
+    object qryRelParcFinanceiroPARCELAORIGINAL: TIntegerField
+      FieldName = 'PARCELAORIGINAL'
+      Origin = 'TABPARCFINANCEIRO.PARCELAORIGINAL'
+    end
+    object qryRelParcFinanceiroDESCRICAOFPG: TIBStringField
+      FieldName = 'DESCRICAOFPG'
+      Origin = 'TABPARCFINANCEIRO.DESCRICAOFPG'
+    end
+    object qryRelParcFinanceiroDESCRICAOTELA: TStringField
+      DisplayWidth = 60
+      FieldKind = fkCalculated
+      FieldName = 'DESCRICAOTELA'
+      Size = 60
+      Calculated = True
+    end
+    object qryRelParcFinanceiroDIAS: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'DIAS'
+      Calculated = True
+    end
+    object qryRelParcFinanceiroNUMEROCHEQUE: TIBStringField
+      FieldName = 'NUMEROCHEQUE'
+      Origin = 'TABPARCFINANCEIRO.NUMEROCHEQUE'
+      Size = 10
+    end
+  end
+  object dtsGeral: TDataSource
+    DataSet = Geral
+    Left = 88
+    Top = 64
+  end
+  object pipComunidade: TppDBPipeline
+    DataSource = dtsComunidade
+    OpenDataSource = False
+    UserName = 'pipComunidade'
+    Left = 296
+    Top = 112
+    object pipComunidadeppField1: TppField
+      FieldAlias = 'NOMECOMUNIDADE'
+      FieldName = 'NOMECOMUNIDADE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField2: TppField
+      FieldAlias = 'NOMEPAROQUIA'
+      FieldName = 'NOMEPAROQUIA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField3: TppField
+      FieldAlias = 'NOMEDIOCESE'
+      FieldName = 'NOMEDIOCESE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField4: TppField
+      FieldAlias = 'URLLOGO'
+      FieldName = 'URLLOGO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField5: TppField
+      FieldAlias = 'ENDERECO1'
+      FieldName = 'ENDERECO1'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField6: TppField
+      FieldAlias = 'ENDERECO2'
+      FieldName = 'ENDERECO2'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField7: TppField
+      FieldAlias = 'TELEFONES'
+      FieldName = 'TELEFONES'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField8: TppField
+      FieldAlias = 'EMAILSITE'
+      FieldName = 'EMAILSITE'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object pipComunidadeppField9: TppField
+      FieldAlias = 'CNPJ'
+      FieldName = 'CNPJ'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object dtsComunidade: TDataSource
+    DataSet = qryComunidade
+    Left = 296
+    Top = 56
+  end
+  object ReportBase: TppReport
+    PassSetting = psTwoPass
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 104
+    Top = 216
+    Version = '16.01'
+    mmColumnWidth = 0
+    object ppHeaderBand1: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 35190
+      mmPrintPosition = 0
+      object ppImage1: TppImage
+        OnPrint = ppImage1Print
+        DesignLayer = ppDesignLayer1
+        UserName = 'Image1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        mmHeight = 23283
+        mmLeft = 1323
+        mmTop = 265
+        mmWidth = 26723
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText1: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText1'
+        HyperlinkEnabled = False
+        DataField = 'NOMECOMUNIDADE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 5165
+        mmLeft = 30163
+        mmTop = 794
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText2'
+        HyperlinkEnabled = False
+        DataField = 'NOMEPAROQUIA'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 4233
+        mmLeft = 30163
+        mmTop = 6350
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText3'
+        HyperlinkEnabled = False
+        DataField = 'NOMEDIOCESE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 4233
+        mmLeft = 30163
+        mmTop = 10848
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine1: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line1'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 24077
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine2: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 30163
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object OME: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'OME'
+        HyperlinkEnabled = False
+        Caption = 'NOME DO RELAT'#211'RIO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5165
+        mmLeft = 75711
+        mmTop = 24606
+        mmWidth = 46228
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine3: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line3'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 34925
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText4'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO1'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3725
+        mmLeft = 30163
+        mmTop = 15346
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO2'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3725
+        mmLeft = 30163
+        mmTop = 19579
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 3175
+      mmPrintPosition = 0
+    end
+    object ppFooterBand1: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5292
+      mmPrintPosition = 0
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line4'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppSystemVariable1: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable1'
+        HyperlinkEnabled = False
+        VarType = vtPrintDateTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 2910
+        mmTop = 1058
+        mmWidth = 29549
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppSystemVariable2: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable2'
+        HyperlinkEnabled = False
+        VarType = vtPageSetDesc
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 175155
+        mmTop = 1058
+        mmWidth = 19812
+        BandType = 8
+        LayerName = Foreground
+      end
+    end
+    object ppDesignLayers1: TppDesignLayers
+      object ppDesignLayer1: TppDesignLayer
+        UserName = 'Foreground'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList2: TppParameterList
+    end
+  end
+  object qryLista: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    SQL.Strings = (
+      'Select * from TabDizimista'
+      ''
+      ''
+      ''
+      ''
+      ''
+      '')
+    Left = 242
+    Top = 240
+  end
+  object pipLista: TppDBPipeline
+    DataSource = dtsLista
+    OpenDataSource = False
+    UserName = 'pipLista'
+    Left = 240
+    Top = 336
+  end
+  object dtsLista: TDataSource
+    DataSet = qryLista
+    Left = 240
+    Top = 288
+  end
+  object rbiLista: TppReport
+    AutoStop = False
+    DataPipeline = pipLista
+    PassSetting = psTwoPass
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 241
+    Top = 384
+    Version = '16.01'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipLista'
+    object ppHeaderBand2: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 35190
+      mmPrintPosition = 0
+      object ppImage2: TppImage
+        OnPrint = ppImage2Print
+        DesignLayer = ppDesignLayer2
+        UserName = 'Image1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        mmHeight = 23283
+        mmLeft = 1323
+        mmTop = 265
+        mmWidth = 26723
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText1'
+        HyperlinkEnabled = False
+        DataField = 'NOMECOMUNIDADE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 5165
+        mmLeft = 30163
+        mmTop = 794
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText2'
+        HyperlinkEnabled = False
+        DataField = 'NOMEPAROQUIA'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 4233
+        mmLeft = 30163
+        mmTop = 6350
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText3'
+        HyperlinkEnabled = False
+        DataField = 'NOMEDIOCESE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 4233
+        mmLeft = 30163
+        mmTop = 10848
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppLine5: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line1'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 24077
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppLine6: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 30163
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object lblNomeRelatorio: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'OME'
+        HyperlinkEnabled = False
+        Caption = 'NOME DO RELAT'#211'RIO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5165
+        mmLeft = 75711
+        mmTop = 24606
+        mmWidth = 46228
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppLine7: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line3'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 34925
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText4'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO1'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3725
+        mmLeft = 30163
+        mmTop = 15346
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText5'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO2'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3725
+        mmLeft = 30163
+        mmTop = 19579
+        mmWidth = 165365
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object lblNomeCodigo: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'lblNomeCodigo'
+        HyperlinkEnabled = False
+        Caption = 'C'#243'digo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 3704
+        mmTop = 30427
+        mmWidth = 11906
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object lblNomeNome: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'lblNomeNome'
+        HyperlinkEnabled = False
+        Caption = 'Nome'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 32279
+        mmTop = 30427
+        mmWidth = 9790
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object lblCampoExtra: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'lblNomeNome1'
+        HyperlinkEnabled = False
+        AutoSize = False
+        Caption = 'Nome'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 153723
+        mmTop = 30427
+        mmWidth = 41804
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object esquerda: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'esquerda'
+        HyperlinkEnabled = False
+        Caption = 'esquerda'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        Visible = False
+        mmHeight = 4233
+        mmLeft = 136525
+        mmTop = 25135
+        mmWidth = 14023
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object direita: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'direita'
+        HyperlinkEnabled = False
+        Caption = 'direita'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        FormField = False
+        TextAlignment = taRightJustified
+        Transparent = True
+        Visible = False
+        mmHeight = 4233
+        mmLeft = 150813
+        mmTop = 25135
+        mmWidth = 9260
+        BandType = 0
+        LayerName = Foreground1
+      end
+    end
+    object ppDetailBand2: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 3969
+      mmPrintPosition = 0
+      object CampoCodigo: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'CampoCodigo'
+        HyperlinkEnabled = False
+        AutoSize = True
+        DataField = 'CODIGO'
+        DataPipeline = pipLista
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipLista'
+        mmHeight = 3598
+        mmLeft = 3704
+        mmTop = 0
+        mmWidth = 1778
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object CampoNome: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'CampoNome'
+        HyperlinkEnabled = False
+        AutoSize = True
+        DataField = 'NOME'
+        DataPipeline = pipLista
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipLista'
+        mmHeight = 3598
+        mmLeft = 32279
+        mmTop = 0
+        mmWidth = 49699
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object CampoExtra: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'CampoNome1'
+        HyperlinkEnabled = False
+        DataField = 'VALORCONTRIBUICAO'
+        DataPipeline = pipLista
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pipLista'
+        mmHeight = 3598
+        mmLeft = 153723
+        mmTop = 265
+        mmWidth = 41804
+        BandType = 4
+        LayerName = Foreground1
+      end
+    end
+    object ppFooterBand2: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5292
+      mmPrintPosition = 0
+      object ppLine8: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line4'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground1
+      end
+      object ppSystemVariable3: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable1'
+        HyperlinkEnabled = False
+        VarType = vtPrintDateTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 2910
+        mmTop = 1058
+        mmWidth = 29549
+        BandType = 8
+        LayerName = Foreground1
+      end
+      object ppSystemVariable4: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable2'
+        HyperlinkEnabled = False
+        VarType = vtPageSetDesc
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 175155
+        mmTop = 1058
+        mmWidth = 19812
+        BandType = 8
+        LayerName = Foreground1
+      end
+    end
+    object ppDesignLayers2: TppDesignLayers
+      object ppDesignLayer2: TppDesignLayer
+        UserName = 'Foreground1'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList3: TppParameterList
+    end
+  end
+  object qryRelLog: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    SQL.Strings = (
+      'Select L.*, u.username, D.Nome'
+      'from tablog l'
+      'left join tabusuarios u on l.codigousuario = u.codigo'
+      'left join tabperfil D on u.CODIGOFUNCIONARIO = D.codigo'
+      'where 1=1'
+      ''
+      ''
+      'Order by U.username, L.Data, L.Hora'
+      '')
+    Left = 386
+    Top = 8
+    object qryRelLogID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"TABLOG"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelLogDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABLOG"."DATA"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelLogHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABLOG"."HORA"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelLogCODIGOUSUARIO: TIntegerField
+      FieldName = 'CODIGOUSUARIO'
+      Origin = '"TABLOG"."CODIGOUSUARIO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelLogTEXTO: TMemoField
+      FieldName = 'TEXTO'
+      Origin = '"TABLOG"."TEXTO"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object qryRelLogUSERNAME: TIBStringField
+      FieldName = 'USERNAME'
+      Origin = '"TABUSUARIOS"."USERNAME"'
+    end
+    object qryRelLogNOME: TIBStringField
+      FieldName = 'NOME'
+      Origin = '"TABSERVOS"."NOME"'
+      Size = 50
+    end
+  end
+  object pipRelLog: TppDBPipeline
+    DataSource = dtsRelLog
+    OpenDataSource = False
+    UserName = 'pipRelLog'
+    Left = 384
+    Top = 104
+  end
+  object dtsRelLog: TDataSource
+    DataSet = qryRelLog
+    Left = 384
+    Top = 56
+  end
+  object rbiLog: TppReport
+    AutoStop = False
+    DataPipeline = pipRelLog
+    PassSetting = psTwoPass
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 384
+    Top = 152
+    Version = '16.01'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipRelLog'
+    object ppHeaderBand3: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6615
+      mmPrintPosition = 0
+      object ppLine9: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line1'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 265
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine10: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 6350
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'OME'
+        HyperlinkEnabled = False
+        Caption = 'LOG DO USU'#193'RIO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5292
+        mmLeft = 80304
+        mmTop = 794
+        mmWidth = 37042
+        BandType = 0
+        LayerName = Foreground2
+      end
+    end
+    object ppDetailBand3: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 4763
+      mmPrintPosition = 0
+      object ppDBText18: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText7'
+        HyperlinkEnabled = False
+        DataField = 'DATA'
+        DataPipeline = pipRelLog
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipRelLog'
+        mmHeight = 4233
+        mmLeft = 1852
+        mmTop = 529
+        mmWidth = 21696
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText19: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText8'
+        HyperlinkEnabled = False
+        DataField = 'HORA'
+        DataPipeline = pipRelLog
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipRelLog'
+        mmHeight = 4233
+        mmLeft = 25135
+        mmTop = 529
+        mmWidth = 21696
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText20: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText9'
+        HyperlinkEnabled = False
+        AutoSize = True
+        DataField = 'TEXTO'
+        DataPipeline = pipRelLog
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelLog'
+        mmHeight = 4233
+        mmLeft = 48419
+        mmTop = 529
+        mmWidth = 10583
+        BandType = 4
+        LayerName = Foreground2
+      end
+    end
+    object ppFooterBand3: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5292
+      mmPrintPosition = 0
+      object ppLine12: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line4'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground2
+      end
+      object ppSystemVariable5: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable1'
+        HyperlinkEnabled = False
+        VarType = vtPrintDateTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 2910
+        mmTop = 1058
+        mmWidth = 29549
+        BandType = 8
+        LayerName = Foreground2
+      end
+      object ppSystemVariable6: TppSystemVariable
+        DesignLayer = ppDesignLayer3
+        UserName = 'SystemVariable2'
+        HyperlinkEnabled = False
+        VarType = vtPageSetDesc
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3725
+        mmLeft = 175155
+        mmTop = 1058
+        mmWidth = 19812
+        BandType = 8
+        LayerName = Foreground2
+      end
+    end
+    object ppGroup1: TppGroup
+      BreakName = 'CODIGOUSUARIO'
+      DataPipeline = pipRelLog
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group1'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'pipRelLog'
+      NewFile = False
+      object ppGroupHeaderBand1: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 11642
+        mmPrintPosition = 0
+        object ppLine11: TppLine
+          DesignLayer = ppDesignLayer3
+          UserName = 'Line3'
+          ParentWidth = True
+          Weight = 0.750000000000000000
+          mmHeight = 265
+          mmLeft = 0
+          mmTop = 6615
+          mmWidth = 197300
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLabel3: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label1'
+          HyperlinkEnabled = False
+          Caption = 'Usu'#225'rio:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 5292
+          mmLeft = 12435
+          mmTop = 794
+          mmWidth = 17463
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLine13: TppLine
+          DesignLayer = ppDesignLayer3
+          UserName = 'Line13'
+          ParentWidth = True
+          Weight = 0.750000000000000000
+          mmHeight = 265
+          mmLeft = 0
+          mmTop = 11377
+          mmWidth = 197300
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLabel4: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label2'
+          HyperlinkEnabled = False
+          Caption = 'Data'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 8996
+          mmTop = 6879
+          mmWidth = 7673
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLabel5: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label5'
+          HyperlinkEnabled = False
+          Caption = 'Hora'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 32015
+          mmTop = 6879
+          mmWidth = 7938
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLabel6: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label6'
+          HyperlinkEnabled = False
+          Caption = 'Descri'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 48419
+          mmTop = 6879
+          mmWidth = 16404
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppDBText16: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText6'
+          HyperlinkEnabled = False
+          DataField = 'USERNAME'
+          DataPipeline = pipRelLog
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = []
+          TextAlignment = taCentered
+          Transparent = True
+          DataPipelineName = 'pipRelLog'
+          mmHeight = 5027
+          mmLeft = 30692
+          mmTop = 794
+          mmWidth = 22754
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppLabel7: TppLabel
+          DesignLayer = ppDesignLayer3
+          UserName = 'Label7'
+          HyperlinkEnabled = False
+          Caption = '-'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 5292
+          mmLeft = 55033
+          mmTop = 794
+          mmWidth = 1323
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+        object ppDBText17: TppDBText
+          DesignLayer = ppDesignLayer3
+          UserName = 'DBText17'
+          HyperlinkEnabled = False
+          AutoSize = True
+          DataField = 'NOME'
+          DataPipeline = pipRelLog
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 12
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipRelLog'
+          mmHeight = 5027
+          mmLeft = 57944
+          mmTop = 794
+          mmWidth = 12435
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground2
+        end
+      end
+      object ppGroupFooterBand1: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 0
+        mmPrintPosition = 0
+      end
+    end
+    object ppDesignLayers3: TppDesignLayers
+      object ppDesignLayer3: TppDesignLayer
+        UserName = 'Foreground2'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList4: TppParameterList
+    end
+  end
+  object rbiFechamentoTurno: TppReport
+    PassSetting = psTwoPass
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Fechamento de Turno'
+    PrinterSetup.PaperName = 'Custom'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 1000
+    PrinterSetup.mmMarginLeft = 1000
+    PrinterSetup.mmMarginRight = 1000
+    PrinterSetup.mmMarginTop = 1000
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 85000
+    PrinterSetup.PaperSize = 256
+    Units = utMillimeters
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Printer'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = False
+    OutlineSettings.CreatePageNodes = False
+    OutlineSettings.Enabled = False
+    OutlineSettings.Visible = False
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = True
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    ShowPrintDialog = False
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = False
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 384
+    Top = 368
+    Version = '16.01'
+    mmColumnWidth = 0
+    object ppHeaderBand4: TppHeaderBand
+      BeforeGenerate = ppHeaderBand4BeforeGenerate
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 147902
+      mmPrintPosition = 0
+      object ppDBText21: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText1'
+        HyperlinkEnabled = False
+        DataField = 'NOMECOMUNIDADE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3429
+        mmLeft = 0
+        mmTop = 794
+        mmWidth = 71702
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppDBText22: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText2'
+        HyperlinkEnabled = False
+        DataField = 'NOMEPAROQUIA'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3429
+        mmLeft = 0
+        mmTop = 6350
+        mmWidth = 71702
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppDBText23: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText3'
+        HyperlinkEnabled = False
+        DataField = 'NOMEDIOCESE'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3429
+        mmLeft = 0
+        mmTop = 10848
+        mmWidth = 71702
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine14: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line1'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 24077
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine15: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 30163
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel1: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'OME'
+        HyperlinkEnabled = False
+        Caption = 'F E C H A M E N T O  D E  T U R N O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3683
+        mmLeft = 2381
+        mmTop = 25400
+        mmWidth = 66675
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine16: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line3'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 60590
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppDBText24: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText4'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO1'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3302
+        mmLeft = 0
+        mmTop = 15346
+        mmWidth = 71702
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppDBText25: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText5'
+        HyperlinkEnabled = False
+        DataField = 'ENDERECO2'
+        DataPipeline = pipComunidade
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipComunidade'
+        mmHeight = 3302
+        mmLeft = 0
+        mmTop = 19579
+        mmWidth = 71702
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label8'
+        HyperlinkEnabled = False
+        Caption = 'TURNO........:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 2117
+        mmTop = 39952
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label9'
+        HyperlinkEnabled = False
+        Caption = 'RESPONSAVEL..:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 2117
+        mmTop = 47096
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label10'
+        HyperlinkEnabled = False
+        Caption = 'DATA.........:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 2117
+        mmTop = 53975
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varNomeTurno: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varNomeTurno'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 0
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 29898
+        mmTop = 39952
+        mmWidth = 19812
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varNomeServo: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varNomeServo'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 29898
+        mmTop = 47096
+        mmWidth = 19812
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varDataEmissao: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varDataEmissao'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 2
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 29898
+        mmTop = 53975
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine18: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line18'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 67998
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel11: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'OME1'
+        HyperlinkEnabled = False
+        Caption = 'D E T A L H A M E N T O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3683
+        mmLeft = 13758
+        mmTop = 62442
+        mmWidth = 43815
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel12: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label12'
+        HyperlinkEnabled = False
+        Caption = 'D'#205'ZIMOS.................:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1058
+        mmTop = 69850
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label13'
+        HyperlinkEnabled = False
+        Caption = 'COLETAS DA COMUNIDADE...:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1058
+        mmTop = 76994
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel14: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label101'
+        HyperlinkEnabled = False
+        Caption = 'COLETAS ESPECIAIS.......:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1058
+        mmTop = 83873
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotalDizimo: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotalDizimo'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 3
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 48683
+        mmTop = 69850
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotalColetasComunidade: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotalColetasComunidade'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 4
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 30427
+        mmTop = 76994
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotalColetasEspeciais: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotalColetasEspeciais'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 5
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 32015
+        mmTop = 83873
+        mmWidth = 39624
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel15: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label15'
+        HyperlinkEnabled = False
+        Caption = 'OUTRAS COLETAS..........:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 90488
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel16: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label16'
+        HyperlinkEnabled = False
+        Caption = 'FESTAS..................:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 97631
+        mmWidth = 41275
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotalOutrasOfertas: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotalOutrasOfertas'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 6
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 37042
+        mmTop = 90488
+        mmWidth = 34671
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotalFestas: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotalFestas'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 7
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 48683
+        mmTop = 97631
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine19: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line19'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 105834
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine20: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line20'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 113242
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel18: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label18'
+        HyperlinkEnabled = False
+        Caption = 'T O T A I S'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3683
+        mmLeft = 25400
+        mmTop = 107686
+        mmWidth = 20955
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel19: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label19'
+        HyperlinkEnabled = False
+        Caption = 'COLETAS + FESTAS............:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 115094
+        mmWidth = 47879
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotal1: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotal1'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 8
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 56886
+        mmTop = 115094
+        mmWidth = 14859
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel20: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label20'
+        HyperlinkEnabled = False
+        Caption = 'D'#205'ZIMOS + COLETAS + FESTAS..:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 121709
+        mmWidth = 47879
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotal2: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotal2'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 9
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 56886
+        mmTop = 121709
+        mmWidth = 14859
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel21: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label201'
+        HyperlinkEnabled = False
+        Caption = 'OUTRAS OFERTAS..............:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 128323
+        mmWidth = 47879
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotal3: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotal3'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 10
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 56886
+        mmTop = 128323
+        mmWidth = 14859
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel22: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label22'
+        HyperlinkEnabled = False
+        Caption = 'TOTAL GERAL.................:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 1323
+        mmTop = 134938
+        mmWidth = 47879
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object varTotal4: TppVariable
+        DesignLayer = ppDesignLayer4
+        UserName = 'varTotal4'
+        HyperlinkEnabled = False
+        BlankWhenZero = False
+        CalcOrder = 11
+        DataType = dtCurrency
+        DisplayFormat = '#,###,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ResetType = veGroupEnd
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 56886
+        mmTop = 134938
+        mmWidth = 14859
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine21: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line201'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 0
+        mmTop = 142611
+        mmWidth = 83000
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine22: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line5'
+        Pen.Style = psDot
+        Weight = 0.750000000000000000
+        mmHeight = 1058
+        mmLeft = 42863
+        mmTop = 120386
+        mmWidth = 29898
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLine23: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line23'
+        Pen.Style = psDot
+        Weight = 0.750000000000000000
+        mmHeight = 1058
+        mmLeft = 42863
+        mmTop = 133879
+        mmWidth = 29898
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppLabel17: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label17'
+        HyperlinkEnabled = False
+        Caption = 'N'#186' CONTROLE..:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 2117
+        mmTop = 32808
+        mmWidth = 23114
+        BandType = 0
+        LayerName = Foreground3
+      end
+      object ppDBText26: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText26'
+        HyperlinkEnabled = False
+        DataField = 'SEQUENCIAFECHAMENTOTURNO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        ParentDataPipeline = False
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 29898
+        mmTop = 32808
+        mmWidth = 17198
+        BandType = 0
+        LayerName = Foreground3
+      end
+    end
+    object ppDetailBand4: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppDesignLayers4: TppDesignLayers
+      object ppDesignLayer4: TppDesignLayer
+        UserName = 'Foreground3'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList1: TppParameterList
+    end
+  end
+  object BackupFile1: TBackupFile
+    Version = '3.00'
+    BackupMode = bmAll
+    CompressionLevel = clFastest
+    RestoreMode = rmAll
+    MaxSize = 0
+    SetArchiveFlag = False
+    RestoreFullPath = False
+    SaveFileID = False
+    Left = 418
+    Top = 304
+  end
+  object TcpClient1: TTcpClient
+    Left = 296
+    Top = 152
+  end
+  object ibsScript: TIBScript
+    Database = IBDatabase
+    Transaction = IBTransaction
+    Terminator = ';;'
+    Left = 360
+    Top = 240
+  end
+  object GetConfig: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    Left = 32
+    Top = 192
+  end
+  object ImageList1: TImageList
+    Left = 184
+    Top = 256
+    Bitmap = {
+      494C01010C00D400D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000004000000001001800000000000030
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000AD5A5AAD5252A54A4AAD9494C6CEC6CECEC6CECEC6C6CEC6
+      C6CEC6B59C9C9C42429C4242A552520000000000000000000029520029520029
+      5200295200295200295200295200295200295200295200295200295200000000
+      0000000000636E7B000000C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4
+      C2A6A4C2A6A4C2A6A4C2A6A4C2A6A40000000000009C9C9C9C9C9C9C9C9C9C9C
+      9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C9C90909000000000
+      0000000000BD7B73CE6363CE6B6BB55A5A9C8484BDA5A5E7CECEFFF7F7FFFFF7
+      F7F7F7CEB5B59429299C3131C65A5AAD5A5A0000000073BD5ACEEF0073BD0073
+      BD0073BD0073BD0073BD0073BD0073BD0073BD0073BD0073BD0073BD00295200
+      00005E98C73489D07F859DC2A6A4FEFCFBFEFCFBFEFCFBFEFCFBFEFCFBFEFCFB
+      FEFCFBFEFCFBFEFCFBFEFCFBC2A6A40000000000009C9C9CEBEBEBE0E0E0DBDB
+      DBD7D7D7D2D2D2CDCDCDC9C9C9C3C3C3C2C2C2C2C2C2C6C6C690909000000000
+      0000000000BD7B73CE6363CE6363B55A5A9C7B7B9C4242B57373E7DEDEFFF7F7
+      FFFFFFD6B5B59431319C3131BD5A5AAD5A5A0000000073BDC6AD9C4A29184A29
+      184A29184A29184A29184A29184A29184A29184A29184A29180073BD00295200
+      00000000004BB6FF288BE0858498FEFCFBFEFCFBFEFCFBFEFCFBFEFCFBFEFCFB
+      FEFCFBFEFCFBFEFCFBFEFCFBC2A6A4000000000000959595F0F0F0E5E5E5E0E0
+      E0DCDCDCC6C6C6959595959595C0C0C0C4C4C4C2C2C2C6C6C690909000000000
+      0000000000BD7B73CE6363CE6363B55A5AAD84849C39399C3939CEBDBDEFEFEF
+      FFFFFFE7C6C6942929943131BD5A5AAD5A5A0000000073BDC6AD9CF7EFE7EFE7
+      DEE7DED6E7D6CEDECEC6DEC6BDB5BDEFD6BDADD6BDAD4A29180073BD00295200
+      00000000000000004DB5FF278BDE79819AFEFBF7FEFBF7FEFBF7FEFBF7FEFBF7
+      FEFBF7FEFBF7FEFBF7FEFBF7C2A6A4000000000000959595F5F5F5E9E9E99595
+      95CCCCCC959595C6C6C6C6C6C6959595C0C0C0C4C4C4C5C5C590909000000000
+      0000000000BD7B73CE6363CE6363B55A5AB58C8C9C4A4A943131A59C9CD6D6D6
+      FFFFFFE7C6C6942929943131BD5A5AAD5A5A0000000073BDC6A594FFF7F7CE84
+      29CE8429CE8429E7DED6B5BDEF0008B5B5BDEFD6BDAD4A29180073BD00295200
+      00000000000000000000004CB9FF5A91BFE0CCC8C4A39FB08783C4A39FE0CCC8
+      FEF9F4FEF9F4FEF9F4FEF9F4C2A6A40000000000009F9F9FF9F9F9EFEFEF9595
+      95959595CCCCCCDBDBDBD7D7D7C0C0C0959595C8C8C8C7C7C790909000000000
+      0000000000BD7B73CE6363CE6363BD5A5AC6948CC69494B58484AD8C8CBDA5A5
+      E7C6C6DEADADA53939A53939C65A5AAD5A5A0000000073BDBDA594FFFFFFFFF7
+      F7F7EFEFEFE7E7EFE7DE0008B5E7D6CE0008B5B5BDEF4A29180073BD00295200
+      0000000000000000000000C2A6A4D1B7B2B8908AD3B5A8EFDBC3D2B1A0B78E86
+      E0CBC5FEF7F0FEF7F0FEF7F0C2A6A40000000000009F9F9FFEFEFEF3F3F39595
+      95959595959595DFDFDFDBDBDBD7D7D7D1D1D1CCCCCCCCCCCC90909000000000
+      0000000000BD7B73CE6363CE6363CE6363CE6363CE6363CE6363CE6363C65A5A
+      C65A5ACE6363CE6363CE6363CE6B6BAD525A0000000073BDBDA594FFFFFFFFFF
+      FFFFF7F7F7EFEFEFE7E7EFE7DEB5BDEFE7D6CE0008B54A29180073BD00295200
+      0000000000000000000000C2A6A4C4A29DD4B9B1F9EADAF8E7D2FFFFF7D2B0A0
+      C4A29DFEF5ECFEF5ECFEF5ECC2A6A4000000000000A6A6A6FFFFFFF9F9F9F3F3
+      F3EEEEEEE9E9E9E5E5E5959595959595959595D2D2D2D1D1D190909000000000
+      0000000000BD7B73B55252B55A5AC68484D6A5A5D6ADADD6ADA5D6ADADD6A5A5
+      D6A5A5D6ADA5D6ADADD69C9CCE6363AD52520000000073BDBDA594FFFFFFCE84
+      29CE8429CE8429F7EFEFB5BDEF0008B5B5BDEFE7D6CE4A29180073BD00295200
+      0000000000000000000000C2A6A4B08682F5EAE3F9EFE3F8EADAFFFFF0F0DAC4
+      B08682FEF3E9FEF3E9FEF3E9C2A6A4000000000000A6A6A6FFFFFFFEFEFE9595
+      95D6D6D6EEEEEEE9E9E9C9C9C9959595959595D6D6D6D6D6D690909000000000
+      0000000000BD7B73AD524AE7CECEF7F7F7F7F7EFF7F7F7F7F7F7F7F7F7F7F7F7
+      F7F7F7F7F7F7F7F7F7DEBDBDC65A5AAD525A0000000073BDBDA594FFFFFFFFFF
+      FFFFFFFFFFFFFFFFF7F70008B5EFE7E70008B5B5BDEF4A29180073BD00295200
+      0000000000000000000000C2A6A4C4A19BD6BFBAFBF3EBFAEFE2FFFFDED3B5A8
+      C4A19BFFF1E5FFF1E5FFF1E5C2A6A4000000000000B1B1B1FFFFFFFFFFFFDCDC
+      DC959595D6D6D6CECECE959595C9C9C9959595DCDCDCD3D3D390909000000000
+      0000000000BD7B73B5524AEFD6D6FFF7F7F7EFEFF7EFEFF7EFEFF7EFEFF7EFEF
+      F7EFEFF7EFEFF7F7F7DEBDBDC65A5AAD525A0000000073BDBDA594FFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFF7F7F7EFEFEFE7E70008B54A29180073BD00295200
+      0000000000000000000000C2A6A4E0C7BCB8928FD6BFBAF5EAE2D4B9B1B8908A
+      CBB2A8DDCFC2DDCFC2DDCFC2C2A6A4000000000000B1B1B1FFFFFFFFFFFFFFFF
+      FFDCDCDC959595959595CECECEEBEBEBEAEAEAD5D5D5B7B7B790909000000000
+      0000000000BD7B73B5524AEFD6D6EFEFEFD6D6D6D6D6D6D6D6D6D6D6D6D6D6D6
+      D6D6D6D6D6D6EFEFEFDEBDBDC65A5AAD525A0000000073BDBDA594FFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7F7EFEFEFE7E74A29180073BD00295200
+      0000000000000000000000C2A6A4FFEEDEE0C5BAC4A099B08682C4A099E0C5BA
+      C5B5A9C3B4A8C2B3A7C1B2A6C2A6A4000000000000B8B8B8FFFFFFFFFFFFFFFF
+      FFFFFFFFFEFEFEF8F8F8F4F4F4E3E3E3A4A4A4A4A4A4A4A4A4A4A4A400000000
+      0000000000BD7B73B5524AEFD6D6EFEFEFDED6D6DEDEDEDEDEDEDEDEDEDEDEDE
+      DEDEDEDED6D6EFEFEFDEBDBDC65A5AAD525A0000000073BDBDA594FFFFFF0042
+      840029520029520029520029520029520029520029524A29180073BD00295200
+      0000000000000000000000C2A6A4FFECDAFFECDAFFECDAFFECDAFFECDAFFECDA
+      B0A296B0A296B0A296B0A296C2A6A4000000000000B8B8B8FFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFDFDFDFCFCFCD6D6D6A4A4A4ACACACA3A3A3ABABAB00000000
+      0000000000BD7B73B5524AEFD6D6F7F7EFE7DEDEE7DEDEE7DEDEE7DEDEE7DEDE
+      E7DEDEE7DEDEEFEFEFDEBDBDC65A5AAD525A0000000073BDBDA594BDA5940042
+      847BE7F752C6E700295252C6E731ADDE007BBD002952BDA5940073BD00295200
+      0000000000000000000000C2A6A4FFEAD7FFEAD7FFEAD7FFEAD7FFEAD7C9B9AC
+      FBF8F4FBF8F4E6DAD9C2A6A4000000000000000000BFBFBFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFDBDBDBA4A4A4B8B8B8ABABAB00000000000000
+      0000000000BD7B73B5524AEFD6D6EFEFEFD6D6D6D6D6D6D6D6D6D6D6D6D6D6D6
+      D6D6D6D6D6D6EFEFEFDEBDBDC65A5AAD525A0000000073BD7BE7F77BE7F77BE7
+      F70042847BE7F700295200295252C6E70029527BE7F773DEF76BD6EF00295200
+      0000000000000000000000C2A6A4FFE8D3FFE8D3FFE8D3FFE8D3FFE8D3C9B9AC
+      FBF8F4DFCEC7C2A6A4000000000000000000000000BFBFBFF8F8F8F7F7F7F7F7
+      F7F7F7F7F6F6F6F6F6F6F6F6F6D7D7D7A4A4A4ABABAB00000000000000000000
+      0000000000BD7B73B5524AE7D6CEFFF7F7F7EFEFF7EFEFF7EFEFF7EFEFF7EFEF
+      F7EFEFF7EFEFFFF7F7DEBDBDC65A5AAD525A0000000000000073BD0073BD0073
+      BD0073BD0042847BE7F77BE7F70029520073BD0073BD0073BD0073BD00000000
+      0000000000000000000000C2A6A4FFE6D0FFE6D0FFE6D0FFE6D0FFE6D0C9B9AC
+      DFCEC7C2A6A4000000000000000000000000000000BFBFBFBABABABABABABABA
+      BABABABABABABABABABABABABABABABAA4A4A400000000000000000000000000
+      0000000000000000AD524ACEB5B5D6D6D6CECECECECECECECECECECECECECECE
+      CECECECECECED6D6D6CEADADA54A4A0000000000000000000000000000000000
+      0000000000428400428400428400428400000000000000000000000000000000
+      0000000000000000000000C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4C2A6A4
+      C2A6A40000000000000000000000000000000000000000000000000000000000
+      00000000005A08006308005A08005A0800000000000000000000000000000000
+      0000000000000000000000000000868484868484000000000000868484868484
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000884
+      18109C2110A52108A51808A51808A51808941000630800000000000000000000
+      0000000000000000000000868484BCBABAB5B3B3868484868484868484EBEAEA
+      868484868484868484000000000000000000AB7E62A4775A955F3F8E57397E40
+      207E4020000000000000000000AB7E62A4775A955F3F8E57397E40207E402000
+      0000000000B78183A47874A47874A47874A47874A47874A47874A47874A47874
+      A47874A47874A47874986B66000000000000000000000000000000108C2129BD
+      4221B53118B53110AD2910A52108A51808A51808AD1808730800000000000000
+      0000000000000000868484E3E2E2B5B3B3B5B3B3B5B3B35150504F4F4F868787
+      CDCDCDE8E9E9C7C6C6868484868484868484AB7E62FCFAFAE3C8B8CDA38CAC76
+      557E4020000000000000000000AB7E62FCFAFAE3C8B8CDA38CAC76557E402000
+      0000000000B78183FDEFD9F6E3CBF5DFC2F4DBBAF2D7B2F1D4A9F1D0A2EECC99
+      EECC97EECC97F3D199986B6600000000000000000000000010942131C65229C6
+      4A29C64221BD4221BD3118B52910AD2108AD2108AD1808AD1808730800000000
+      0000000000868484DEDDDDD6D6D6A4A3A3A4A3A3A4A3A3565555161516121212
+      181818121212939393CACACA868484000000AB7E62FCFAFAE3C8B8CDA38CB980
+      5F7E4020000000000000000000AB7E62FCFAFAE3C8B8CDA38CB9805F7E402000
+      0000000000B48176FEF3E3F8E7D3F5E3CBF5DFC3CFCF9F018A02018A02CCC68B
+      EECC9AEECC97F3D199986B6600000000000000000010941839CE6331C65A39C6
+      5231BD5231B54A29B54221AD3918AD3118A529109C2108A51808AD1800630800
+      0000868484D6D6D6D6D6D6A4A3A3E0DEDED9D7D7CDCBCBC2C0C0B6B4B49F9D9D
+      7976771212121414141313138684848F8C8CAB7E62FCFAFAE3C8B8CDA38CB980
+      5F7E4020000000000000000000AB7E62FCFAFAE3C8B8CDA38CB9805F7E402000
+      0000000000B48176FFF7EBF9EBDA018A02D1D6AC018A02D0CF9ECECC98018A02
+      CCC689EFCD99F3D198986B6600000000000000000031BD4A42D66B39CE5A396B
+      42316B42316342316339316339296331295A31295A2908A51808AD1808941000
+      0000868484D6D6D6A4A3A3F3F2F2FFFEFEFCFBFBEAE7E8E6E6E6E6E5E5DAD9D9
+      CCCBCBBFBDBDA2A0A07371719391918E8C8CAB7E62FCFAFAE3C8B8CDA38CB980
+      5F7E4020000000000000000000AB7E62FCFAFAE3C8B8CDA38CB9805F7E402000
+      0000000000BA8E85FFFCF4FAEFE4018A02018A02D1D5ADF5DFC2F4DBBBCDCC98
+      018A02F0D0A1F3D29B986B66000000000000089C1842CE6B42D66B42CE6339CE
+      6339CE6339CE5A31C65229C64A21BD3918B53110AD2910AD2108A51808A51800
+      5A08868484A4A3A3FFFFFFFEFDFDFBFBFBDFDEDFADA7A9B4ADAEC3BDBED1CECF
+      E0E0E0E1E1E1D4D3D3C7C6C6A7A5A5868383AB7E629F6B4E9F6B4E9153319153
+      317E40207E40206F4324AB7E629F6B4E9F6B4E9153319153317E40207E402000
+      0000000000BA8E85FFFFFDFBF4EC018A02018A02018A02F5E3C9F5DFC2F4DBBA
+      F2D7B1F0D4A9F5D5A3986B6600000000000010A5215ADE8452D67B42D66B39CE
+      6339D66339CE5A31C65229BD4A29BD4221BD3918B53118AD2910AD2110A51800
+      5A08000000868484868484F1F0F0C2B9BA93898BA19B9FABA8AAABA6A7B1ACAD
+      AFA9AAB2ADAECAC9C9DCDCDCD0D0D0868484DDC5A9AB7E62ECD8CDECD8CDCAA0
+      89AC76557E40209F6B4EAB7E62ECD8CDECD8CDCAA089AC76557E402090606000
+      0000000000CB9A82FFFFFFFEF9F5FBF3ECFAEFE2F9EADAF8E7D2018A02018A02
+      018A02F2D8B2F6D9AC986B6600000000000010A52184E7A563DE8C4AD67342D6
+      6B39A55A39BD5A39CE5A31C65229BD4A29943921AD3918B53118AD2910AD2100
+      6308000000000000000000868484CAA097BA9E87A2897E95817B897C7F928C92
+      A5A2A4BBB6B7D7D6D6CFCFCF868484000000000000AB7E62FFFFFFF1E8E5EED2
+      C1AC76557E4020C89890AB7E62FFFFFFF1E8E5EED2C1AC765590606000000000
+      0000000000CB9A82FFFFFFFFFEFD018A02D6E3C9F9EFE3F8EADAD2D9B3018A02
+      018A02F4DBB9F8DDB4986B6600000000000010A5188CE7AD8CEFAD52E77B42AD
+      63312131396B4239D66339D65A319C4A312131315A3921BD3921B53118AD2900
+      5A08000000000000000000000000CC9A99FFEAC4FFDDB3EEC399D5AE8CC9A786
+      CC9A99989596868484868484000000000000000000000000AB7E629F6B4E955F
+      3F7E40207E40209F6B4EAB7E629F6B4E955F3F7E40207E402000000000000000
+      0000000000DCA887FFFFFFFFFFFFD9EDD8018A02D6E3C8D5E0C1018A02D3D8B2
+      018A02F7E1C2F0DAB7986B660000000000000000006BD684C6F7D673EF9C428C
+      5A29102939524242D66B39DE63398C4A31183131423929BD4229BD4218A52900
+      0000000000000000000000000000CC9A99FFE7C8FFDDBAFFDBB1FFD9A6FFD39F
+      CC9A99000000000000000000000000000000000000000000AB7E62FCFAFADEC3
+      B1AC76557E4020000000AB7E62FCFAFADEC3B1AC76557E402000000000000000
+      0000000000DCA887FFFFFFFFFFFFFFFFFFD9EDD8018A02018A02D5DFC1FAEDDC
+      FCEFD9E6D9C4C6BCA9986B6600000000000000000021AD31BDF7D6C6FFD663CE
+      84314A39428C524ADE7342D66B39BD5A314239317B4231C64A31C64A087B1000
+      0000000000000000000000CE9D9BFFEDDAFFE7CEFFE2C3FFDDB8FFDBAECC9A99
+      000000000000000000000000000000000000000000000000AB7E629F6B4E955F
+      3F7E40209F6B4E000000AB7E629F6B4E955F3F7E40209F6B4E00000000000000
+      0000000000E3B18EFFFFFFFFFFFFFFFFFFFFFFFFFFFEFDFDF8F3FDF6ECF1E1D5
+      B48176B48176B48176B4817600000000000000000000000031B542D6FFE7CEFF
+      DE84EFA55AE7844ADE7B4AD67342D66B42CE6342CE6339CE5A108C2100000000
+      0000000000000000000000CC9A99FEF0E1FFECD8FFE6CCFFE1C2FEDDB7CC9A99
+      000000000000000000000000000000000000000000000000000000AB7E62FCFA
+      FA7E4020000000000000000000AB7E62FCFAFA7E402000000000000000000000
+      0000000000E3B18EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFCFFFEF9E3CFC9
+      B48176E8B270ECA54AC5876800000000000000000000000000000031BD42C6F7
+      D6DEFFEFC6F7D6A5EFBD94EFAD8CE7A57BE79452D67B189C2900000000000000
+      0000000000000000CC9A99FFFFF5FFFFF5FFF0E1FFEBD6FFE8CCF6D4BACC9A99
+      000000000000000000000000000000000000000000000000000000AB7E62AB7E
+      629F6B4E000000000000000000AB7E62AB7E629F6B4E00000000000000000000
+      0000000000EDBD92FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE4D4D2
+      B48176FAC577CD937700000000000000000000000000000000000000000021AD
+      316BD684A5EFB5ADEFC6A5EFBD84E79C4AC66310942100000000000000000000
+      0000000000000000CC9A99CC9A99CC9A99FCF3E9FCEADAFCE5D0CC9A99000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000EDBD92FCF7F4FCF7F3FBF6F3FBF6F3FAF5F3F9F5F3F9F5F3E1D0CE
+      B48176CF9B860000000000000000000000000000000000000000000000000000
+      0000000010A52110A52110A521089C1800000000000000000000000000000000
+      0000000000000000000000000000000000CC9A99CC9A99CC9A99000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000EDBD92DAA482DAA482DAA482DAA482DAA482DAA482DAA482DAA482
+      B481760000000000000000000000000000000000000000000000000000000000
+      000000000000A50000A50000A50000A500000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      9C31009429009429000000000000000000000000000000000000000000000000
+      00B58C8C8C5A5A8C5A5A8C5A5A8C5A5A8C5A5A8C5A5A8C5A5A8C5A5A8C5A5A00
+      0000000000000000AAABAB999C9D999C9D999C9D999C9D999C9D999C9D999C9D
+      999C9D999C9D999C9D999C9D999C9D0000000000000000000000000000000010
+      CE0010C60008C60000BD0000BD0000BD0000B50000AD00000000000000000000
+      00000000000000000000000000000000000000000000000000009C31009C3100
+      9C3100FFAD42CE5200CE52009C42080000000000000000000000000000000000
+      00B58C8CFFF7E7F7EFDEF7EFDEF7EFDEF7EFDEF7EFDEF7EFDEF7E7CE8C5A5A00
+      0000000000000000AAABABFEFEFDFDFDFCFAFAF9F6F6F5F3F3F2F0F0EFECECEB
+      E9E9E8E4E4E4DBDBDBD2D2D2999C9D0000000000000000000021DE0021E70021
+      E70018DE0010D60008CE0000BD0000BD0000BD0000BD0000B500009C00000000
+      00000000000000000000000000000000000000000000009C29009C3100FF9400
+      FF9C00FFAD21FFBD4AFFCE73A531000000000000000000000000000000000000
+      00B58C8CF7EFDEF7DECEF7DEC6F7DEC6F7DEC6F7DEC6EFDECEEFDECE8C5A5A00
+      0000000000000000AAABABFEFEFDC6C6C6C6C6C6C6C6C6C6C6C6C6C6C6C6C6C6
+      C6C6C6C6C6C6C6C6C6DBDBDB999C9D0000000000000000000031F70839F70839
+      F70831F70021E70018DE0010CE0008C60008C60808BD0808B50000B500000000
+      00000000000000000000000000000000000000000000009C2900942100FFB531
+      FF9400A53100DE8410FFBD52A531000000000000000000000000000000000000
+      00B58C8CFFF7E7FFD6A5FFD6A5FFD6A5FFD6A5FFD6A5FFD6A5EFDECE8C5A5A00
+      0000000000000000AAABABFEFEFD2D2D2D58534ED6C6BDFAFAF9F6F6F5F3F3F2
+      F0F0EFECECEBE9E9E8E4E4E4999C9D0000000000000031F71042FF1042FF2139
+      8C1039E71039F70831EF0829E70829DE0821C621297B0810BD0000C60000A500
+      00000000000000000000000000000000000000009C29009C2900E7AD73FFCE7B
+      CE6B080000008C1800F79C21FFB54AA53100000000B58C8C8C5A5A8C5A5A8C5A
+      5AB58C8CFFF7EFF7DEC6F7DEC6F7DEC6F7DEC6F7DEBDF7E7CEEFDECE9C6B6300
+      0000000000000000AAABABFEFEFD58534E454442516061D6C6BDFAFAF9F6F6F5
+      F3F3F2F0F0EFECECEBE9E9E8999C9D000000000000184AFF184AFF1042FF1839
+      B52939731839AD1031E71031E71829A529316318219C0008C60000BD0000B500
+      0000000000000000000000006BA500528C108CB5735229BD4A00EFBD8CFFE7AD
+      CE7B390000008C1800F79400FFAD29A53100000000B58C8CFFF7E7F7EFDEF7EF
+      DEB58C8CFFF7EFF7E7CEF7DEC6F7DEC6F7DEC6F7DEC6F7E7D6EFDECE9C6B6B00
+      0000000000000000AAABABFEFEFDC6C6C654777B1A9CC218556F425A94C6B5B5
+      C6C6C6C6C6C6C6C6C6ECECEB999C9D0000000839FF295AFF295AFF1852FF1042
+      FF1042E721399421317B21317B2131841021BD0010D60008CE0000C60000BD00
+      009C000000006BA5006BA5006BA510A5D663E7FF008CCE008CCE737363FFE7AD
+      EFBD84A53900CE6B00FF9400A53100000000000000B58C8CF7EFDEF7DECEF7DE
+      C6B58C8CFFFFF7FFD6A5FFD6A5FFD6A5FFD6A5FFD6A5FFD6A5EFE7D6A57B7300
+      0000000000000000AAABABFEFEFDFEFEFD54777B29799A947E751A9CC2425A94
+      D6C6BDF6F6F5F3F3F2F0F0EF999C9D0000001042FF4A7BFF3163FF295AFF1852
+      FF104AFF0839FF0839FF0031F70029F70021F70018E70010D60010CE0008C600
+      00A500000000528C0084B500D6FF10D6FF39DEFF6BE7FF94EFFF008CCEFFE7AD
+      FFE7ADFFDEA5FFC65AFFA510A53100000000000000B58C8CFFF7E7FFD6A5FFD6
+      A5B58C8CFFFFF7FFE7D6FFE7D6F7E7D6F7E7CEFFE7D6FFF7E7EFDEDEA57B7300
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFD98B9D727D1FC04B8EC1A9CC2
+      425A94D6C6BDF8F8F7F3F3F2999C9D000000184AFF7B9CFF527BFF3163FF295A
+      FF294ABD184AE71042FF0039FF0031FF1029B50829D60018E70018DE0010CE00
+      00A500000000528C088CBD39DEFF00B5E7006BA529B5DE6BE7FF008CCED68439
+      D68429FFE7ADCE5200CE5200CE5200000000000000B58C8CFFF7EFF7DEC6F7DE
+      C6B58C8CFFFFFFFFFFFFFFFFFFFFFFF7FFFFF7EFDEDED6C6C6BDADADB5847300
+      0000000000000000AAABABFEFEFDC6C6C6C6C6C698B9D7ACEDFC27D1FC04B8EC
+      1A9CC2425A94C6B5B5F8F8F7999C9D0000001042FF94ADFF7B9CFF3973FF315A
+      C631312129427B1852FF1042FF1039C63931212131730021F70021E70018DE00
+      00A500528C189CC6B5EFFF84EFFF000000005A9400639C4AE7FF6BE7FF397B8C
+      CE5200CE5200000000000000000000000000000000B58C8CFFF7EFF7E7CEF7DE
+      C6B58C8CFFFFFFFFFFFFFFFFFFFFFFF7FFFFF7B58C8CB58C8CB58C8CB58C8C00
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFDFEFEFD98B9D7ACEDFC27D1FC
+      04B8EC1A9CC2425A94D6C6BD999C9D0000000000007394FFB5CEFF5A8CFF3952
+      9C31290831395A295AF71852FF2142A539311029314A0029F70029F70018D600
+      000000528C0894C6BDF7FFBDF7FF0000000063A5006BA521DEFF42DEFF187BA5
+      000000000000000000000000000000000000000000B58C8CFFFFF7FFD6A5FFD6
+      A5B58C8CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB58C8CEFB56BC68C7B00000000
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFDFEFEFDFEFEFD98B9D7ACEDFC
+      27D1FC04B8EC1A9CC2425A94999C9D000000000000295AFFC6D6FFADC6FF5273
+      DE31394A314A9C316BFF295AFF2152DE31314A21399C0039FF0031FF0010C600
+      0000000000005A9429ADD6C6FFFF94DEF70884B518C6F700D6FF187BA5000000
+      000000000000000000000000000000000000000000B58C8CFFFFF7FFE7D6FFE7
+      D6B58C8CB58C8CB58C8CB58C8CB58C8CB58C8CB58C8CBD848400000000000000
+      0000000000000000AAABABFEFEFDC6C6C6C6C6C6C6C6C6C6C6C6C6C6C698B9D7
+      ACEDFC27D1FC35A8F5222F9B1108750000000000000000005A7BFFD6E7FFBDD6
+      FF7394F74A7BFF4273FF3163FF3163FF295AF71852FF104AFF0029E700000000
+      0000000000005A9429ADD6C6F7FFC6FFFFADF7FF6BE7FF18D6FF187BA5000000
+      000000000000000000000000000000000000000000B58C8CFFFFFFFFFFFFFFFF
+      FFFFFFF7FFFFF7EFDEDED6C6C6BDADADB5847300000000000000000000000000
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFD
+      98B9D74A9EED455FC4455FC4222F9B1108750000000000000839FF5A7BFFC6D6
+      FFDEE7FFBDCEFF9CB5FF8CA5FF7B9CFF638CFF396BFF1039EF0018CE00000000
+      0000000000000000005A9400639452C6DEC6FFFF187BA5187BA5000000000000
+      000000000000000000000000000000000000000000B58C8CFFFFFFFFFFFFFFFF
+      FFFFFFF7FFFFF7B58C8CB58C8CB58C8CB58C8C00000000000000000000000000
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFD
+      FEFEFD455FC4889FE18997DF455FC4000000000000000000000000000000315A
+      FF6B8CFF9CB5FFADC6FF9CB5FF7B9CFF3963FF1039EF00000000000000000000
+      0000000000000000000000000000005A94006394000000000000000000000000
+      000000000000000000000000000000000000000000B58C8CFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFB58C8CEFB56BC68C7B00000000000000000000000000000000
+      0000000000000000AAABABFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFDFEFEFD
+      FEFEFD999C9D455FC4455FC40000000000000000000000000000000000000000
+      000000000839FF1842FF1042FF0839FF00000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000B58C8CB58C8CB58C8CB58C
+      8CB58C8CB58C8CB58C8CBD848400000000000000000000000000000000000000
+      0000000000000000AAABAB999C9D999C9D999C9D999C9D999C9D999C9D999C9D
+      999C9D999C9D000000000000000000000000424D3E000000000000003E000000
+      2800000040000000400000000100010000000000000200000000000000000000
+      000000000000000000000000FFFFFF0000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000FFFFC001C003A0018003800080010001
+      8003800080018001800380008001C001800380008001E001800380008001E001
+      800380008001E001800380008001E001800380008001E001800380008001E001
+      800380008001E001800380008001E001800380008001E003800780008001E007
+      800F8000C003E00F801FC001FC3FE01FFC3FF33FFFFFFFFFF00FE00703818003
+      E007C00003818003C00380010381800380010000038180038001000003818003
+      000000000001800300008000000180030000E001800380030000F003C0078003
+      8001F01FC10780038001E03FC1078003C003E03FE38F8003E007C03FE38F8007
+      F00FC07FFFFF800FFC3FF8FFFFFF801FFC3FFFC7F801C001F00FFF01F801C001
+      C003FE01F801C001C003FE01F801C0018001FC108001C0018001E0108001C001
+      000080018001C001000080018001C001000080018001C0010000080F8001C001
+      8001083F8003C0018001807F8007C001C003807F801FC000C003C0FF801FC001
+      F00FF3FF803FC003FC3FFFFF807FC00F00000000000000000000000000000000
+      000000000000}
+  end
+  object updHistoricoSituacao: TIBUpdateSQL
+    RefreshSQL.Strings = (
+      'Select '
+      '  CODIGOORIGEM,'
+      '  ID,'
+      '  TIPO,'
+      '  DATA,'
+      '  HORA,'
+      '  CODIGOSITUACAO,'
+      '  DESCRICAOSITUACAO,'
+      '  DATAFIM,'
+      '  HORAFIM,'
+      '  CODIGOUSUARIO,'
+      '  HISTORICOTRANSFERENCIA,'
+      '  CODIGOQUESTIONARIO'
+      'from TABHISTORICOSITUACAO '
+      'where'
+      '  ID = :ID')
+    ModifySQL.Strings = (
+      'update TABHISTORICOSITUACAO'
+      'set'
+      '  CODIGOORIGEM = :CODIGOORIGEM,'
+      '  CODIGOQUESTIONARIO = :CODIGOQUESTIONARIO,'
+      '  CODIGOSITUACAO = :CODIGOSITUACAO,'
+      '  CODIGOUSUARIO = :CODIGOUSUARIO,'
+      '  DATA = :DATA,'
+      '  DATAFIM = :DATAFIM,'
+      '  DESCRICAOSITUACAO = :DESCRICAOSITUACAO,'
+      '  HISTORICOTRANSFERENCIA = :HISTORICOTRANSFERENCIA,'
+      '  HORA = :HORA,'
+      '  HORAFIM = :HORAFIM,'
+      '  ID = :ID,'
+      '  TIPO = :TIPO'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into TABHISTORICOSITUACAO'
+      
+        '  (CODIGOORIGEM, CODIGOQUESTIONARIO, CODIGOSITUACAO, CODIGOUSUAR' +
+        'IO, DATA, '
+      
+        '   DATAFIM, DESCRICAOSITUACAO, HISTORICOTRANSFERENCIA, HORA, HOR' +
+        'AFIM, ID, '
+      '   TIPO)'
+      'values'
+      
+        '  (:CODIGOORIGEM, :CODIGOQUESTIONARIO, :CODIGOSITUACAO, :CODIGOU' +
+        'SUARIO, '
+      
+        '   :DATA, :DATAFIM, :DESCRICAOSITUACAO, :HISTORICOTRANSFERENCIA,' +
+        ' :HORA, '
+      '   :HORAFIM, :ID, :TIPO)')
+    DeleteSQL.Strings = (
+      'delete from TABHISTORICOSITUACAO'
+      'where'
+      '  ID = :OLD_ID')
+    Left = 42
+    Top = 407
+  end
+  object dtsHistoricoSituacao: TDataSource
+    DataSet = qryHistoricoSituacao
+    Left = 36
+    Top = 341
+  end
+  object qryHistoricoSituacao: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    SQL.Strings = (
+      'SELECT *'
+      '   FROM TABHISTORICOSITUACAO'
+      ''
+      'WHERE 1 = 1'
+      ''
+      '--AND'
+      ''
+      ''
+      ''
+      'ORDER BY ID')
+    UpdateObject = updHistoricoSituacao
+    Left = 34
+    Top = 287
+    object qryHistoricoSituacaoCODIGOORIGEM: TIntegerField
+      FieldName = 'CODIGOORIGEM'
+      Origin = '"TABHISTORICOSITUACAO"."CODIGOORIGEM"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryHistoricoSituacaoID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"TABHISTORICOSITUACAO"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryHistoricoSituacaoTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = '"TABHISTORICOSITUACAO"."TIPO"'
+    end
+    object qryHistoricoSituacaoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABHISTORICOSITUACAO"."DATA"'
+    end
+    object qryHistoricoSituacaoHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABHISTORICOSITUACAO"."HORA"'
+    end
+    object qryHistoricoSituacaoCODIGOSITUACAO: TIntegerField
+      FieldName = 'CODIGOSITUACAO'
+      Origin = '"TABHISTORICOSITUACAO"."CODIGOSITUACAO"'
+    end
+    object qryHistoricoSituacaoDESCRICAOSITUACAO: TIBStringField
+      FieldName = 'DESCRICAOSITUACAO'
+      Origin = '"TABHISTORICOSITUACAO"."DESCRICAOSITUACAO"'
+      Size = 100
+    end
+    object qryHistoricoSituacaoDATAFIM: TDateField
+      FieldName = 'DATAFIM'
+      Origin = '"TABHISTORICOSITUACAO"."DATAFIM"'
+    end
+    object qryHistoricoSituacaoHORAFIM: TTimeField
+      FieldName = 'HORAFIM'
+      Origin = '"TABHISTORICOSITUACAO"."HORAFIM"'
+    end
+    object qryHistoricoSituacaoCODIGOUSUARIO: TIntegerField
+      FieldName = 'CODIGOUSUARIO'
+      Origin = '"TABHISTORICOSITUACAO"."CODIGOUSUARIO"'
+    end
+    object qryHistoricoSituacaoHISTORICOTRANSFERENCIA: TIBStringField
+      FieldName = 'HISTORICOTRANSFERENCIA'
+      Origin = '"TABHISTORICOSITUACAO"."HISTORICOTRANSFERENCIA"'
+      Size = 500
+    end
+    object qryHistoricoSituacaoCODIGOQUESTIONARIO: TIntegerField
+      FieldName = 'CODIGOQUESTIONARIO'
+      Origin = '"TABHISTORICOSITUACAO"."CODIGOQUESTIONARIO"'
+    end
+  end
+  object Geral2: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    Left = 224
+    Top = 120
+  end
+  object Geral3: TIBQuery
+    Database = IBDatabase
+    Transaction = IBTransaction
+    Left = 224
+    Top = 176
+  end
+end

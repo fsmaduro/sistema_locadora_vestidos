@@ -1,0 +1,651 @@
+object frmConfiguracoes: TfrmConfiguracoes
+  Left = 185
+  Top = 175
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Configura'#231#245'es'
+  ClientHeight = 527
+  ClientWidth = 1019
+  Color = 16312551
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDefault
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel_btns_cad: TPanel
+    Left = 939
+    Top = 41
+    Width = 80
+    Height = 486
+    Align = alRight
+    BevelInner = bvLowered
+    Color = 16644087
+    ParentBackground = False
+    TabOrder = 0
+    object btn_sair: TSpeedButton
+      Left = 2
+      Top = 427
+      Width = 76
+      Height = 57
+      Hint = 'Sair'
+      Align = alBottom
+      Caption = '&Sair'
+      Flat = True
+      Glyph.Data = {
+        FE0A0000424DFE0A00000000000036000000280000001E0000001E0000000100
+        180000000000C80A0000120B0000120B00000000000000000000FFFFFFFFFFFF
+        C8C9E7797CDD8487EB878AEB878AEC878BEC888BED888BEE888BF0888BF0878B
+        F1878AF28789F38588F48587F58688F58688F58588F58688F68688F68688F587
+        89F4888BF3888CF2787BE18C8BCBF6F6F6FFFFFF0000FFFFFFC5C5EC4648DE3A
+        3BD22121C21919C21A1AC61A1ACA1A1ACD1A1AD11A1AD41A1AD71A1ADB1A1ADE
+        1A1AE01A1AE41A1AE71C1EE72023E92429EA282FEB2D34EC3139EC343FEE3944
+        EF3D4AF04F5CF64C54E77575CDFCFBF80000F3F3F94849DE2323C10101B10000
+        B70000BA0000BF0000C30000C60000CA0000CE0000D10000D50000D80000DB00
+        00DF0000E20001E30408E50A0FE60D15E7121AE81621E81A27EA1F2DEC2331EB
+        2535ED3E50F5434CE19494CB0000A9A9E91818CA0000AC0000B50000B80000BC
+        0000C00000C40000C70000CB0000CD0000CF0101D51212DD2727E12C2CE61F1F
+        E60B0CE50000E40309E51119E71820E91C26EA202BEA2431EC2937ED2D3DEE2D
+        3EEE3749F37377D800008C8CEB0000B30000AF0000B40000B80000BC0000C000
+        00C30000C60000C71919D27070E5BABAF3E3E3FBF6F6FEF9F9FEEFEFFED2D3FA
+        9C9DF54A4EED0C12E70E16E81C26EA202BEA2531EC2937ED2D3CEE3142EF3044
+        F36872E300008787E40000AD0000AF0000B40000B80000BB0000BF0000C10202
+        C46C6CE0E7E7FAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFB8BAF8363DEC0D18E8202BEA2431EC2937ED2D3CEE3142EF2F43F3606BE1
+        00008686E00000AB0000AF0000B30000B70000BB0000BD0909C1A1A1E9FFFFFF
+        FFFFFFFFFFFFFFFFFFFDFDFDECECF8E6E6F7F5F5FBFFFFFFFFFFFFFFFFFFFFFF
+        FFEBECFD535AEF111CE92430EC2836EC2C3BEE3141EF2F42F25F69DE00008686
+        DD0000A80000AD0000B20000B60000B80000BB9D9DE6FFFFFFFFFFFFFFFFFFF0
+        F0F99393E24040D41A1AD41313D72929DB6464E2C9C9F1FFFFFFFFFFFFFFFFFF
+        EFF0FE4B54EF1723EA2835ED2B3AEE3040EF2E41F15F69DB00008686D90000A4
+        0202AE0303B20202B50000B56666D5FFFFFFFFFFFFFFFFFFD3D3EF2F2FCB0000
+        CB0000D50000DA0000DE0000E10000E10707DB8484E6FFFFFEFFFFFFFFFFFFD3
+        D6FB2833EB212FEC2A39ED2E3EEE2C3FF15E67D800008585D60000A20D0DB00E
+        0EB40B0BB61C1CBFDCDCF6FFFFFFFFFFFFDFDFF32626C70000CB0000D20000D4
+        0000D80000DC0000E00101E30002E50000DF8385E7FFFFFFFFFFFFFFFFFF8086
+        F41623EA2936ED2D3CEE2A3CEF5D65D400008585D200009F1515B11616B50A0A
+        B56666D3FFFFFFFFFFFFFFFFFF6464D30E0ECB2020D31C1CD41313D50808D800
+        00DB0000DD0000E20304E40305E6090CE0C7C8F3FFFFFFFFFFFFCFD1FB222EEB
+        2431EC2A39EE2738EC5B63D300008585CF00009B1C1CB21C1CB61212B6A6A6E5
+        FFFFFFFFFFFFD9D9F22727C92323CF2929D32B2BD62C2CD92C2CDC2424DE1414
+        DE0303E00000E20406E40000E4696BE9FFFFFFFFFFFFF9F9FE414AED1B28EB27
+        35ED2433EA5A61D200008484CB0000982323B32222B62121B9C4C4EDFFFFFFFF
+        FFFFADADE82020C82D2DCF2F2FD23131D63232D93333DC3737DF3939E23131E4
+        1B1BE40404E40000E43335E6FAFAFDFFFFFFFFFFFF5B62F0141FEA2431ED202F
+        E8585FD100008484C80000962B2BB42929B72D2DBBD2D2F1FFFFFFFFFFFFA7A7
+        E72626C83434CE3636D23838D53939D83535D93535DD3C3CE14040E44343E73A
+        39E81313E62527E8F4F5FEFFFFFFFFFFFF666CF00E18E9202BEC1B29E5565DCF
+        00008484C40000933232B43131B83030B9C7C7EBFFFFFFFFFFFFB5B5EB2E2EC8
+        3C3CCF3E3ED23F3FD53D3DD75555DE5E5EE24444E04444E24747E64B4BE94444
+        EA5A5AEEFAFAFFFFFFFFFFFFFF5459EC0B14E81C25EB1622E35359CD00008383
+        C003038F3C3CB53D3DB93232B99E9EDBFFFFFFFFFFFFEFEFFA5959D13F3FCC48
+        48D23F3FD28C8CE6FAFAFEFFFFFFB5B5F24B4BE15050E35252E64949E7B2B2F6
+        FFFFFFFFFFFFE8E8F92124E40B10E7151CEA0F17E15054CB00008383BE06068C
+        4545B74545BA3F3FBB6464C4FAFAFBFFFFFFFFFFFFBCBCEC4343CA4D4DD04545
+        D1B0B0ECFFFFFFFFFFFFDEDEF85858E05757E25050E37A7AEBF9F9FEFFFFFFFF
+        FFFFBBBBEF0A0BE30306E50D12E7070CDD4C4FCA00008282BD08088A4C4CB74C
+        4CBB4C4CBE4646BABEBEE1FFFFFFFFFFFFFFFFFFA4A4E54F4FCE4C4CD0B0B0EB
+        FFFFFFFFFFFFDDDDF85F5FDE5454DE7373E6E5E5FBFFFFFFFFFFFFFBFBFA8888
+        E65656ED1010E50002E50002DC494AC800008282BC0B0B895555B95353BB5454
+        BE5050BF6868C0ECECF3FFFFFFFFFFFFFFFFFFB0B0E85050CEB4B4EBFFFFFFFF
+        FFFFDEDEF76161DD8E8EE8EFEFFCFFFFFFFFFFFFFFFFFFB6B6E46565E57878EE
+        5F5FEC0B0BE30000DA4445C700008282BC0E0E885D5DBB5B5BBC5C5CBE5D5DC2
+        5454BF8686C5F7F7F8FFFFFFFFFFFFECECF86262D0B5B5EAFFFFFFFFFFFFDDDD
+        F77272DEE9E9FAFFFFFFFFFFFFFFFFFFCDCDE76F6FDC7575EA7878E98282EC56
+        56E80000D34242C200008181BB1313896464BC6262BC6363BF6464C16666C55B
+        5BC18888C4EAEAEFFEFEFAB2B2DA5F5FCCBABAEAFFFFFFFFFFFFDFDFF77474DA
+        DCDCF0FFFFFFFFFFFDC3C3E07575D67979E67E7EE77F7FE78181E88A8AEB3232
+        D83E3EBE00008080B91B1B8C6D6DBE6969BE6A6ABF6C6CC26D6DC56E6EC86666
+        C57171BE7C7CBF6B6BC66B6BCFBEBEEAFFFFFFFFFFFFE2E2F77878DA8282CEB1
+        B1D59C9CD17676D58080E38484E38585E48787E58787E68E8EE87272DF4A4ABC
+        00008080B82929907575BF7070BE7171C07272C27373C57575C67676C97575CC
+        7474CD7A7AD07373CEC1C1EAFFFFFFFFFFFFE4E4F78383DA7F7FDA7979D57F7F
+        DA8888E18A8AE08B8BE18C8CE28E8EE38F8FE49393E58282E05858BC00008383
+        B93E3E9A7B7BC07676BE7777C17979C27B7BC57C7CC77D7DCA7F7FCC8080CE81
+        81CF7A7ACEC6C6EBFFFFFFFFFFFFE7E7F78A8AD98A8ADA8D8DDD8E8EDD8F8FDD
+        9191DF9292E09393E19595E19696E19999E19090E06767C000008A8ABE5858A8
+        8181C07E7EBF7F7FC28080C48181C68383C88585CA8686CB8888CE8989D08484
+        CFB0B0DAFFFFFDFFFFFFCACAE38C8CD59292D99494DA9595DB9696DD9999DE99
+        99DF9A9ADF9C9CDF9E9EDFA0A0E09D9DE08989CC0000A6A6CC7272B78484BF84
+        84C18787C48888C58989C78B8BC98C8CCA8E8ECD8F8FCF9090D09292D28D8DCC
+        A1A1C9AAAACC9292CD9898D89A9AD99B9BDA9D9DDB9E9EDC9F9FDCA1A1DDA2A2
+        DDA4A4DEA5A5DEA4A4DCAEAEE2B7B7DC0000DBDBE67B7BBB9A9AC98989C08B8B
+        C28E8EC58F8FC78F8FC99191CB9292CC9494CE9595CF9797D19898D39393D093
+        93D19B9BD79D9DD79F9FD8A0A0D9A2A2D9A3A3DBA4A4DBA6A6DBA7A7DBA8A8DB
+        A6A6DAB2B2DEC7C7E8BBBBDA0000FFFFFFB0B0D19393C9B3B3D5A5A5CDA0A0CC
+        A1A1CEA3A3D0A4A4D1A6A6D3A7A7D5A9A9D6ABABD8ACACD9AEAEDAB0B0DCB0B0
+        DCB2B2DDB4B4DEB5B5DEB7B7E0B8B8E0B9B9E0BABAE1BCBCE1BEBEE2D1D1EADF
+        DFF2AFAFD5EFEFF50000FFFFFFFEFEFCC0C0DCA0A0CFB6B6DBC1C1DFC3C3E0C5
+        C5E1C7C7E3C9C9E4CCCCE6CECEE6D0D0E8D1D1E9D3D3EAD4D4EBD7D7ECD9D9ED
+        DBDBEEDCDCEEDEDEEFDFDFF0E0E0F0E1E1F1E2E2F1E1E1F1CCCCE7B9B9DAE5E5
+        EDFFFFFF0000FFFFFFFFFFFFFFFFFFF1F1F7CDCDDEC8C8D7CACAD9CACAD9CBCB
+        D9CBCBD9CCCCD9CCCCD9CCCCD9CCCCD9CDCDDACDCDD9CDCDDACDCDDACECEDACE
+        CEDACECEDACECEDACECEDACECEDACECEDACACAD8DFDFECFAFAFCFFFFFFFFFFFF
+        0000}
+      Layout = blGlyphTop
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btn_sairClick
+      ExplicitLeft = 4
+    end
+  end
+  object pnlTitulo: TPanel
+    Left = 0
+    Top = 0
+    Width = 1019
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'CONFIGURA'#199#195'O'
+    Color = 14719638
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 8924712
+    Font.Height = -27
+    Font.Name = 'Arial Black'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 1
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 41
+    Width = 939
+    Height = 486
+    Align = alClient
+    BevelOuter = bvNone
+    Color = 16312551
+    ParentBackground = False
+    TabOrder = 2
+    object cxGrid1: TcxGrid
+      Left = 0
+      Top = 0
+      Width = 608
+      Height = 486
+      Align = alClient
+      TabOrder = 0
+      LookAndFeel.SkinName = 'UserSkin'
+      object cxGrid1DBTableView1: TcxGridDBTableView
+        NavigatorButtons.ConfirmDelete = False
+        DataController.DataSource = dtsConfig
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        OptionsData.CancelOnExit = False
+        OptionsData.Deleting = False
+        OptionsData.DeletingConfirmation = False
+        OptionsData.Editing = False
+        OptionsData.Inserting = False
+        OptionsView.GroupByBox = False
+        OptionsView.Header = False
+        object cxGrid1DBTableView1CONFIG_CAPTION: TcxGridDBColumn
+          DataBinding.FieldName = 'CONFIG_CAPTION'
+          Width = 576
+        end
+      end
+      object cxGrid1Level1: TcxGridLevel
+        GridView = cxGrid1DBTableView1
+      end
+    end
+    object Panel3: TPanel
+      Left = 608
+      Top = 0
+      Width = 331
+      Height = 486
+      Align = alRight
+      BevelOuter = bvNone
+      Color = 16312551
+      TabOrder = 1
+      object DBMemo1: TDBMemo
+        Left = 0
+        Top = 217
+        Width = 331
+        Height = 269
+        Align = alClient
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        BorderStyle = bsNone
+        DataField = 'DESCRICAO'
+        DataSource = dtsConfig
+        ParentColor = True
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object Notebook1: TNotebook
+        Left = 0
+        Top = 81
+        Width = 331
+        Height = 136
+        Align = alTop
+        TabOrder = 1
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configTexto'
+          object wwDBEdit1: TwwDBEdit
+            Left = 6
+            Top = 15
+            Width = 319
+            Height = 21
+            Color = 16644087
+            DataField = 'VALOR_STRING'
+            DataSource = dtsConfig
+            TabOrder = 0
+            UnboundDataType = wwDefault
+            WantReturns = False
+            WordWrap = False
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configInteiro'
+          object wwDBEdit2: TwwDBEdit
+            Left = 6
+            Top = 15
+            Width = 121
+            Height = 21
+            Color = 16644087
+            DataField = 'VALOR_INTEIRO'
+            DataSource = dtsConfig
+            TabOrder = 0
+            UnboundDataType = wwDefault
+            WantReturns = False
+            WordWrap = False
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configMemo'
+          object DBMemo2: TDBMemo
+            Left = 6
+            Top = 15
+            Width = 319
+            Height = 115
+            Color = 16644087
+            DataField = 'VALOR_MEMO'
+            DataSource = dtsConfig
+            TabOrder = 0
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configLogico'
+          object DBRadioGroup1: TDBRadioGroup
+            Left = 6
+            Top = 15
+            Width = 131
+            Height = 74
+            Ctl3D = False
+            DataField = 'VALOR_LOGICO'
+            DataSource = dtsConfig
+            Items.Strings = (
+              '(N'#195'O) Falso'
+              '(SIM ) Verdadeiro')
+            ParentBackground = True
+            ParentCtl3D = False
+            TabOrder = 0
+            Values.Strings = (
+              '0'
+              '1')
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configData'
+          object wwDBDateTimePicker1: TwwDBDateTimePicker
+            Left = 6
+            Top = 15
+            Width = 139
+            Height = 21
+            CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+            CalendarAttributes.Font.Color = clWindowText
+            CalendarAttributes.Font.Height = -11
+            CalendarAttributes.Font.Name = 'Tahoma'
+            CalendarAttributes.Font.Style = []
+            Color = 16644087
+            DataField = 'VALOR_DATA'
+            DataSource = dtsConfig
+            Epoch = 1950
+            ShowButton = True
+            TabOrder = 0
+            UnboundDataType = wwDTEdtDate
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configHora'
+          object wwDBDateTimePicker2: TwwDBDateTimePicker
+            Left = 6
+            Top = 15
+            Width = 121
+            Height = 21
+            CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+            CalendarAttributes.Font.Color = clWindowText
+            CalendarAttributes.Font.Height = -11
+            CalendarAttributes.Font.Name = 'Tahoma'
+            CalendarAttributes.Font.Style = []
+            Color = 16644087
+            DataField = 'VALOR_HORA'
+            DataSource = dtsConfig
+            Epoch = 1950
+            ShowButton = True
+            TabOrder = 0
+            UnboundDataType = wwDTEdtTime
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configReal'
+          object wwDBEdit3: TwwDBEdit
+            Left = 6
+            Top = 15
+            Width = 121
+            Height = 21
+            Color = 16644087
+            DataField = 'VALORREAL'
+            DataSource = dtsConfig
+            TabOrder = 0
+            UnboundDataType = wwDefault
+            WantReturns = False
+            WordWrap = False
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configLookup'
+          object lkpConfig: TRxDBLookupCombo
+            Left = 6
+            Top = 15
+            Width = 320
+            Height = 21
+            DropDownCount = 8
+            Color = 16644087
+            DataField = 'VALOR_INTEIRO'
+            DataSource = dtsConfig
+            LookupSource = dtsLookup
+            TabOrder = 0
+          end
+        end
+        object TPage
+          Left = 0
+          Top = 0
+          Caption = 'configCor'
+          object Panel1: TPanel
+            Left = 0
+            Top = 0
+            Width = 331
+            Height = 136
+            Align = alClient
+            BevelOuter = bvNone
+            Color = 16312551
+            ParentBackground = False
+            TabOrder = 0
+            object SpeedButtonAlterarCor: TSpeedButton
+              Left = 35
+              Top = 96
+              Width = 92
+              Height = 27
+              Hint = 'Escolher Cor'
+              Caption = 'Alterar Cor'
+              Flat = True
+              Glyph.Data = {
+                5E010000424D5E010000000000005E0000002800000010000000100000000100
+                08000000000000010000C30E0000C30E00000A00000000000000000000000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF000080808000CC99FF00FFFF
+                FF00050505050505050505050505050505050505050505050505050505050505
+                0505050000000000000000000000000005050500020202000606060008080800
+                0505050002020200060606000808080005050500020202000606060008080800
+                0505050000000000000000000000000005050500070707000909090000000000
+                0505050007070700090909000000000005050500070707000909090000000000
+                0505050000000000000000000000000005050500010101000303030004040400
+                0505050001010100030303000404040005050500010101000303030004040400
+                0505050000000000000000000000000005050505050505050505050505050505
+                0505}
+              Margin = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = SpeedButtonAlterarCorClick
+            end
+            object ShapeCor: TShape
+              Left = 6
+              Top = 6
+              Width = 147
+              Height = 83
+              Shape = stRoundSquare
+            end
+          end
+        end
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 0
+        Width = 331
+        Height = 81
+        Align = alTop
+        BevelOuter = bvNone
+        Color = 14055796
+        ParentBackground = False
+        TabOrder = 2
+        object DBText1: TDBText
+          Left = 0
+          Top = 0
+          Width = 331
+          Height = 81
+          Align = alClient
+          Alignment = taCenter
+          DataField = 'CONFIG_CAPTION'
+          DataSource = dtsConfig
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 16312551
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = [fsBold, fsUnderline]
+          ParentFont = False
+          WordWrap = True
+          ExplicitLeft = 32
+          ExplicitTop = 16
+          ExplicitWidth = 65
+          ExplicitHeight = 17
+        end
+      end
+    end
+  end
+  object dseConfig: TIBDataSet
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    AfterPost = dseConfigAfterPost
+    AfterScroll = dseConfigAfterScroll
+    BeforeOpen = dseConfigBeforeOpen
+    DeleteSQL.Strings = (
+      'delete from TABCONFIGURACOES'
+      'where'
+      '  CONFIG_NAME = :OLD_CONFIG_NAME and'
+      '  FORM_NAME = :OLD_FORM_NAME')
+    InsertSQL.Strings = (
+      'insert into TABCONFIGURACOES'
+      
+        '  (CONFIG_CAPTION, CONFIG_NAME, DESCRICAO, DISPLAY_LOOKUP, FORM_' +
+        'NAME, KEYVALUE_LOOKUP, '
+      
+        '   SEQUENCIAFECHAMENTOTURNO, SQL_LOOKUP, TIPOCONFIG, VALOR_DATA,' +
+        ' VALOR_HORA, '
+      
+        '   VALOR_INTEIRO, VALOR_LOGICO, VALOR_MEMO, VALOR_STRING, VALORR' +
+        'EAL)'
+      'values'
+      
+        '  (:CONFIG_CAPTION, :CONFIG_NAME, :DESCRICAO, :DISPLAY_LOOKUP, :' +
+        'FORM_NAME, '
+      
+        '   :KEYVALUE_LOOKUP, :SEQUENCIAFECHAMENTOTURNO, :SQL_LOOKUP, :TI' +
+        'POCONFIG, '
+      
+        '   :VALOR_DATA, :VALOR_HORA, :VALOR_INTEIRO, :VALOR_LOGICO, :VAL' +
+        'OR_MEMO, '
+      '   :VALOR_STRING, :VALORREAL)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  FORM_NAME,'
+      '  CONFIG_NAME,'
+      '  CONFIG_CAPTION,'
+      '  DESCRICAO,'
+      '  TIPOCONFIG,'
+      '  VALOR_INTEIRO,'
+      '  VALOR_STRING,'
+      '  VALOR_MEMO,'
+      '  VALOR_LOGICO,'
+      '  VALOR_DATA,'
+      '  VALOR_HORA,'
+      '  SQL_LOOKUP,'
+      '  DISPLAY_LOOKUP,'
+      '  KEYVALUE_LOOKUP,'
+      '  SEQUENCIAFECHAMENTOTURNO,'
+      '  VALORREAL'
+      'from TABCONFIGURACOES '
+      'where'
+      '  CONFIG_NAME = :CONFIG_NAME and'
+      '  FORM_NAME = :FORM_NAME')
+    SelectSQL.Strings = (
+      'Select * from TABCONFIGURACOES'
+      'where FORM_NAME = :F_NAME '
+      'order by CONFIG_CAPTION')
+    ModifySQL.Strings = (
+      'update TABCONFIGURACOES'
+      'set'
+      '  CONFIG_CAPTION = :CONFIG_CAPTION,'
+      '  CONFIG_NAME = :CONFIG_NAME,'
+      '  DESCRICAO = :DESCRICAO,'
+      '  DISPLAY_LOOKUP = :DISPLAY_LOOKUP,'
+      '  FORM_NAME = :FORM_NAME,'
+      '  KEYVALUE_LOOKUP = :KEYVALUE_LOOKUP,'
+      '  SEQUENCIAFECHAMENTOTURNO = :SEQUENCIAFECHAMENTOTURNO,'
+      '  SQL_LOOKUP = :SQL_LOOKUP,'
+      '  TIPOCONFIG = :TIPOCONFIG,'
+      '  VALOR_DATA = :VALOR_DATA,'
+      '  VALOR_HORA = :VALOR_HORA,'
+      '  VALOR_INTEIRO = :VALOR_INTEIRO,'
+      '  VALOR_LOGICO = :VALOR_LOGICO,'
+      '  VALOR_MEMO = :VALOR_MEMO,'
+      '  VALOR_STRING = :VALOR_STRING,'
+      '  VALORREAL = :VALORREAL'
+      'where'
+      '  CONFIG_NAME = :OLD_CONFIG_NAME and'
+      '  FORM_NAME = :OLD_FORM_NAME')
+    Left = 200
+    Top = 128
+    object dseConfigFORM_NAME: TIBStringField
+      FieldName = 'FORM_NAME'
+      Origin = '"TABCONFIGURACOES"."FORM_NAME"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object dseConfigCONFIG_NAME: TIBStringField
+      FieldName = 'CONFIG_NAME'
+      Origin = '"TABCONFIGURACOES"."CONFIG_NAME"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object dseConfigCONFIG_CAPTION: TIBStringField
+      FieldName = 'CONFIG_CAPTION'
+      Origin = '"TABCONFIGURACOES"."CONFIG_CAPTION"'
+      Size = 100
+    end
+    object dseConfigDESCRICAO: TIBStringField
+      FieldName = 'DESCRICAO'
+      Origin = '"TABCONFIGURACOES"."DESCRICAO"'
+      Size = 200
+    end
+    object dseConfigTIPOCONFIG: TIntegerField
+      FieldName = 'TIPOCONFIG'
+      Origin = '"TABCONFIGURACOES"."TIPOCONFIG"'
+    end
+    object dseConfigVALOR_INTEIRO: TIntegerField
+      FieldName = 'VALOR_INTEIRO'
+      Origin = '"TABCONFIGURACOES"."VALOR_INTEIRO"'
+    end
+    object dseConfigVALOR_STRING: TIBStringField
+      FieldName = 'VALOR_STRING'
+      Origin = '"TABCONFIGURACOES"."VALOR_STRING"'
+      Size = 200
+    end
+    object dseConfigVALOR_MEMO: TMemoField
+      FieldName = 'VALOR_MEMO'
+      Origin = '"TABCONFIGURACOES"."VALOR_MEMO"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object dseConfigVALOR_LOGICO: TIntegerField
+      FieldName = 'VALOR_LOGICO'
+      Origin = '"TABCONFIGURACOES"."VALOR_LOGICO"'
+    end
+    object dseConfigVALOR_DATA: TDateField
+      FieldName = 'VALOR_DATA'
+      Origin = '"TABCONFIGURACOES"."VALOR_DATA"'
+    end
+    object dseConfigVALOR_HORA: TTimeField
+      FieldName = 'VALOR_HORA'
+      Origin = '"TABCONFIGURACOES"."VALOR_HORA"'
+    end
+    object dseConfigSQL_LOOKUP: TMemoField
+      FieldName = 'SQL_LOOKUP'
+      Origin = '"TABCONFIGURACOES"."SQL_LOOKUP"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object dseConfigDISPLAY_LOOKUP: TIBStringField
+      FieldName = 'DISPLAY_LOOKUP'
+      Origin = '"TABCONFIGURACOES"."DISPLAY_LOOKUP"'
+      Size = 50
+    end
+    object dseConfigKEYVALUE_LOOKUP: TIBStringField
+      FieldName = 'KEYVALUE_LOOKUP'
+      Origin = '"TABCONFIGURACOES"."KEYVALUE_LOOKUP"'
+      Size = 50
+    end
+    object dseConfigSEQUENCIAFECHAMENTOTURNO: TIntegerField
+      FieldName = 'SEQUENCIAFECHAMENTOTURNO'
+      Origin = '"TABCONFIGURACOES"."SEQUENCIAFECHAMENTOTURNO"'
+    end
+    object dseConfigVALORREAL: TFMTBCDField
+      FieldName = 'VALORREAL'
+      Origin = '"TABCONFIGURACOES"."VALORREAL"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object dtsConfig: TDataSource
+    DataSet = dseConfig
+    Left = 232
+    Top = 128
+  end
+  object qryLookup: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    Left = 200
+    Top = 160
+  end
+  object dtsLookup: TDataSource
+    DataSet = qryLookup
+    Left = 232
+    Top = 160
+  end
+  object ColorDialogClassificacao: TColorDialog
+    Left = 203
+    Top = 195
+  end
+end

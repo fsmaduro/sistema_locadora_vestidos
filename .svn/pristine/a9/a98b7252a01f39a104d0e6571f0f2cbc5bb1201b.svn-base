@@ -1,0 +1,488 @@
+object frmARARA: TfrmARARA
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'AMVSystem 1.0 | ARARA'
+  ClientHeight = 532
+  ClientWidth = 1019
+  Color = 16312551
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PopupMenu = PopupMenu1
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lblCodigo: TLabel
+    Left = 5
+    Top = 3
+    Width = 36
+    Height = 13
+    Caption = 'C'#243'digo:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label1: TLabel
+    Left = 96
+    Top = 3
+    Width = 86
+    Height = 13
+    Caption = 'Data de Cadastro:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label12: TLabel
+    Left = 5
+    Top = 43
+    Width = 37
+    Height = 13
+    Caption = 'Agenda'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 128
+    Top = 43
+    Width = 23
+    Height = 13
+    Caption = 'Data'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 212
+    Top = 3
+    Width = 23
+    Height = 13
+    Caption = 'Perfil'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 240
+    Top = 43
+    Width = 23
+    Height = 13
+    Caption = 'Hora'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object edtCodigo: TDBEdit
+    Left = 5
+    Top = 18
+    Width = 88
+    Height = 21
+    CharCase = ecUpperCase
+    Color = 15452591
+    Ctl3D = True
+    DataField = 'CODIGO'
+    DataSource = dtsArara
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 0
+  end
+  object wwDBDateTimePicker1: TwwDBDateTimePicker
+    Left = 96
+    Top = 18
+    Width = 106
+    Height = 21
+    CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+    CalendarAttributes.Font.Color = clWindowText
+    CalendarAttributes.Font.Height = -11
+    CalendarAttributes.Font.Name = 'Tahoma'
+    CalendarAttributes.Font.Style = []
+    Color = 15452591
+    DataField = 'DATAREGISTRO'
+    DataSource = dtsArara
+    Epoch = 1950
+    ReadOnly = True
+    ShowButton = True
+    TabOrder = 1
+  end
+  object DBEdit5: TDBEdit
+    Left = 5
+    Top = 58
+    Width = 116
+    Height = 21
+    CharCase = ecUpperCase
+    Color = 15452591
+    Ctl3D = True
+    DataField = 'CODIGOAGENDA'
+    DataSource = dtsArara
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 2
+  end
+  object wwDBDateTimePicker2: TwwDBDateTimePicker
+    Left = 128
+    Top = 58
+    Width = 106
+    Height = 21
+    CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+    CalendarAttributes.Font.Color = clWindowText
+    CalendarAttributes.Font.Height = -11
+    CalendarAttributes.Font.Name = 'Tahoma'
+    CalendarAttributes.Font.Style = []
+    Color = 15452591
+    DataField = 'DATA'
+    DataSource = dtsArara
+    Epoch = 1950
+    ReadOnly = True
+    ShowButton = True
+    TabOrder = 3
+  end
+  object DBEdit1: TDBEdit
+    Left = 212
+    Top = 18
+    Width = 329
+    Height = 21
+    CharCase = ecUpperCase
+    Color = 15452591
+    Ctl3D = True
+    DataField = 'PERFIL'
+    DataSource = dtsArara
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 4
+  end
+  object cxButton6: TcxButton
+    Left = 778
+    Top = 499
+    Width = 116
+    Height = 31
+    Caption = 'OK'
+    TabOrder = 5
+    OnClick = cxButton6Click
+    LookAndFeel.SkinName = 'UserSkin'
+  end
+  object cxButton1: TcxButton
+    Left = 586
+    Top = 8
+    Width = 137
+    Height = 65
+    Caption = 'Adicionar Produto'
+    TabOrder = 6
+    OnClick = cxButton1Click
+    LookAndFeel.SkinName = 'UserSkin'
+  end
+  object cxButton3: TcxButton
+    Left = 897
+    Top = 499
+    Width = 116
+    Height = 31
+    Caption = 'Cancelar'
+    TabOrder = 7
+    OnClick = cxButton3Click
+    LookAndFeel.SkinName = 'UserSkin'
+  end
+  object ScrollBox1: TScrollBox
+    Left = 5
+    Top = 86
+    Width = 1008
+    Height = 407
+    Ctl3D = False
+    ParentCtl3D = False
+    TabOrder = 8
+    object Edit1: TEdit
+      Left = 0
+      Top = 0
+      Width = 0
+      Height = 9
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 8924712
+      Font.Height = -1
+      Font.Name = 'Arial Black'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      Text = 'Edit1'
+    end
+  end
+  object pnlImagem: TPanel
+    Left = 584
+    Top = 90
+    Width = 424
+    Height = 398
+    BevelInner = bvLowered
+    TabOrder = 9
+    Visible = False
+    object Image1: TImage
+      Left = 2
+      Top = 20
+      Width = 420
+      Height = 376
+      Align = alClient
+      Stretch = True
+      ExplicitLeft = 56
+      ExplicitTop = 72
+      ExplicitWidth = 105
+      ExplicitHeight = 105
+    end
+    object Edit2: TEdit
+      Left = 88
+      Top = 88
+      Width = 0
+      Height = 21
+      TabOrder = 0
+      Text = 'Edit2'
+    end
+    object Panel1: TPanel
+      Left = 2
+      Top = 2
+      Width = 420
+      Height = 18
+      Align = alTop
+      BevelOuter = bvNone
+      Color = clNavy
+      ParentBackground = False
+      TabOrder = 1
+      object SpeedButton1: TSpeedButton
+        Left = 392
+        Top = -1
+        Width = 26
+        Height = 20
+        Flat = True
+        Glyph.Data = {
+          36030000424D3603000000000000360000002800000010000000100000000100
+          18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FF0054AA0053A8004E9E004A9600489200
+          4892004892004892004892004892004892004184FF00FFFF00FFFF00FF0066CE
+          0073E80070E2006DDC0069D40066CE0066CE0066CE0066CE0066CE0066CE0068
+          D2005BB8004184FF00FFFF00FF0072E60782FF007CFA0079F40077F00073E800
+          6FE0006FE0006FE0006FE0006FE00071E40068D2004892FF00FFFF00FF0078F2
+          0F86FF0581FF007BF80078F20075EC0071E4006FE0006DDC006CDA006BD8006F
+          E00066CE004994FF00FFFF00FF0079F41F8EFF1388FF0782FFFFFFFFCFE6FD10
+          7FEF0073E89FC9F3FFFFFF006CDA006FE00066CE004892FF00FFFF00FF0079F4
+          3D9DFF2792FF1388FFD0E7FFFFFFFFCFE6FD9FCCFAFFFFFFCFE4FA006EDE006F
+          E00066CE004892FF00FFFF00FF0079F461AFFF3599FF1B8CFF228FFFD0E7FFFF
+          FFFFFFFFFFCFE6FD107FEF0072E60071E40067D0004994FF00FFFF00FF0079F4
+          77BAFF419FFF2390FF178AFFA4D1FFFFFFFFFFFFFFCFE6FE1081F50076EE0075
+          EC006AD6004C9AFF00FFFF00FF0079F483C0FF4BA4FF2B94FFA9D4FFFFFFFFD1
+          E8FFD1E8FFFFFFFFCFE7FF007AF60079F4006FE00054AAFF00FFFF00FF0079F4
+          8DC5FF57AAFF3B9CFFF2F8FFD5EAFF2792FF2490FFD1E8FFFFFFFF0380FF007E
+          FF0074EA005AB6FF00FFFF00FF0079F499CBFF6BB4FF43A0FF3D9DFF2F96FF25
+          91FF2390FF198BFF0F86FF0983FF0782FF0078F2005FC0FF00FFFF00FF0079F4
+          A1CFFF97CAFF7FBEFF71B7FF61AFFF4FA6FF3D9DFF2591FF1589FF0F86FF0F86
+          FF007EFF0066CEFF00FFFF00FF0079F481BFFFA1CFFFA5D1FF99CBFF8BC4FF75
+          B9FF51A7FF3398FF1B8CFF1589FF178AFF0782FF006BD8FF00FFFF00FFFF00FF
+          0D85FF2D95FF2F96FF2D95FF2792FF1B8CFF0D85FF0380FF007BF80079F4007A
+          F60072E6FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+        OnClick = SpeedButton1Click
+      end
+    end
+  end
+  object cxButton2: TcxButton
+    Left = 743
+    Top = 8
+    Width = 137
+    Height = 65
+    Caption = 'Imprimir'
+    TabOrder = 10
+    OnClick = cxButton2Click
+    LookAndFeel.SkinName = 'UserSkin'
+  end
+  object cxButton4: TcxButton
+    Left = 5
+    Top = 499
+    Width = 177
+    Height = 31
+    Caption = 'Remover Selecionados'
+    TabOrder = 11
+    OnClick = cxButton4Click
+    LookAndFeel.SkinName = 'UserSkin'
+  end
+  object wwDBDateTimePicker3: TwwDBDateTimePicker
+    Left = 240
+    Top = 58
+    Width = 106
+    Height = 21
+    CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+    CalendarAttributes.Font.Color = clWindowText
+    CalendarAttributes.Font.Height = -11
+    CalendarAttributes.Font.Name = 'Tahoma'
+    CalendarAttributes.Font.Style = []
+    Color = 15452591
+    DataField = 'HORA'
+    DataSource = dtsArara
+    Epoch = 1950
+    ReadOnly = True
+    ShowButton = True
+    TabOrder = 12
+  end
+  object qryArara: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    BeforeOpen = qryAraraBeforeOpen
+    SQL.Strings = (
+      
+        'Select a.*, p.codigo||'#39' - '#39'||p.nome as Perfil, ag.data, ag.hora,' +
+        ' AG.DATAFIM, AG.HORAFIM'
+      ' from TABARARA a'
+      ' left join tabperfil p on a.codigoperfil = p.codigo'
+      ' left join tabagenda ag on a.codigoagenda = ag.codigo'
+      'where a.codigo = :codigo')
+    Left = 424
+    Top = 24
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'codigo'
+        ParamType = ptUnknown
+      end>
+    object qryAraraCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABARARA"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryAraraCODIGOAGENDA: TIntegerField
+      FieldName = 'CODIGOAGENDA'
+      Origin = '"TABARARA"."CODIGOAGENDA"'
+    end
+    object qryAraraCODIGOPERFIL: TIntegerField
+      FieldName = 'CODIGOPERFIL'
+      Origin = '"TABARARA"."CODIGOPERFIL"'
+    end
+    object qryAraraPERFIL: TIBStringField
+      FieldName = 'PERFIL'
+      ProviderFlags = []
+      Size = 64
+    end
+    object qryAraraDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABAGENDA"."DATA"'
+    end
+    object qryAraraHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABAGENDA"."HORA"'
+    end
+    object qryAraraDATAREGISTRO: TDateField
+      FieldName = 'DATAREGISTRO'
+    end
+    object qryAraraDATAFIM: TDateField
+      FieldName = 'DATAFIM'
+      Origin = '"TABAGENDA"."DATAFIM"'
+    end
+    object qryAraraHORAFIM: TTimeField
+      FieldName = 'HORAFIM'
+      Origin = '"TABAGENDA"."HORAFIM"'
+    end
+  end
+  object dtsArara: TDataSource
+    DataSet = qryArara
+    Left = 456
+    Top = 24
+  end
+  object qryAraraDetalhe: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    AfterOpen = qryAraraDetalheAfterOpen
+    DataSource = dtsArara
+    SQL.Strings = (
+      'Select ad.codigoproduto,'
+      '       p.descricao,'
+      '       (Select First 1 pf.urlfoto'
+      '          from tabprodutofotos pf'
+      
+        '          left join tabtipofoto tf on pf.codigotipofoto = tf.cod' +
+        'igo'
+      '         where pf.codigoproduto = ad.codigoproduto'
+      '           and tf.usarnaarara = 1'
+      '         order by pf.id) as UrlFoto'
+      ' from tabararadetalhe ad'
+      ' left join tabprodutos p on ad.codigoproduto = p.codigo'
+      ''
+      'where ad.codigoarara = :codigo'
+      ''
+      'order by ad.codigoproduto')
+    Left = 432
+    Top = 104
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'codigo'
+        ParamType = ptUnknown
+      end>
+    object qryAraraDetalheCODIGOPRODUTO: TIntegerField
+      FieldName = 'CODIGOPRODUTO'
+      Origin = '"TABARARADETALHE"."CODIGOPRODUTO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryAraraDetalheDESCRICAO: TIBStringField
+      FieldName = 'DESCRICAO'
+      Origin = '"TABPRODUTOS"."DESCRICAO"'
+      Size = 200
+    end
+    object qryAraraDetalheURLFOTO: TMemoField
+      FieldName = 'URLFOTO'
+      ProviderFlags = []
+      BlobType = ftMemo
+      Size = 8
+    end
+  end
+  object dtsAraraDetalhe: TDataSource
+    DataSet = qryAraraDetalhe
+    Left = 464
+    Top = 104
+  end
+  object PopupMenu1: TPopupMenu
+    Images = Dados.ImageList1
+    Left = 528
+    Top = 16
+    object Configuraes1: TMenuItem
+      Caption = 'Configura'#231#245'es'
+      ImageIndex = 1
+      ShortCut = 49219
+      OnClick = Configuraes1Click
+    end
+  end
+end

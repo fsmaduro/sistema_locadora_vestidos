@@ -1,0 +1,934 @@
+unit untAcompanhaPerformance;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, cxStyles, dxSkinsCore, dxSkinsDefaultPainters, dxSkinscxPCPainter,
+  cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, DB,
+  cxDBData, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxGDIPlusClasses, ExtCtrls, IBCustomDataSet, IBQuery, RxLookup, StdCtrls,
+  wwdbdatetimepicker, Menus, cxLookAndFeelPainters, cxButtons, cxCheckBox,
+  cxGridExportLink, ShellAPI, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd,
+  dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns,
+  dxPSCore, dxPScxCommon, dxPScxGrid6Lnk, DBCtrls, cxPC, cxContainer,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, DBTables, rxMemTable,
+  cxGridBandedTableView, cxGridDBBandedTableView, rxPlacemnt, TeEngine, Series,
+  TeeProcs, Chart, PivotChart_SRC, TeeDBEdit, TeeDBCrossTab, cxSplitter,
+  cxGroupBox, cxRadioGroup, IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl,
+  IWControl, IWCompDynamicChart, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, cxDBExtLookupComboBox, Mask, untdados;
+
+type
+  TfrmAcompanhaPerformance = class(TForm)
+    Panel2: TPanel;
+    dtsPerfil: TDataSource;
+    qryPerfil: TIBQuery;
+    qryPerfilCODIGO: TIntegerField;
+    qryPerfilNOME: TIBStringField;
+    cxButton2: TcxButton;
+    cxButton3: TcxButton;
+    cxButton5: TcxButton;
+    qryComparativoReceita: TIBQuery;
+    dtsComparativoReceita: TDataSource;
+    SaveDialog2: TSaveDialog;
+    Panel3: TPanel;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    grdPainel: TcxGrid;
+    grdPainelLevel1: TcxGridLevel;
+    Panel1: TPanel;
+    Image1: TImage;
+    cxButton1: TcxButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    cmbAnoFim: TcxComboBox;
+    dtsTblComparativoReceita: TDataSource;
+    tblComparativoReceita: TMemoryTable;
+    qryComparativoReceitaANO: TSmallintField;
+    qryComparativoReceitaMES: TSmallintField;
+    qryComparativoReceitaVALORTOTAL: TIBBCDField;
+    qryComparativoReceitaMEDIAVALOR: TIBBCDField;
+    qryComparativoReceitaQTD: TIntegerField;
+    grdPainelDBBandedTableView1: TcxGridDBBandedTableView;
+    cmbAnoInicio: TcxComboBox;
+    FormStorage1: TFormStorage;
+    Panel4: TPanel;
+    GraficoComparativo: TPivotChart;
+    cxSplitter1: TcxSplitter;
+    rdgGrafico: TcxRadioGroup;
+    cxTabSheet2: TcxTabSheet;
+    Panel5: TPanel;
+    Image2: TImage;
+    cxButton4: TcxButton;
+    cxGrid1: TcxGrid;
+    cxGridLevel1: TcxGridLevel;
+    Panel6: TPanel;
+    cxSplitter2: TcxSplitter;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    dtsReceitaProduto: TDataSource;
+    qryReceitaProduto: TIBQuery;
+    Label38: TLabel;
+    edtDtInicial: TwwDBDateTimePicker;
+    edtDtFinal: TwwDBDateTimePicker;
+    Label3: TLabel;
+    Label4: TLabel;
+    qryReceitaProdutoCODIGOPRODUTO: TIntegerField;
+    qryReceitaProdutoDESCRICAO: TIBStringField;
+    qryReceitaProdutoREFERENCIA: TIBStringField;
+    qryReceitaProdutoDATAAQUISICAO: TDateField;
+    qryReceitaProdutoVIDAUTIL: TIntegerField;
+    qryReceitaProdutoSITUACAO: TIBStringField;
+    qryReceitaProdutoVALORCUSTO: TIBBCDField;
+    qryReceitaProdutoVALORTOTAL: TIBBCDField;
+    qryReceitaProdutoMEDIAVALOR: TIBBCDField;
+    qryReceitaProdutoQTD: TIntegerField;
+    qryReceitaProdutoRECEITA: TIBBCDField;
+    cxGrid1DBTableView1CODIGOPRODUTO: TcxGridDBColumn;
+    cxGrid1DBTableView1DESCRICAO: TcxGridDBColumn;
+    cxGrid1DBTableView1REFERENCIA: TcxGridDBColumn;
+    cxGrid1DBTableView1DATAAQUISICAO: TcxGridDBColumn;
+    cxGrid1DBTableView1VIDAUTIL: TcxGridDBColumn;
+    cxGrid1DBTableView1SITUACAO: TcxGridDBColumn;
+    cxGrid1DBTableView1VALORCUSTO: TcxGridDBColumn;
+    cxGrid1DBTableView1VALORTOTAL: TcxGridDBColumn;
+    cxGrid1DBTableView1MEDIAVALOR: TcxGridDBColumn;
+    cxGrid1DBTableView1QTD: TcxGridDBColumn;
+    cxGrid1DBTableView1RECEITA: TcxGridDBColumn;
+    dtsProduto: TDataSource;
+    qryProduto: TIBQuery;
+    IntegerField1: TIntegerField;
+    IBStringField1: TIBStringField;
+    qryReceitaProdutoGrafico: TIBQuery;
+    dtsReceitaProdutoGrafico: TDataSource;
+    qryReceitaProdutoGraficoTIPO: TIBStringField;
+    qryReceitaProdutoGraficoQTD: TIntegerField;
+    PivotChart1: TPivotChart;
+    serReceitaProduto: TPieSeries;
+    cxTabSheet3: TcxTabSheet;
+    Panel7: TPanel;
+    Image3: TImage;
+    Label5: TLabel;
+    Label6: TLabel;
+    cxButton6: TcxButton;
+    edtDtInicial2: TwwDBDateTimePicker;
+    edtDtFinal2: TwwDBDateTimePicker;
+    Label27: TLabel;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel2: TcxGridLevel;
+    qryReceitaPerfil: TIBQuery;
+    dtsReceitaPerfil: TDataSource;
+    qryReceitaPerfilCODIGO: TIntegerField;
+    qryReceitaPerfilNOME: TIBStringField;
+    qryReceitaPerfilCPF: TIBStringField;
+    qryReceitaPerfilSITUACAO: TIBStringField;
+    qryReceitaPerfilVALORTOTAL: TIBBCDField;
+    qryReceitaPerfilMEDIAVALOR: TIBBCDField;
+    qryReceitaPerfilQTD: TIntegerField;
+    cxGridDBTableView1CODIGO: TcxGridDBColumn;
+    cxGridDBTableView1NOME: TcxGridDBColumn;
+    cxGridDBTableView1CPF: TcxGridDBColumn;
+    cxGridDBTableView1SITUACAO: TcxGridDBColumn;
+    cxGridDBTableView1VALORTOTAL: TcxGridDBColumn;
+    cxGridDBTableView1MEDIAVALOR: TcxGridDBColumn;
+    cxGridDBTableView1QTD: TcxGridDBColumn;
+    qryReceitaPerfilIDADE: TLargeintField;
+    cxGridDBTableView1Column1: TcxGridDBColumn;
+    Panel8: TPanel;
+    PivotChart2: TPivotChart;
+    serFaixaEtaria: TPieSeries;
+    qryReceitaPerfilGrafico: TIBQuery;
+    dtsReceitaPerfilGrafico: TDataSource;
+    qryReceitaPerfilGraficoVALORTOTAL: TIBBCDField;
+    qryReceitaPerfilGraficoMEDIAVALOR: TIBBCDField;
+    qryReceitaPerfilGraficoQTD: TLargeintField;
+    cxSplitter3: TcxSplitter;
+    qryReceitaPerfilGraficoFAIXA: TIBStringField;
+    cbProduto: TcxLookupComboBox;
+    cbPerfil: TcxLookupComboBox;
+    edtProduto: TcxTextEdit;
+    edtPerfil: TcxTextEdit;
+    qryReceitaProdutoTIPOPECA: TIBStringField;
+    qryReceitaProdutoORIGEM: TIBStringField;
+    qryReceitaProdutoTAMANHO: TIBBCDField;
+    qryReceitaProdutoSALDOVIDAUTIL: TLargeintField;
+    cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    cxGrid1DBTableView1Column2: TcxGridDBColumn;
+    cxGrid1DBTableView1Column3: TcxGridDBColumn;
+    cxGrid1DBTableView1Column4: TcxGridDBColumn;
+    qryComparativoReceitaQTDAGENDA: TIntegerField;
+    cxGroupBox1: TcxGroupBox;
+    edtValorTotalAcumulado: TDBEdit;
+    cxTabSheet4: TcxTabSheet;
+    Panel9: TPanel;
+    Image4: TImage;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    cxButton7: TcxButton;
+    edtDtInicial3: TwwDBDateTimePicker;
+    edtDtFinal3: TwwDBDateTimePicker;
+    cbPerfil3: TcxLookupComboBox;
+    edtPerfil3: TcxTextEdit;
+    cxGrid3: TcxGrid;
+    cxGridDBTableView2: TcxGridDBTableView;
+    cxGridLevel3: TcxGridLevel;
+    dtsPedidoAgenda: TDataSource;
+    qryPedidoAgenda: TIBQuery;
+    Panel10: TPanel;
+    PivotChart3: TPivotChart;
+    serPedidoAgenda: TPieSeries;
+    cxSplitter4: TcxSplitter;
+    cxTabSheet5: TcxTabSheet;
+    Panel11: TPanel;
+    cxButton8: TcxButton;
+    cxGrid4: TcxGrid;
+    cxGridDBTableView3: TcxGridDBTableView;
+    cxGridLevel4: TcxGridLevel;
+    dtsTerceiros: TDataSource;
+    qryTerceiros: TIBQuery;
+    qryTerceirosCODIGO: TIntegerField;
+    qryTerceirosNOME: TIBStringField;
+    qryTerceirosCODIGOPRODUTO: TIntegerField;
+    qryTerceirosDESCRICAO: TIBStringField;
+    qryTerceirosQTD: TIntegerField;
+    qryTerceirosVALORTOTAL: TIBBCDField;
+    qryTerceirosVALORMEDIO: TIBBCDField;
+    cxGridDBTableView3CODIGO: TcxGridDBColumn;
+    cxGridDBTableView3NOME: TcxGridDBColumn;
+    cxGridDBTableView3CODIGOPRODUTO: TcxGridDBColumn;
+    cxGridDBTableView3DESCRICAO: TcxGridDBColumn;
+    cxGridDBTableView3QTD: TcxGridDBColumn;
+    cxGridDBTableView3VALORTOTAL: TcxGridDBColumn;
+    cxGridDBTableView3VALORMEDIO: TcxGridDBColumn;
+    qryPedidoAgendaTAMANHO: TLargeintField;
+    qryPedidoAgendaQTDPEDIDOAGENDA: TIntegerField;
+    qryPedidoAgendaQTDAGENDA: TLargeintField;
+    qryPedidoAgendaALUGADO: TIntegerField;
+    cxGridDBTableView2TAMANHO: TcxGridDBColumn;
+    cxGridDBTableView2QTDPEDIDOAGENDA: TcxGridDBColumn;
+    cxGridDBTableView2QTDAGENDA: TcxGridDBColumn;
+    cxGridDBTableView2ALUGADO: TcxGridDBColumn;
+    qryTerceirosCODIGOCONTRATO: TIntegerField;
+    qryTerceirosDATACADASTRO: TDateField;
+    qryTerceirosSITUACAO: TIBStringField;
+    cxGridDBTableView3Column1: TcxGridDBColumn;
+    cxGridDBTableView3Column2: TcxGridDBColumn;
+    cxGridDBTableView3Column3: TcxGridDBColumn;
+    qryComparativoReceitaQTDPRODUTOSCONTRATO: TIntegerField;
+    qryReceitaPerfilQTDPRODUTOS: TIntegerField;
+    qryReceitaPerfilQTDAGENDAS: TIntegerField;
+    cxGridDBTableView1Column2: TcxGridDBColumn;
+    cxGridDBTableView1Column3: TcxGridDBColumn;
+    procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure qryComparativoReceitaBeforeOpen(DataSet: TDataSet);
+    procedure cxButton3Click(Sender: TObject);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure Configuraes1Click(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    procedure qryReceitaProdutoBeforeOpen(DataSet: TDataSet);
+    procedure cxButton4Click(Sender: TObject);
+    procedure qryReceitaProdutoGraficoBeforeOpen(DataSet: TDataSet);
+    procedure cxButton6Click(Sender: TObject);
+    procedure qryReceitaPerfilBeforeOpen(DataSet: TDataSet);
+    procedure qryReceitaPerfilGraficoBeforeOpen(DataSet: TDataSet);
+    procedure edtProdutoExit(Sender: TObject);
+    procedure cbProdutoExit(Sender: TObject);
+    procedure edtPerfilExit(Sender: TObject);
+    procedure cbPerfilExit(Sender: TObject);
+    procedure qryPedidoAgendaBeforeOpen(DataSet: TDataSet);
+    procedure cxButton7Click(Sender: TObject);
+    procedure edtPerfil3Exit(Sender: TObject);
+    procedure cbPerfil3Exit(Sender: TObject);
+    procedure cxButton8Click(Sender: TObject);
+  private
+    vDiasUrgente, vDiasAlerta, vDiasMuitoUrgente: Integer;
+    function Filtro(): String;
+    function Filtro2: String;
+    function Filtro3: String;
+    function Filtro4: String;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcompanhaPerformance: TfrmAcompanhaPerformance;
+
+implementation
+
+uses form_cadastro_pedido_agenda, untConsultaProdutos,
+  untAgendarPedido, untAcompanhaPedidoAgenda, untOrcamento, untContrato,
+  untDtmRelatorios, Funcao, untContratoTerceiros;
+
+const NomeMenu = 'AcompanhamentodePerformance1';
+
+{$R *.dfm}
+
+procedure TfrmAcompanhaPerformance.FormActivate(Sender: TObject);
+begin
+  Try
+    dados.Log(1,copy(Caption,17,length(Caption)));
+  except
+  End;
+end;
+
+procedure TfrmAcompanhaPerformance.edtPerfil3Exit(Sender: TObject);
+begin
+  try
+    if cbPerfil3.Text <> '' then
+      cbPerfil3.EditValue := StrToInt(edtPerfil3.Text)
+    else
+      cbPerfil3.EditValue := Null;
+  except
+  end;
+end;
+
+procedure TfrmAcompanhaPerformance.cbPerfil3Exit(Sender: TObject);
+begin
+  if (Trim(cbPerfil3.Text) <> '') and (cbPerfil3.EditValue > 0) then
+    edtPerfil3.Text := VarToStr(cbPerfil3.EditValue)
+  else
+    edtPerfil3.Text := '';
+end;
+
+procedure TfrmAcompanhaPerformance.cbPerfilExit(Sender: TObject);
+begin
+  if (Trim(cbPerfil.Text) <> '') and (cbPerfil.EditValue > 0) then
+    edtPerfil.Text := VarToStr(cbPerfil.EditValue)
+  else
+    edtPerfil.Text := '';
+end;
+
+procedure TfrmAcompanhaPerformance.cbProdutoExit(Sender: TObject);
+begin
+  if (Trim(cbProduto.Text) <> '') and (cbProduto.EditValue > 0) then
+    edtProduto.Text := VarToStr(cbProduto.EditValue)
+  else
+    edtProduto.Text := '';
+end;
+
+procedure TfrmAcompanhaPerformance.Configuraes1Click(Sender: TObject);
+begin
+ dados.ShowConfig(frmAcompanhaPerformance);
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton1Click(Sender: TObject);
+ var
+   QtdAnos, AnoAtual: Integer;
+   NomeCampo : String;
+
+ procedure CriarTabelaMemoria;
+ var
+    i, cont, cAno: Integer;
+ begin
+
+   cAno := cmbAnoInicio.EditValue;
+
+   tblComparativoReceita.close;
+   tblComparativoReceita.EmptyTable;
+   tblComparativoReceita.FieldDefs.Clear;
+
+
+   tblComparativoReceita.FieldDefs.Add('MES',ftString,50,false);
+
+   for i:=1 to QtdAnos do
+   begin
+
+     NomeCampo := '_'+intToStr(cAno);
+     tblComparativoReceita.FieldDefs.Add('ANO'+NomeCampo,ftString,50,false);
+     tblComparativoReceita.FieldDefs.Add('VALORTOTAL'+NomeCampo,ftCurrency,0,false);
+     tblComparativoReceita.FieldDefs.Add('VALORACUMULADO'+NomeCampo,ftCurrency,0,false);
+     tblComparativoReceita.FieldDefs.Add('MEDIAVALOR'+NomeCampo,ftCurrency,0,false);
+     tblComparativoReceita.FieldDefs.Add('MEDIADIAOCORRIDO'+NomeCampo,ftCurrency,0,false);
+     tblComparativoReceita.FieldDefs.Add('MEDIADIAUTIL'+NomeCampo,ftCurrency,0,false);
+     tblComparativoReceita.FieldDefs.Add('MEDIAQTDPRODCONTR'+NomeCampo,ftInteger,0,false);
+     tblComparativoReceita.FieldDefs.Add('QTD'+NomeCampo,ftInteger,0,false);
+     tblComparativoReceita.FieldDefs.Add('QTDAGENDA'+NomeCampo,ftInteger,0,false);
+
+
+     inc(cAno);
+     
+   end;
+
+
+   cAno := cmbAnoInicio.EditValue;
+
+   tblComparativoReceita.Open;
+
+   for i:=1 to QtdAnos do
+   begin
+
+     NomeCampo := '_'+intToStr(cAno);//+'_'+intToStr(cont);
+
+     tblComparativoReceita.fieldbyname('ANO'+NomeCampo).Visible := False;
+
+     tblComparativoReceita.fieldbyname('MES').DisplayLabel  := 'Mês';
+
+     tblComparativoReceita.fieldbyname('VALORTOTAL'+NomeCampo).DisplayLabel  := 'Vl. Total';
+     TFloatField(tblComparativoReceita.fieldbyname('VALORTOTAL'+NomeCampo)).DisplayFormat := '#,##0.00';
+
+     tblComparativoReceita.fieldbyname('VALORACUMULADO'+NomeCampo).DisplayLabel  := 'Vl. Acumul.';
+     TFloatField(tblComparativoReceita.fieldbyname('VALORACUMULADO'+NomeCampo)).DisplayFormat := '#,##0.00';
+
+     tblComparativoReceita.fieldbyname('MEDIAVALOR'+NomeCampo).DisplayLabel  := 'Méd. Contr.';
+     TFloatField(tblComparativoReceita.fieldbyname('MEDIAVALOR'+NomeCampo)).DisplayFormat := '#,##0.00';
+
+     tblComparativoReceita.fieldbyname('MEDIADIAOCORRIDO'+NomeCampo).DisplayLabel  := 'Méd. Dia Corr.';
+     TFloatField(tblComparativoReceita.fieldbyname('MEDIADIAOCORRIDO'+NomeCampo)).DisplayFormat := '#,##0.00';
+
+     tblComparativoReceita.fieldbyname('MEDIADIAUTIL'+NomeCampo).DisplayLabel  := 'Méd. Dia. Útil';
+     TFloatField(tblComparativoReceita.fieldbyname('MEDIADIAUTIL'+NomeCampo)).DisplayFormat := '#,##0.00';
+
+     tblComparativoReceita.fieldbyname('MEDIAQTDPRODCONTR'+NomeCampo).DisplayLabel  := 'Qtd. Méd. Prod. Contr.';
+
+     tblComparativoReceita.fieldbyname('QTD'+NomeCampo).DisplayLabel  := 'Qtd. Alug.';
+
+     tblComparativoReceita.fieldbyname('QTDAGENDA'+NomeCampo).DisplayLabel  := 'Qtd. Agend.';
+
+     inc(cAno);
+   end;
+
+
+ end;
+
+ procedure PopularTabelaMemoria;
+ var
+   i, cont, cAno, cQtdDiasUteis: Integer;
+   NomeMesAno, cOldAno : String;
+   cValorAcumulado, cValorAcumuladoTotal : Currency;
+
+ begin
+
+
+
+   for cont:= 1 to 12 do
+   begin
+
+     cAno := cmbAnoInicio.EditValue;
+
+     NomeCampo := '_'+intToStr(cAno);
+
+     tblComparativoReceita.Insert;
+     tblComparativoReceita.fieldbyname('MES').text := NomeMes(cont);
+     tblComparativoReceita.post;
+
+   end;
+
+   cValorAcumulado := 0;
+   cValorAcumuladoTotal := 0;
+   cOldAno := '';
+
+   While not qryComparativoReceita.Eof do
+   begin
+
+     if cOldAno <> qryComparativoReceitaANO.Text then
+       cValorAcumulado := 0;
+
+     NomeMesAno := NomeMes(qryComparativoReceitaMES.AsInteger);
+
+     NomeCampo := '_'+qryComparativoReceitaANO.Text;
+
+     if tblComparativoReceita.Locate('MES',NomeMesAno,[]) then
+     begin
+
+       Dados.Geral.Close;
+       Dados.Geral.SQL.Text := 'SELECT * '+
+                               '  FROM PRC_RETORNADIASUTEIS('+QuotedStr(FormatDateTime('mm/dd/yyyy',StrToDate('01/'+qryComparativoReceitaMES.Text+'/'+qryComparativoReceitaANO.Text)))+', '+
+                                                              QuotedStr(FormatDateTime('mm/dd/yyyy',StrToDate(UltimoDiaMes('01/'+qryComparativoReceitaMES.Text+'/'+qryComparativoReceitaANO.Text))))+') ';
+       Dados.Geral.Open;
+       
+       cQtdDiasUteis := Dados.Geral.FieldByName('QTD').AsInteger;
+
+
+       tblComparativoReceita.edit;
+       tblComparativoReceita.fieldbyname('ANO'+NomeCampo).Text := qryComparativoReceitaANO.Text;
+       tblComparativoReceita.fieldbyname('VALORTOTAL'+NomeCampo).AsCurrency := qryComparativoReceitaVALORTOTAL.AsCurrency;
+       tblComparativoReceita.fieldbyname('VALORACUMULADO'+NomeCampo).AsCurrency := cValorAcumulado + qryComparativoReceitaVALORTOTAL.AsCurrency;
+       tblComparativoReceita.fieldbyname('MEDIAVALOR'+NomeCampo).AsCurrency := qryComparativoReceitaMEDIAVALOR.AsCurrency;
+       tblComparativoReceita.fieldbyname('MEDIADIAOCORRIDO'+NomeCampo).AsCurrency := qryComparativoReceitaVALORTOTAL.AsCurrency/MonthDays[IsLeapYear(qryComparativoReceitaANO.AsInteger),qryComparativoReceitaMES.AsInteger];
+       tblComparativoReceita.fieldbyname('MEDIADIAUTIL'+NomeCampo).AsCurrency := qryComparativoReceitaVALORTOTAL.AsCurrency/cQtdDiasUteis;
+
+       try
+         tblComparativoReceita.fieldbyname('MEDIAQTDPRODCONTR'+NomeCampo).AsInteger := Trunc(qryComparativoReceitaQTDPRODUTOSCONTRATO.AsInteger/qryComparativoReceitaQTD.AsInteger);
+       except
+         tblComparativoReceita.fieldbyname('MEDIAQTDPRODCONTR'+NomeCampo).AsInteger  := 0;
+       end;
+       
+       tblComparativoReceita.fieldbyname('QTD'+NomeCampo).AsInteger := qryComparativoReceitaQTD.AsInteger;
+       tblComparativoReceita.fieldbyname('QTDAGENDA'+NomeCampo).AsInteger := qryComparativoReceitaQTDAGENDA.AsInteger;
+       tblComparativoReceita.post;
+
+       cValorAcumulado := cValorAcumulado + qryComparativoReceitaVALORTOTAL.AsCurrency;
+
+       cValorAcumuladoTotal := cValorAcumuladoTotal + cValorAcumulado;
+
+       cOldAno := qryComparativoReceitaANO.Text;
+
+     end;
+
+     qryComparativoReceita.Next;
+
+   end;
+
+   edtValorTotalAcumulado.Text := FormatFloat('#,##0.00',cValorAcumuladoTotal);
+
+ end;
+
+ procedure AtualizarGrid;
+ var
+   i, x, y, cAno : Integer;
+ begin
+
+   grdPainelDBBandedTableView1.BeginUpdate;
+   grdPainelDBBandedTableView1.ClearItems;
+   grdPainelDBBandedTableView1.Bands.Clear;
+   grdPainelDBBandedTableView1.DataController.CreateAllItems;
+
+   cAno := cmbAnoInicio.EditValue;
+
+   grdPainelDBBandedTableView1.Bands.Add;
+   grdPainelDBBandedTableView1.Bands[0].Caption := '';
+   grdPainelDBBandedTableView1.Columns[0].Position.BandIndex := 0;
+   y := 1;
+
+   for i:=1 to QtdAnos do
+   begin
+
+     grdPainelDBBandedTableView1.Bands.Add;
+     grdPainelDBBandedTableView1.Bands[i].Caption := intTostr(cAno);
+
+     for x:=1 to 9 do
+     begin
+
+       grdPainelDBBandedTableView1.Columns[y].Position.BandIndex := grdPainelDBBandedTableView1.Bands[i].ID;
+       grdPainelDBBandedTableView1.Columns[y].Width := 77;
+
+       with grdPainelDBBandedTableView1.DataController.Summary.FooterSummaryItems do
+       begin
+         Case x of
+           2:
+              begin
+                Add(grdPainelDBBandedTableView1.Columns[y],spFooter,skSum,'#,##0.00');
+                grdPainelDBBandedTableView1.Columns[y].Summary.GroupKind := skSum;
+                grdPainelDBBandedTableView1.Columns[y].Summary.GroupFormat := '#,##0.00';
+              end;
+           4,5,6,7:
+              begin
+                Add(grdPainelDBBandedTableView1.Columns[y],spFooter,skAverage,'#,##0.00');
+                grdPainelDBBandedTableView1.Columns[y].Summary.GroupKind := skAverage;
+                grdPainelDBBandedTableView1.Columns[y].Summary.GroupFormat := '#,##0.00';
+              end;
+           8,9:
+              begin
+                Add(grdPainelDBBandedTableView1.Columns[y],spFooter,skSum,'');
+                grdPainelDBBandedTableView1.Columns[y].Summary.GroupKind := skSum;
+//                grdPainelDBBandedTableView1.Columns[y].Summary.GroupFormat := '';
+              end;
+         End;
+       end;
+
+       inc(y);
+       
+     end;
+
+     inc(cAno);
+     
+   end;
+
+   grdPainelDBBandedTableView1.Columns[0].Width := 80;
+
+   grdPainelDBBandedTableView1.EndUpdate;
+
+ end;
+
+ procedure PreencherGrafico;
+ var
+   i, cAno:Integer;
+   Serie : TBarSeries;
+   Campo: String;
+   Valor: Currency;
+ begin
+
+   cAno := cmbAnoInicio.EditValue;
+
+   try
+     for i := 0 to GraficoComparativo.SeriesCount - 1  do
+       GraficoComparativo.Series[i].Destroy;
+   except
+     for i := 0 to GraficoComparativo.SeriesCount - 1  do
+       GraficoComparativo.Series[i].Destroy;
+   end;
+
+   for i:=1 to QtdAnos do
+   begin
+
+     With GraficoComparativo do
+     begin
+       AddSeries(TBarSeries.Create(nil));
+       Series[GraficoComparativo.SeriesCount - 1].Name := 'Ano_'+intToStr(cAno);
+       Series[GraficoComparativo.SeriesCount - 1].Marks.Style := smsValue;
+     end;
+
+     inc(cAno);
+
+   end;
+
+   Case rdgGrafico.ItemIndex of
+     0: Campo := 'VALORTOTAL_';
+     1: Campo := 'MEDIAVALOR_';
+     2: Campo := 'QTD_';
+     3: Campo := 'QTDAGENDA_';
+   End;
+
+   tblComparativoReceita.First;
+
+   While not tblComparativoReceita.Eof do
+   begin
+
+     cAno := cmbAnoInicio.EditValue;
+
+     for i:=1 to QtdAnos do
+     begin
+       GraficoComparativo.Series[i-1].Add(tblComparativoReceita.FieldByName(Campo+intToStr(cAno)).AsCurrency,Copy(tblComparativoReceita.FieldByName('MES').Text,1,3) ) ;
+       inc(cAno);
+     end; 
+
+     tblComparativoReceita.Next;
+   end;
+
+ end;
+
+begin
+
+
+  try
+    QtdAnos := (cmbAnoFim.EditValue - cmbAnoInicio.EditValue) + 1;
+  except
+    ShowMessage('Informe o período!');
+    Abort;
+  end;
+
+  if QtdAnos < 1 then
+  begin
+    ShowMessage('Período inválido!');
+    Abort;
+  end;
+
+  qryComparativoReceita.Close;
+  qryComparativoReceita.Open;
+
+  CriarTabelaMemoria;
+  PopularTabelaMemoria;
+  AtualizarGrid;
+  PreencherGrafico;
+
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton2Click(Sender: TObject);
+begin
+  if cxPageControl1.ActivePage = cxTabSheet1 then
+    ImprimirGrid(grdPainel,'Painel Geral')
+  else
+  if cxPageControl1.ActivePage = cxTabSheet2 then
+    ImprimirGrid(cxGrid1,'Painel por Produto')
+  else
+  if cxPageControl1.ActivePage = cxTabSheet3 then
+    ImprimirGrid(cxGrid2,'Painel por Cliente')
+  else
+  if cxPageControl1.ActivePage = cxTabSheet4 then
+    ImprimirGrid(cxGrid3,'Painel Pedido de Agenda')
+  else
+  if cxPageControl1.ActivePage = cxTabSheet5 then
+    ImprimirGrid(cxGrid4,'Painel de Terceiros');
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton3Click(Sender: TObject);
+begin
+  if cxPageControl1.ActivePage = cxTabSheet1 then
+    ExportarGrid(grdPainel)
+  else
+  if cxPageControl1.ActivePage = cxTabSheet2 then
+    ExportarGrid(cxGrid1)
+  else
+  if cxPageControl1.ActivePage = cxTabSheet3 then
+    ExportarGrid(cxGrid2)
+  else
+  if cxPageControl1.ActivePage = cxTabSheet4 then
+    ExportarGrid(cxGrid3)
+  else
+  if cxPageControl1.ActivePage = cxTabSheet5 then
+    ExportarGrid(cxGrid4);
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton4Click(Sender: TObject);
+
+  procedure PreencherPainelReceitaProduto;
+  var
+    color : Tcolor;
+  begin
+
+    qryReceitaProdutoGrafico.Close;
+    qryReceitaProdutoGrafico.Open;
+
+    serReceitaProduto.Clear;
+
+    While not qryReceitaProdutoGrafico.Eof do
+    begin
+
+      if qryReceitaProdutoGraficoTIPO.Text = 'Positiva' then
+        color := clGreen
+      else
+        color := clRed;
+
+      serReceitaProduto.AddPie(qryReceitaProdutoGraficoQTD.AsInteger, qryReceitaProdutoGraficoTIPO.Text, color);
+
+      qryReceitaProdutoGrafico.Next;
+
+    end;
+
+  end;
+
+begin
+  qryReceitaProduto.Close;
+  qryReceitaProduto.Open;
+
+  PreencherPainelReceitaProduto;
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton5Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton6Click(Sender: TObject);
+
+  procedure PreencherGraficoCliente;
+  var
+    cFaixa: String;
+  begin
+
+    qryReceitaPerfilGrafico.Close;
+    qryReceitaPerfilGrafico.Open;
+
+    serFaixaEtaria.Clear;
+
+    While not qryReceitaPerfilGrafico.Eof do
+    begin
+
+      if Trim(qryReceitaPerfilGraficoFAIXA.Text) = '20' then
+        cFaixa := '<= 20 anos'
+      else
+      if Trim(qryReceitaPerfilGraficoFAIXA.Text) = '50' then
+        cFaixa := '>= 50 anos'
+      else
+        cFaixa := qryReceitaPerfilGraficoFAIXA.Text;
+
+      serFaixaEtaria.AddPie(qryReceitaPerfilGraficoVALORTOTAL.AsCurrency, cFaixa);
+
+      qryReceitaPerfilGrafico.Next;
+
+    end;
+
+  end;
+
+begin
+  qryReceitaPerfil.Close;
+  qryReceitaPerfil.Open;
+
+  PreencherGraficoCliente;
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton7Click(Sender: TObject);
+begin
+
+  qryPedidoAgenda.Close;
+  qryPedidoAgenda.Open;
+
+  serPedidoAgenda.Clear;
+
+  While not qryPedidoAgenda.Eof do
+  begin
+
+    serPedidoAgenda.AddPie(qryPedidoAgendaQTDPEDIDOAGENDA.AsInteger, 'Tam. '+ qryPedidoAgendaTAMANHO.Text);
+
+    qryPedidoAgenda.Next;
+
+  end;
+
+  qryPedidoAgenda.First;
+
+end;
+
+procedure TfrmAcompanhaPerformance.cxButton8Click(Sender: TObject);
+begin
+  qryTerceiros.Close;
+  qryTerceiros.Open;
+end;
+
+procedure TfrmAcompanhaPerformance.edtPerfilExit(Sender: TObject);
+begin
+  try
+    if edtPerfil.Text <> '' then
+      cbPerfil.EditValue := StrToInt(edtPerfil.Text)
+    else
+      cbPerfil.EditValue := Null;
+  except
+  end;
+end;
+
+procedure TfrmAcompanhaPerformance.edtProdutoExit(Sender: TObject);
+begin
+  try
+    if edtProduto.Text <> '' then
+      cbProduto.EditValue := StrToInt(edtProduto.Text)
+    else
+      cbProduto.EditValue := Null;
+  except
+  end;
+end;
+
+function TfrmAcompanhaPerformance.Filtro(): String;
+var
+  vFiltro : String;
+  vCampoData : String;
+begin
+
+  if (Trim(cbProduto.Text) <> '') and (cbProduto.EditValue > 0) then
+    vFiltro := vFiltro + ' and CODIGOPRODUTO = '+VarToStr(cbProduto.EditValue);
+
+  if (edtDtInicial.Text <> '') and (edtDtFinal.Text <> '') then
+    vFiltro := vFiltro + ' and C.DATA between '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial.Date))+' and '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal.Date))
+  else if (edtDtInicial.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA >= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial.Date))
+  else if (edtDtFinal.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA <= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal.Date));
+
+  result := vFiltro;
+end;
+
+function TfrmAcompanhaPerformance.Filtro2: String;
+var
+  vFiltro : String;
+  vCampoData : String;
+begin
+
+  if (Trim(cbPerfil.Text) <> '') and (cbPerfil.EditValue > 0) then
+    vFiltro := vFiltro + ' and CODIGOCLIENTE = '+VarToStr(cbPerfil.EditValue);
+
+  if (edtDtInicial2.Text <> '') and (edtDtFinal2.Text <> '') then
+    vFiltro := vFiltro + ' and C.DATA between '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial2.Date))+' and '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal2.Date))
+  else if (edtDtInicial.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA >= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial2.Date))
+  else if (edtDtFinal.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA <= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal2.Date));
+
+  result := vFiltro;
+end;
+
+procedure TfrmAcompanhaPerformance.FormShow(Sender: TObject);
+begin
+  TOP := 122;
+  LEFT := 0;
+  try
+    qryPerfil.Close;
+    qryPerfil.Open;
+
+    qryProduto.Close;
+    qryProduto.Open;
+    
+  except
+    on E:Exception do
+      application.MessageBox(Pchar('Erro ao abrir consulta com banco de dados'+E.message),'ERRO',mb_OK+MB_ICONERROR);
+  end;
+end;
+
+procedure TfrmAcompanhaPerformance.qryComparativoReceitaBeforeOpen(DataSet: TDataSet);
+begin
+  qryComparativoReceita.SQL.Strings[qryComparativoReceita.SQL.IndexOf('--AND')+1] := ' AND X.ANO BETWEEN '+cmbAnoInicio.Text + ' AND '+cmbAnoFim.Text;
+end;
+
+procedure TfrmAcompanhaPerformance.qryPedidoAgendaBeforeOpen(DataSet: TDataSet);
+begin
+  qryPedidoAgenda.SQL.Strings[qryPedidoAgenda.SQL.IndexOf('--AND')+1] := Filtro3();
+  qryPedidoAgenda.SQL.Strings[qryPedidoAgenda.SQL.IndexOf('--AND2')+1] := Filtro4();
+end;
+
+procedure TfrmAcompanhaPerformance.qryReceitaPerfilBeforeOpen(
+  DataSet: TDataSet);
+begin
+  qryReceitaPerfil.SQL.Strings[qryReceitaPerfil.SQL.IndexOf('--AND')+1] := Filtro2();
+end;
+
+procedure TfrmAcompanhaPerformance.qryReceitaPerfilGraficoBeforeOpen(
+  DataSet: TDataSet);
+begin
+  qryReceitaPerfilGrafico.SQL.Strings[qryReceitaPerfilGrafico.SQL.IndexOf('--AND')+1] := Filtro2();
+end;
+
+procedure TfrmAcompanhaPerformance.qryReceitaProdutoBeforeOpen(
+  DataSet: TDataSet);
+begin
+  qryReceitaProduto.SQL.Strings[qryReceitaProduto.SQL.IndexOf('--AND')+1] := Filtro();
+end;
+
+procedure TfrmAcompanhaPerformance.qryReceitaProdutoGraficoBeforeOpen(
+  DataSet: TDataSet);
+begin
+  qryReceitaProdutoGrafico.SQL.Strings[qryReceitaProdutoGrafico.SQL.IndexOf('--AND1')+1] := Filtro();
+  qryReceitaProdutoGrafico.SQL.Strings[qryReceitaProdutoGrafico.SQL.IndexOf('--AND2')+1] := Filtro();
+end;
+
+function TfrmAcompanhaPerformance.Filtro3: String;
+var
+  vFiltro : String;
+  vCampoData : String;
+begin
+
+  if (Trim(cbPerfil3.Text) <> '') and (cbPerfil3.EditValue > 0) then
+    vFiltro := vFiltro + ' and A.codigoperfil = '+VarToStr(cbPerfil3.EditValue);
+
+  if (edtDtInicial3.Text <> '') and (edtDtFinal3.Text <> '') then
+    vFiltro := vFiltro + ' and P.DATAEVENTO between '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial3.Date))+' and '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal3.Date))
+  else if (edtDtInicial.Text <> '')  then
+    vFiltro := vFiltro + ' and P.DATAEVENTO >= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial3.Date))
+  else if (edtDtFinal.Text <> '')  then
+    vFiltro := vFiltro + ' and P.DATAEVENTO <= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal3.Date));
+
+  result := vFiltro;
+end;
+
+
+function TfrmAcompanhaPerformance.Filtro4: String;
+var
+  vFiltro : String;
+  vCampoData : String;
+begin
+
+  if (Trim(cbPerfil3.Text) <> '') and (cbPerfil3.EditValue > 0) then
+    vFiltro := vFiltro + ' and C.CODIGOCLIENTE = '+VarToStr(cbPerfil3.EditValue);
+
+  if (edtDtInicial3.Text <> '') and (edtDtFinal3.Text <> '') then
+    vFiltro := vFiltro + ' and C.DATA between '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial3.Date))+' and '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal3.Date))
+  else if (edtDtInicial.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA  >= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial3.Date))
+  else if (edtDtFinal.Text <> '')  then
+    vFiltro := vFiltro + ' and C.DATA  <= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal3.Date));
+
+  result := vFiltro;
+end;
+
+
+end.

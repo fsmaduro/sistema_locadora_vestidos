@@ -1,0 +1,5619 @@
+object frmDtmRelatorios: TfrmDtmRelatorios
+  Left = 0
+  Top = 0
+  Caption = 'frmDtmRelatorios'
+  ClientHeight = 415
+  ClientWidth = 747
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object qryRelArara: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      'Select A.codigo,'
+      '       A.dataregistro,'
+      '       A.codigoagenda,'
+      '       ag.data,'
+      '       ag.hora,'
+      '       A.codigoperfil||'#39' - '#39'||p.nome as Perfil,'
+      '       p.urlfoto as FotoPerfil,'
+      '       e.nome as Evento,'
+      '       tc.nome as TipoConvidado,'
+      '       ad.codigoproduto||'#39' - '#39'||pr.descricao as Produto,'
+      '       (Select First 1 pf.urlfoto'
+      '          from tabprodutofotos pf'
+      
+        '          left join tabtipofoto tf on pf.codigotipofoto = tf.cod' +
+        'igo'
+      '         where pf.codigoproduto = ad.codigoproduto'
+      '           and tf.usarnaarara = 1'
+      '         order by pf.id) as UrlFoto'
+      '  from TabArara a'
+      '  left join tabperfil p on a.codigoperfil = p.codigo'
+      '  left join tabagenda ag on a.codigoagenda = ag.codigo'
+      
+        '  left join tabpedidoagendamento pa on ag.idpedidoagenda = pa.co' +
+        'digo'
+      
+        '  left join tabacompanhantespedidoagenda ac on pa.codigo = ac.co' +
+        'digopedido and a.codigoperfil = ac.codigoperfil'
+      '  left join tabevento e on pa.codigoevento = e.codigo'
+      
+        '  left join tabtipoconvidado tc on ac.codigotipoconvidado = tc.c' +
+        'odigo'
+      '  left join tabararadetalhe ad on a.codigo = ad.codigoarara'
+      '  left join tabprodutos pr on ad.codigoproduto = pr.codigo'
+      'where A.codigo = :codigoArara'
+      ''
+      'order by ad.codigoproduto')
+    Left = 64
+    Top = 24
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'codigoArara'
+        ParamType = ptUnknown
+      end>
+    object qryRelAraraCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABARARA"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryRelAraraDATAREGISTRO: TDateField
+      FieldName = 'DATAREGISTRO'
+      Origin = '"TABARARA"."DATAREGISTRO"'
+    end
+    object qryRelAraraCODIGOAGENDA: TIntegerField
+      FieldName = 'CODIGOAGENDA'
+      Origin = '"TABARARA"."CODIGOAGENDA"'
+    end
+    object qryRelAraraDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABAGENDA"."DATA"'
+    end
+    object qryRelAraraHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABAGENDA"."HORA"'
+    end
+    object qryRelAraraPERFIL: TIBStringField
+      FieldName = 'PERFIL'
+      ProviderFlags = []
+      Size = 64
+    end
+    object qryRelAraraEVENTO: TIBStringField
+      FieldName = 'EVENTO'
+      Origin = '"TABEVENTO"."NOME"'
+      Size = 50
+    end
+    object qryRelAraraTIPOCONVIDADO: TIBStringField
+      FieldName = 'TIPOCONVIDADO'
+      Origin = '"TABTIPOCONVIDADO"."NOME"'
+    end
+    object qryRelAraraPRODUTO: TIBStringField
+      FieldName = 'PRODUTO'
+      ProviderFlags = []
+      Size = 214
+    end
+    object qryRelAraraURLFOTO: TMemoField
+      FieldName = 'URLFOTO'
+      ProviderFlags = []
+      BlobType = ftMemo
+      Size = 8
+    end
+    object qryRelAraraFOTOPERFIL: TIBStringField
+      FieldName = 'FOTOPERFIL'
+      Origin = '"TABPERFIL"."URLFOTO"'
+      Size = 200
+    end
+  end
+  object dtsRelArara: TDataSource
+    DataSet = qryRelArara
+    Left = 96
+    Top = 24
+  end
+  object pipRelArara: TppDBPipeline
+    DataSource = dtsRelArara
+    OpenDataSource = False
+    UserName = 'pipRelArara'
+    Left = 128
+    Top = 24
+    object pipRelArarappField1: TppField
+      FieldAlias = 'CODIGO'
+      FieldName = 'CODIGO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField2: TppField
+      FieldAlias = 'DATAREGISTRO'
+      FieldName = 'DATAREGISTRO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField3: TppField
+      FieldAlias = 'CODIGOAGENDA'
+      FieldName = 'CODIGOAGENDA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField4: TppField
+      FieldAlias = 'DATA'
+      FieldName = 'DATA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField5: TppField
+      FieldAlias = 'HORA'
+      FieldName = 'HORA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField6: TppField
+      FieldAlias = 'PERFIL'
+      FieldName = 'PERFIL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField7: TppField
+      FieldAlias = 'EVENTO'
+      FieldName = 'EVENTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField8: TppField
+      FieldAlias = 'TIPOCONVIDADO'
+      FieldName = 'TIPOCONVIDADO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField9: TppField
+      FieldAlias = 'PRODUTO'
+      FieldName = 'PRODUTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField10: TppField
+      FieldAlias = 'URLFOTO'
+      FieldName = 'URLFOTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object pipRelArarappField11: TppField
+      FieldAlias = 'FOTOPERFIL'
+      FieldName = 'FOTOPERFIL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
+      Searchable = False
+      Sortable = False
+    end
+  end
+  object rbiRelArara: TppReport
+    AutoStop = False
+    Columns = 3
+    ColumnPositions.Strings = (
+      '6350'
+      '101115'
+      '195880')
+    DataPipeline = pipRelArara
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.Orientation = poLandscape
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 210000
+    PrinterSetup.mmPaperWidth = 297000
+    PrinterSetup.PaperSize = 9
+    AllowPrintToFile = True
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Portuguese (Brazil)'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = False
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = False
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 160
+    Top = 24
+    Version = '16.01'
+    mmColumnWidth = 94766
+    DataPipelineName = 'pipRelArara'
+    object ppHeaderBand1: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 44979
+      mmPrintPosition = 0
+      object ppShape1: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape1'
+        ParentWidth = True
+        mmHeight = 27517
+        mmLeft = 0
+        mmTop = 10583
+        mmWidth = 284300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppShape2: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape2'
+        Brush.Color = clSilver
+        ParentWidth = True
+        mmHeight = 6085
+        mmLeft = 0
+        mmTop = 10583
+        mmWidth = 284300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppShape4: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape4'
+        Brush.Color = clSilver
+        ParentWidth = True
+        mmHeight = 7144
+        mmLeft = 0
+        mmTop = 37831
+        mmWidth = 284300
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel14: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label14'
+        Caption = 'PRODUTOS'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 14
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5821
+        mmLeft = 127793
+        mmTop = 38360
+        mmWidth = 28840
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel1: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label1'
+        Caption = 'FICHA DE ATENDIMENTO - ARARA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 18
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 7673
+        mmLeft = 88900
+        mmTop = 794
+        mmWidth = 106627
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText1: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText1'
+        DataField = 'CODIGO'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 14
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 5821
+        mmLeft = 23813
+        mmTop = 19844
+        mmWidth = 29104
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel2: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label2'
+        Caption = 'C'#243'digo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 14
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5821
+        mmLeft = 2646
+        mmTop = 19844
+        mmWidth = 19579
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel3: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label3'
+        Caption = 'Data de Reg.:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 2646
+        mmTop = 28575
+        mmWidth = 22754
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText2: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText2'
+        DataField = 'DATAREGISTRO'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 26458
+        mmTop = 28575
+        mmWidth = 26458
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine1: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line1'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 27517
+        mmLeft = 54240
+        mmTop = 10583
+        mmWidth = 2381
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel4: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label4'
+        Caption = 'Dados da Arara'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 15610
+        mmTop = 11377
+        mmWidth = 25929
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel5: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label5'
+        Caption = 'Dados da Agenda'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 82815
+        mmTop = 11377
+        mmWidth = 29633
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine2: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line2'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 27517
+        mmLeft = 141552
+        mmTop = 10583
+        mmWidth = 2381
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel6: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label6'
+        Caption = 'C'#243'digo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 55563
+        mmTop = 17463
+        mmWidth = 11113
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText3: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText3'
+        DataField = 'CODIGOAGENDA'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 55827
+        mmTop = 21960
+        mmWidth = 20373
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText4: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText4'
+        DataField = 'DATA'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 78846
+        mmTop = 21960
+        mmWidth = 27252
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel7: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label7'
+        Caption = 'Data:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 78581
+        mmTop = 17463
+        mmWidth = 7673
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText5: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText5'
+        DataField = 'HORA'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 110067
+        mmTop = 21960
+        mmWidth = 27252
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel8: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label8'
+        Caption = 'Hora:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 109802
+        mmTop = 17463
+        mmWidth = 7938
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine3: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line3'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 54240
+        mmTop = 27252
+        mmWidth = 202142
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine4: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line4'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 21696
+        mmLeft = 76729
+        mmTop = 16404
+        mmWidth = 1323
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLine5: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line5'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 11113
+        mmLeft = 107686
+        mmTop = 16404
+        mmWidth = 1323
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel9: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label9'
+        Caption = 'Evento:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 78581
+        mmTop = 28046
+        mmWidth = 10848
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText6: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText6'
+        DataField = 'EVENTO'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 78581
+        mmTop = 32544
+        mmWidth = 61913
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel10: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label10'
+        Caption = 'Dados do Perfil'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4233
+        mmLeft = 186002
+        mmTop = 11377
+        mmWidth = 25665
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppShape3: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape3'
+        mmHeight = 27517
+        mmLeft = 256382
+        mmTop = 10583
+        mmWidth = 28046
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppImage1: TppImage
+        OnPrint = ppImage1Print
+        DesignLayer = ppDesignLayer1
+        UserName = 'Image1'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        mmHeight = 26987
+        mmLeft = 256647
+        mmTop = 10848
+        mmWidth = 27516
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel11: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label11'
+        Caption = 'Perfil:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3968
+        mmLeft = 143404
+        mmTop = 17463
+        mmWidth = 8732
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText7: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText7'
+        DataField = 'PERFIL'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 143669
+        mmTop = 21960
+        mmWidth = 111654
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel12: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label12'
+        Caption = 'Tipo de Convidado:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 143404
+        mmTop = 28046
+        mmWidth = 28046
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText8: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText8'
+        DataField = 'TIPOCONVIDADO'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 143404
+        mmTop = 32544
+        mmWidth = 111919
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppLabel13: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label13'
+        Caption = 'Pedido:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 55563
+        mmTop = 28046
+        mmWidth = 11113
+        BandType = 0
+        LayerName = Foreground
+      end
+      object ppDBText9: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText9'
+        DataField = 'CODIGOAGENDA'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 4498
+        mmLeft = 55827
+        mmTop = 32544
+        mmWidth = 20373
+        BandType = 0
+        LayerName = Foreground
+      end
+    end
+    object ppColumnHeaderBand1: TppColumnHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppDetailBand1: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 142875
+      mmPrintPosition = 0
+      object ppShape5: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape5'
+        mmHeight = 48419
+        mmLeft = 790
+        mmTop = 94444
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppDBText10: TppDBText
+        DesignLayer = ppDesignLayer1
+        UserName = 'DBText10'
+        DataField = 'PRODUTO'
+        DataPipeline = pipRelArara
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        Transparent = True
+        WordWrap = True
+        DataPipelineName = 'pipRelArara'
+        mmHeight = 18257
+        mmLeft = 10848
+        mmTop = 793
+        mmWidth = 82550
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppImage2: TppImage
+        OnPrint = ppImage2Print
+        DesignLayer = ppDesignLayer1
+        UserName = 'Image2'
+        AlignHorizontal = ahCenter
+        AlignVertical = avCenter
+        MaintainAspectRatio = False
+        Stretch = True
+        mmHeight = 74083
+        mmLeft = 791
+        mmTop = 20107
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLabel15: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label15'
+        Caption = 'Anota'#231#245'es:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3968
+        mmLeft = 2646
+        mmTop = 95515
+        mmWidth = 16933
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine6: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line6'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 103451
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine7: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line7'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 108209
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine8: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line8'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 117731
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine9: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line9'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 112971
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine10: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line10'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 137831
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine11: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line11'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 132806
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine12: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line12'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 127781
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppLine13: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line13'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 790
+        mmTop = 122756
+        mmWidth = 92604
+        BandType = 4
+        LayerName = Foreground
+      end
+      object ppShape6: TppShape
+        DesignLayer = ppDesignLayer1
+        UserName = 'Shape6'
+        mmHeight = 6615
+        mmLeft = 1589
+        mmTop = 1852
+        mmWidth = 7408
+        BandType = 4
+        LayerName = Foreground
+      end
+    end
+    object ppColumnFooterBand1: TppColumnFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppFooterBand1: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6350
+      mmPrintPosition = 0
+      object ppSystemVariable1: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable1'
+        VarType = vtPageSetDesc
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 261938
+        mmTop = 1323
+        mmWidth = 20108
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppLine17: TppLine
+        DesignLayer = ppDesignLayer1
+        UserName = 'Line14'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 284300
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppSystemVariable2: TppSystemVariable
+        DesignLayer = ppDesignLayer1
+        UserName = 'SystemVariable2'
+        VarType = vtPrintDateTime
+        DisplayFormat = #39'Impresso em'#39' dd '#39'de'#39' MMMM '#39'de'#39' yyyy '#39#224's'#39' hh:mm:ss'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 1852
+        mmTop = 1323
+        mmWidth = 68263
+        BandType = 8
+        LayerName = Foreground
+      end
+      object ppLabel16: TppLabel
+        DesignLayer = ppDesignLayer1
+        UserName = 'Label16'
+        Caption = 'AMVSystem'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 133615
+        mmTop = 1323
+        mmWidth = 16933
+        BandType = 8
+        LayerName = Foreground
+      end
+    end
+    object raCodeModule1: TraCodeModule
+      ProgramStream = {
+        01060F5472614576656E7448616E646C65720B50726F6772616D4E616D650614
+        44657461696C4265666F726547656E65726174650B50726F6772616D54797065
+        070B747450726F63656475726506536F75726365066970726F63656475726520
+        44657461696C4265666F726547656E65726174653B0D0A626567696E0D0A2020
+        202F2F496D616765322E506963747572652E4C6F616446726F6D46696C652870
+        697052656C41726172615B2755524C464F544F275D293B0D0A656E643B0D0A0D
+        436F6D706F6E656E744E616D65060644657461696C094576656E744E616D6506
+        0E4265666F726547656E6572617465074576656E744944021A08436172657450
+        6F730102060203000001060F5472614576656E7448616E646C65720B50726F67
+        72616D4E616D6506144865616465724265666F726547656E65726174650B5072
+        6F6772616D54797065070B747450726F63656475726506536F75726365066770
+        726F636564757265204865616465724265666F726547656E65726174653B0D0A
+        626567696E0D0A20202F2F496D616765312E506963747572652E4C6F61644672
+        6F6D46696C652870697052656C41726172615B2750455246494C275D293B0D0A
+        656E643B0D0A0D436F6D706F6E656E744E616D65060648656164657209457665
+        6E744E616D65060E4265666F726547656E6572617465074576656E744944021A
+        084361726574506F730102050203000000}
+    end
+    object ppDesignLayers1: TppDesignLayers
+      object ppDesignLayer1: TppDesignLayer
+        UserName = 'Foreground'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList1: TppParameterList
+    end
+  end
+  object qryOrdemServico: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      'Select o.codigo,'
+      '  o.codigoperfil||'#39' - '#39'||p.nome as Perfil,'
+      '  o.codigoservico||'#39' - '#39'||s.decricao as Servico,'
+      '  s.detalhamento, '
+      '  o.numeroprestador,'
+      '  o.data,'
+      '  o.datainicio,'
+      '  o.horainicio,'
+      '  o.datafim,'
+      '  o.horafim,'
+      '  o.observacoes,'
+      '  Trim(Case when o.situacao = 1 then '#39'Em Aberto'#39
+      '            when o.situacao = 2 then '#39'Agendada'#39
+      '            when o.situacao = 3 then '#39'Finalizada'#39
+      '            when o.situacao = 4 then '#39'Cancelada'#39
+      '            else '#39#39' end) as Situacao,'
+      '  d.codigoproduto,'
+      '  pr.descricao,'
+      '  d.valorservico,'
+      '  Coalesce(c.endereco,'#39#39')||'#39', '#39'||'
+      '  Coalesce(p.numero,'#39'S/N'#39')||'#39' - '#39'||'
+      '  Coalesce(c.bairro,'#39#39')||'#39' - '#39'||'
+      '  Coalesce(m.nome,'#39#39')||'#39' / '#39'||'
+      '  Coalesce(m.uf,'#39#39')||'#39' - CEP.: '#39'||'
+      '  Coalesce(p.cep,'#39#39') as endereco,'
+      '  '#39'Res.: '#39'||Coalesce(P.telresidencial,'#39#39')||'#39' - Cel.: '#39'||'
+      '  Coalesce(p.telcelular,'#39#39')||'#39' - Com.: '#39'||'
+      '  Coalesce(p.telcomercial,'#39#39')||'#39' - Rec.: '#39'||'
+      
+        '  Coalesce(p.telrecado,'#39#39')||'#39' ('#39'||Coalesce(p.pessoarecado,'#39#39')||'#39 +
+        ')'#39' as Telefones,'
+      '  p.email1, p.PESSOARECADO'
+      ''
+      'from tabos O'
+      'left join tabperfil p on o.codigoperfil = p.codigo'
+      'left join tabcep c on p.cep = c.cep'
+      'left join tabmunicipios m on c.codigomunicipio = m.codigo'
+      'left join tabservico s on o.codigoservico = s.codigo'
+      'left join tabosdetalhe d on o.codigo = d.codigoos'
+      'left join tabprodutos pr on d.codigoproduto = pr.codigo'
+      'where o.codigo = :codigoos'
+      ''
+      'order by o.codigo')
+    Left = 64
+    Top = 55
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'codigoos'
+        ParamType = ptUnknown
+      end>
+    object qryOrdemServicoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABOS"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryOrdemServicoPERFIL: TIBStringField
+      FieldName = 'PERFIL'
+      ProviderFlags = []
+      Size = 64
+    end
+    object qryOrdemServicoSERVICO: TIBStringField
+      FieldName = 'SERVICO'
+      ProviderFlags = []
+      Size = 114
+    end
+    object qryOrdemServicoDETALHAMENTO: TMemoField
+      FieldName = 'DETALHAMENTO'
+      Origin = '"TABSERVICO"."DETALHAMENTO"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object qryOrdemServicoNUMEROPRESTADOR: TIBStringField
+      FieldName = 'NUMEROPRESTADOR'
+      Origin = '"TABOS"."NUMEROPRESTADOR"'
+    end
+    object qryOrdemServicoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABOS"."DATA"'
+    end
+    object qryOrdemServicoDATAINICIO: TDateField
+      FieldName = 'DATAINICIO'
+      Origin = '"TABOS"."DATAINICIO"'
+    end
+    object qryOrdemServicoHORAINICIO: TTimeField
+      FieldName = 'HORAINICIO'
+      Origin = '"TABOS"."HORAINICIO"'
+    end
+    object qryOrdemServicoDATAFIM: TDateField
+      FieldName = 'DATAFIM'
+      Origin = '"TABOS"."DATAFIM"'
+    end
+    object qryOrdemServicoHORAFIM: TTimeField
+      FieldName = 'HORAFIM'
+      Origin = '"TABOS"."HORAFIM"'
+    end
+    object qryOrdemServicoSITUACAO: TIBStringField
+      FieldName = 'SITUACAO'
+      ProviderFlags = []
+      Size = 10
+    end
+    object qryOrdemServicoCODIGOPRODUTO: TIntegerField
+      FieldName = 'CODIGOPRODUTO'
+      Origin = '"TABOSDETALHE"."CODIGOPRODUTO"'
+    end
+    object qryOrdemServicoDESCRICAO: TIBStringField
+      FieldName = 'DESCRICAO'
+      Origin = '"TABPRODUTOS"."DESCRICAO"'
+      Size = 200
+    end
+    object qryOrdemServicoVALORSERVICO: TIBBCDField
+      FieldName = 'VALORSERVICO'
+      Origin = '"TABOSDETALHE"."VALORSERVICO"'
+      Precision = 18
+      Size = 2
+    end
+    object qryOrdemServicoOBSERVACOES: TMemoField
+      FieldName = 'OBSERVACOES'
+      Origin = '"TABOS"."OBSERVACOES"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftMemo
+      Size = 8
+    end
+    object qryOrdemServicoENDERECO: TIBStringField
+      FieldName = 'ENDERECO'
+      ProviderFlags = []
+      Size = 173
+    end
+    object qryOrdemServicoTELEFONES: TIBStringField
+      FieldName = 'TELEFONES'
+      ProviderFlags = []
+      Size = 116
+    end
+    object qryOrdemServicoEMAIL1: TIBStringField
+      FieldName = 'EMAIL1'
+      Origin = '"TABPERFIL"."EMAIL1"'
+      Size = 50
+    end
+    object qryOrdemServicoPESSOARECADO: TIBStringField
+      FieldName = 'PESSOARECADO'
+      Origin = '"TABPERFIL"."PESSOARECADO"'
+    end
+  end
+  object dtsOrdemServico: TDataSource
+    DataSet = qryOrdemServico
+    Left = 96
+    Top = 56
+  end
+  object pipOrdemServico: TppDBPipeline
+    DataSource = dtsOrdemServico
+    OpenDataSource = False
+    UserName = 'pipOrdemServico'
+    Left = 128
+    Top = 56
+    object pipOrdemServicoppField1: TppField
+      FieldAlias = 'CODIGO'
+      FieldName = 'CODIGO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 0
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField2: TppField
+      FieldAlias = 'PERFIL'
+      FieldName = 'PERFIL'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 1
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField3: TppField
+      FieldAlias = 'SERVICO'
+      FieldName = 'SERVICO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 2
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField4: TppField
+      FieldAlias = 'DETALHAMENTO'
+      FieldName = 'DETALHAMENTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 3
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField5: TppField
+      FieldAlias = 'NUMEROPRESTADOR'
+      FieldName = 'NUMEROPRESTADOR'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 4
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField6: TppField
+      FieldAlias = 'DATA'
+      FieldName = 'DATA'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 5
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField7: TppField
+      FieldAlias = 'DATAINICIO'
+      FieldName = 'DATAINICIO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 6
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField8: TppField
+      FieldAlias = 'HORAINICIO'
+      FieldName = 'HORAINICIO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 7
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField9: TppField
+      FieldAlias = 'DATAFIM'
+      FieldName = 'DATAFIM'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 8
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField10: TppField
+      FieldAlias = 'HORAFIM'
+      FieldName = 'HORAFIM'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 9
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField11: TppField
+      FieldAlias = 'SITUACAO'
+      FieldName = 'SITUACAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 10
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField12: TppField
+      FieldAlias = 'CODIGOPRODUTO'
+      FieldName = 'CODIGOPRODUTO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 11
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField13: TppField
+      FieldAlias = 'DESCRICAO'
+      FieldName = 'DESCRICAO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 12
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField14: TppField
+      FieldAlias = 'VALORSERVICO'
+      FieldName = 'VALORSERVICO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 13
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField15: TppField
+      FieldAlias = 'OBSERVACOES'
+      FieldName = 'OBSERVACOES'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 14
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField16: TppField
+      FieldAlias = 'ENDERECO'
+      FieldName = 'ENDERECO'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 15
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField17: TppField
+      FieldAlias = 'TELEFONES'
+      FieldName = 'TELEFONES'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 16
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField18: TppField
+      FieldAlias = 'EMAIL1'
+      FieldName = 'EMAIL1'
+      FieldLength = 0
+      DataType = dtNotKnown
+      DisplayWidth = 0
+      Position = 17
+      Searchable = False
+      Sortable = False
+    end
+    object pipOrdemServicoppField19: TppField
+      FieldAlias = 'PESSOARECADO'
+      FieldName = 'PESSOARECADO'
+      FieldLength = 10
+      DisplayWidth = 10
+      Position = 18
+    end
+  end
+  object rbiOrdemServico: TppReport
+    AutoStop = False
+    DataPipeline = pipOrdemServico
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    AllowPrintToFile = True
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    EmailSettings.Enabled = True
+    LanguageID = 'Default'
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = False
+    ThumbnailSettings.Enabled = True
+    ThumbnailSettings.Visible = False
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    PreviewFormSettings.WindowState = wsMaximized
+    PreviewFormSettings.ZoomSetting = zsPageWidth
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 160
+    Top = 56
+    Version = '16.01'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipOrdemServico'
+    object ppHeaderBand2: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 8996
+      mmPrintPosition = 0
+      object ppLine14: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line1'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 8732
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground1
+      end
+      object ppLabel17: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label17'
+        Caption = 'ORDEM DE SERVI'#199'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 76954
+        mmTop = 1852
+        mmWidth = 43392
+        BandType = 0
+        LayerName = Foreground1
+      end
+    end
+    object ppDetailBand2: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppDBText11: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText11'
+        DataField = 'CODIGOPRODUTO'
+        DataPipeline = pipOrdemServico
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipOrdemServico'
+        mmHeight = 4498
+        mmLeft = 4498
+        mmTop = 529
+        mmWidth = 17198
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppDBText12: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText12'
+        DataField = 'DESCRICAO'
+        DataPipeline = pipOrdemServico
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'pipOrdemServico'
+        mmHeight = 4498
+        mmLeft = 24077
+        mmTop = 529
+        mmWidth = 140229
+        BandType = 4
+        LayerName = Foreground1
+      end
+      object ppDBText13: TppDBText
+        DesignLayer = ppDesignLayer2
+        UserName = 'DBText13'
+        DataField = 'VALORSERVICO'
+        DataPipeline = pipOrdemServico
+        DisplayFormat = '#,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'pipOrdemServico'
+        mmHeight = 4498
+        mmLeft = 166688
+        mmTop = 529
+        mmWidth = 24606
+        BandType = 4
+        LayerName = Foreground1
+      end
+    end
+    object ppFooterBand2: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 6615
+      mmPrintPosition = 0
+      object ppSystemVariable3: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable3'
+        VarType = vtPageSetDesc
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 174890
+        mmTop = 1323
+        mmWidth = 20108
+        BandType = 8
+        LayerName = Foreground1
+      end
+      object ppLabel35: TppLabel
+        DesignLayer = ppDesignLayer2
+        UserName = 'Label35'
+        Caption = 'AMVSystem'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 112447
+        mmTop = 1323
+        mmWidth = 16933
+        BandType = 8
+        LayerName = Foreground1
+      end
+      object ppSystemVariable4: TppSystemVariable
+        DesignLayer = ppDesignLayer2
+        UserName = 'SystemVariable4'
+        VarType = vtPrintDateTime
+        DisplayFormat = #39'Impresso em'#39' dd '#39'de'#39' MMMM '#39'de'#39' yyyy '#39#224's'#39' hh:mm:ss'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 9
+        Font.Style = []
+        Transparent = True
+        mmHeight = 3969
+        mmLeft = 1852
+        mmTop = 1323
+        mmWidth = 68263
+        BandType = 8
+        LayerName = Foreground1
+      end
+      object ppLine20: TppLine
+        DesignLayer = ppDesignLayer2
+        UserName = 'Line20'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground1
+      end
+    end
+    object ppGroup1: TppGroup
+      BreakName = 'CODIGO'
+      DataPipeline = pipOrdemServico
+      GroupFileSettings.NewFile = False
+      GroupFileSettings.EmailFile = False
+      KeepTogether = True
+      OutlineSettings.CreateNode = True
+      StartOnOddPage = False
+      UserName = 'Group1'
+      mmNewColumnThreshold = 0
+      mmNewPageThreshold = 0
+      DataPipelineName = 'pipOrdemServico'
+      NewFile = False
+      object ppGroupHeaderBand1: TppGroupHeaderBand
+        Background.Brush.Style = bsClear
+        mmBottomOffset = 0
+        mmHeight = 71702
+        mmPrintPosition = 0
+        object ppShape8: TppShape
+          DesignLayer = ppDesignLayer2
+          UserName = 'Shape8'
+          Brush.Color = 14540253
+          mmHeight = 23021
+          mmLeft = 1852
+          mmTop = 34403
+          mmWidth = 191294
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppShape7: TppShape
+          DesignLayer = ppDesignLayer2
+          UserName = 'Shape7'
+          Brush.Color = 13092807
+          mmHeight = 27261
+          mmLeft = 1852
+          mmTop = 6878
+          mmWidth = 191294
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel18: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label18'
+          Caption = 'C'#243'digo:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 4498
+          mmTop = 1323
+          mmWidth = 12965
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel19: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label19'
+          Caption = 'N'#250'mero no Prestador:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 99751
+          mmTop = 1323
+          mmWidth = 36777
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel20: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label20'
+          Caption = 'Prestador:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 10319
+          mmTop = 7673
+          mmWidth = 15875
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel21: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label201'
+          Caption = 'Telefone:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3968
+          mmLeft = 12436
+          mmTop = 12435
+          mmWidth = 13758
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel22: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label22'
+          Caption = 'E-Mail:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3968
+          mmLeft = 16404
+          mmTop = 17201
+          mmWidth = 9790
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel23: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label23'
+          Caption = 'Endere'#231'o:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 11113
+          mmTop = 26463
+          mmWidth = 15081
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel24: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label202'
+          Caption = 'Servi'#231'o:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 14023
+          mmTop = 35197
+          mmWidth = 12171
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel25: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label25'
+          Caption = 'Detalhamento:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 4498
+          mmTop = 40489
+          mmWidth = 21696
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel27: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label27'
+          Caption = 'Data / Hora de Envio:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 4498
+          mmTop = 59275
+          mmWidth = 30427
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel26: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label26'
+          Caption = 'Data / Hora de Retorno:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 91810
+          mmTop = 59275
+          mmWidth = 34396
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel28: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label28'
+          Caption = 'Produto'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 4498
+          mmTop = 66681
+          mmWidth = 11906
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel29: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label29'
+          Caption = 'Descri'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 24077
+          mmTop = 66681
+          mmWidth = 15346
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel30: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label30'
+          Caption = 'Valor do Servi'#231'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          TextAlignment = taRightJustified
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 166688
+          mmTop = 66681
+          mmWidth = 24606
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLine15: TppLine
+          DesignLayer = ppDesignLayer2
+          UserName = 'Line15'
+          ParentWidth = True
+          Weight = 0.750000000000000000
+          mmHeight = 259
+          mmLeft = 0
+          mmTop = 71443
+          mmWidth = 197300
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText14: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText14'
+          DataField = 'CODIGO'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          TextAlignment = taCentered
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 20108
+          mmTop = 1323
+          mmWidth = 32808
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText15: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText15'
+          DataField = 'NUMEROPRESTADOR'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 139178
+          mmTop = 1323
+          mmWidth = 52095
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText16: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText16'
+          AutoSize = True
+          DataField = 'PERFIL'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 3969
+          mmLeft = 29369
+          mmTop = 7673
+          mmWidth = 11113
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText17: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText17'
+          AutoSize = True
+          DataField = 'SERVICO'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 3969
+          mmLeft = 29369
+          mmTop = 35197
+          mmWidth = 14023
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBMemo2: TppDBMemo
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBMemo2'
+          CharWrap = False
+          DataField = 'DETALHAMENTO'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          RemoveEmptyLines = False
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 16142
+          mmLeft = 29368
+          mmTop = 40490
+          mmWidth = 161926
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+          mmBottomOffset = 0
+          mmOverFlowOffset = 0
+          mmStopPosition = 0
+          mmMinHeight = 0
+          mmLeading = 0
+        end
+        object ppDBText18: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText18'
+          DataField = 'DATAINICIO'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = 'dd/MM/yyyy'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 36246
+          mmTop = 59274
+          mmWidth = 20902
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText19: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText19'
+          DataField = 'HORAINICIO'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = 'hh:mm'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 58737
+          mmTop = 59275
+          mmWidth = 28046
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText20: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText20'
+          DataField = 'HORAFIM'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = 'hh:mm'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 150289
+          mmTop = 59275
+          mmWidth = 26723
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText21: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText21'
+          DataField = 'DATAFIM'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = 'dd/MM/yyyy'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 127537
+          mmTop = 59275
+          mmWidth = 20902
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel36: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label36'
+          Caption = 'Data:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 54769
+          mmTop = 1323
+          mmWidth = 8731
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText22: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText22'
+          DataField = 'DATA'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = 'dd/MM/yyyy'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          TextAlignment = taCentered
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 65090
+          mmTop = 1323
+          mmWidth = 32808
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText23: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText23'
+          AutoSize = True
+          DataField = 'TELEFONES'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 3705
+          mmLeft = 29369
+          mmTop = 12567
+          mmWidth = 15346
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText24: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText24'
+          AutoSize = True
+          DataField = 'EMAIL1'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 3704
+          mmLeft = 29369
+          mmTop = 17333
+          mmWidth = 9525
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBMemo3: TppDBMemo
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBMemo3'
+          CharWrap = False
+          DataField = 'ENDERECO'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          RemoveEmptyLines = False
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 7144
+          mmLeft = 29369
+          mmTop = 26465
+          mmWidth = 161926
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+          mmBottomOffset = 0
+          mmOverFlowOffset = 0
+          mmStopPosition = 0
+          mmMinHeight = 0
+          mmLeading = 0
+        end
+        object ppLabel75: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label75'
+          Caption = 'Contato:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 9
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 3969
+          mmLeft = 13754
+          mmTop = 21696
+          mmWidth = 12436
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBText57: TppDBText
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBText57'
+          AutoSize = True
+          DataField = 'PESSOARECADO'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 3705
+          mmLeft = 29369
+          mmTop = 21960
+          mmWidth = 74613
+          BandType = 3
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+      end
+      object ppGroupFooterBand1: TppGroupFooterBand
+        Background.Brush.Style = bsClear
+        PrintHeight = phDynamic
+        HideWhenOneDetail = False
+        mmBottomOffset = 0
+        mmHeight = 43921
+        mmPrintPosition = 0
+        object ppLabel31: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label31'
+          Caption = 'Total dos Servi'#231'os:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4233
+          mmLeft = 4496
+          mmTop = 528
+          mmWidth = 31750
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLine16: TppLine
+          DesignLayer = ppDesignLayer2
+          UserName = 'Line16'
+          ParentWidth = True
+          Weight = 0.750000000000000000
+          mmHeight = 259
+          mmLeft = 0
+          mmTop = 5818
+          mmWidth = 197300
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppLabel32: TppLabel
+          DesignLayer = ppDesignLayer2
+          UserName = 'Label32'
+          Caption = 'Observa'#231#245'es:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          FormField = False
+          Transparent = True
+          mmHeight = 4234
+          mmLeft = 4498
+          mmTop = 7408
+          mmWidth = 22490
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+        object ppDBMemo1: TppDBMemo
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBMemo1'
+          CharWrap = False
+          DataField = 'OBSERVACOES'
+          DataPipeline = pipOrdemServico
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 8
+          Font.Style = []
+          RemoveEmptyLines = False
+          Stretch = True
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 10054
+          mmLeft = 27781
+          mmTop = 7408
+          mmWidth = 167482
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+          mmBottomOffset = 0
+          mmOverFlowOffset = 0
+          mmStopPosition = 0
+          mmMinHeight = 0
+          mmLeading = 0
+        end
+        object ppRegion1: TppRegion
+          DesignLayer = ppDesignLayer2
+          UserName = 'Region1'
+          Brush.Style = bsClear
+          Caption = 'Region1'
+          ParentWidth = True
+          Pen.Style = psClear
+          ShiftRelativeTo = ppDBMemo1
+          Transparent = True
+          mmHeight = 25400
+          mmLeft = 0
+          mmTop = 18519
+          mmWidth = 197300
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+          mmBottomOffset = 0
+          mmOverFlowOffset = 0
+          mmStopPosition = 0
+          mmMinHeight = 0
+          object ppLine18: TppLine
+            DesignLayer = ppDesignLayer2
+            UserName = 'Line18'
+            Weight = 0.750000000000000000
+            mmHeight = 3969
+            mmLeft = 9264
+            mmTop = 35453
+            mmWidth = 75936
+            BandType = 5
+            GroupNo = 0
+            LayerName = Foreground1
+          end
+          object ppLabel33: TppLabel
+            DesignLayer = ppDesignLayer2
+            UserName = 'Label33'
+            Caption = 'ACHEI MEU VESTIDO EIRELI'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Name = 'Arial'
+            Font.Size = 10
+            Font.Style = [fsBold]
+            FormField = False
+            TextAlignment = taCentered
+            Transparent = True
+            mmHeight = 4234
+            mmLeft = 24871
+            mmTop = 35454
+            mmWidth = 46831
+            BandType = 5
+            GroupNo = 0
+            LayerName = Foreground1
+          end
+          object ppDBText58: TppDBText
+            DesignLayer = ppDesignLayer2
+            UserName = 'DBText58'
+            AutoSize = True
+            DataField = 'PERFIL'
+            DataPipeline = pipOrdemServico
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Name = 'Arial'
+            Font.Size = 10
+            Font.Style = [fsBold]
+            TextAlignment = taCentered
+            Transparent = True
+            DataPipelineName = 'pipOrdemServico'
+            mmHeight = 4234
+            mmLeft = 141817
+            mmTop = 35454
+            mmWidth = 12171
+            BandType = 5
+            GroupNo = 0
+            LayerName = Foreground1
+          end
+          object ppLine19: TppLine
+            DesignLayer = ppDesignLayer2
+            UserName = 'Line2'
+            Weight = 0.750000000000000000
+            mmHeight = 2114
+            mmLeft = 109812
+            mmTop = 35453
+            mmWidth = 75936
+            BandType = 5
+            GroupNo = 0
+            LayerName = Foreground1
+          end
+        end
+        object ppDBCalc1: TppDBCalc
+          DesignLayer = ppDesignLayer2
+          UserName = 'DBCalc1'
+          DataField = 'VALORSERVICO'
+          DataPipeline = pipOrdemServico
+          DisplayFormat = '#,##0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = 'Arial'
+          Font.Size = 10
+          Font.Style = [fsBold]
+          ResetGroup = ppGroup1
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'pipOrdemServico'
+          mmHeight = 4498
+          mmLeft = 145786
+          mmTop = 528
+          mmWidth = 45508
+          BandType = 5
+          GroupNo = 0
+          LayerName = Foreground1
+        end
+      end
+    end
+    object ppDesignLayers2: TppDesignLayers
+      object ppDesignLayer2: TppDesignLayer
+        UserName = 'Foreground1'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList2: TppParameterList
+    end
+  end
+  object ppDBOrcamentoDetalhe: TppDBPipeline
+    DataSource = dtsOrcamentoDetalhe
+    UserName = 'ppDBOrcamentoDetalhe'
+    Left = 136
+    Top = 154
+  end
+  object ppDBOrcamento: TppDBPipeline
+    DataSource = dtsOrcamento
+    UserName = 'ppDBOrcamento'
+    Left = 134
+    Top = 111
+  end
+  object rbiOrcamento: TppReport
+    AutoStop = False
+    DataPipeline = ppDBOrcamentoDetalhe
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OnPreviewFormCreate = rbiOrcamentoPreviewFormCreate
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = False
+    ThumbnailSettings.Visible = False
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 171
+    Top = 109
+    Version = '16.01'
+    mmColumnWidth = 197300
+    DataPipelineName = 'ppDBOrcamentoDetalhe'
+    object ppTitleBand1: TppTitleBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 12965
+      mmPrintPosition = 0
+      object ppLine21: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line1'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = Foreground2
+      end
+      object ppLine22: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 1
+        LayerName = Foreground2
+      end
+      object ppLine23: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line3'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 8991
+        mmWidth = 197300
+        BandType = 1
+        LayerName = Foreground2
+      end
+      object ppLine24: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line4'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 193411
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = Foreground2
+      end
+      object ppLabel37: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label1'
+        Caption = 'OR'#199'AMENTO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 13
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5556
+        mmLeft = 85461
+        mmTop = 4229
+        mmWidth = 28840
+        BandType = 1
+        LayerName = Foreground2
+      end
+    end
+    object ppHeaderBand3: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 17727
+      mmPrintPosition = 0
+      object ppLine25: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line5'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 10563
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine26: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line6'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 2379
+        mmLeft = 0
+        mmTop = 8204
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel38: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label2'
+        Caption = 'C'#243'digo:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 1588
+        mmTop = 1058
+        mmWidth = 9789
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppDBText25: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText1'
+        DataField = 'CODIGO'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 3438
+        mmLeft = 12698
+        mmTop = 1056
+        mmWidth = 17198
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel39: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label3'
+        Caption = 'Data:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 166423
+        mmTop = 1058
+        mmWidth = 7144
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppDBText26: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText2'
+        DataField = 'DATACADASTRO'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 3440
+        mmLeft = 175155
+        mmTop = 1058
+        mmWidth = 17198
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel40: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label4'
+        Caption = 'Operador:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 1587
+        mmTop = 5818
+        mmWidth = 13229
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppDBText27: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText3'
+        DataField = 'USERNAME'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 3440
+        mmLeft = 16403
+        mmTop = 5818
+        mmWidth = 51329
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel41: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label5'
+        Caption = 'Cliente:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 35190
+        mmTop = 1058
+        mmWidth = 9789
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppDBText28: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText4'
+        DataField = 'NOMCLIENTE'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 3440
+        mmLeft = 46302
+        mmTop = 1058
+        mmWidth = 69586
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine27: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line11'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 13226
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine28: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line12'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 17462
+        mmWidth = 197300
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine29: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line13'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 0
+        mmTop = 13227
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine30: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line14'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 4498
+        mmLeft = 193415
+        mmTop = 13229
+        mmWidth = 4233
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine31: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line15'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 10332
+        mmTop = 13229
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine32: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line16'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 28600
+        mmTop = 13229
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine33: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line17'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 121859
+        mmTop = 13229
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine34: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line18'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 149812
+        mmTop = 13229
+        mmWidth = 4219
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel42: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label6'
+        Caption = 'Id'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 3969
+        mmTop = 13758
+        mmWidth = 3175
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel43: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label7'
+        Caption = 'Produto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 13758
+        mmTop = 13758
+        mmWidth = 11907
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel44: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label8'
+        Caption = 'Descri'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 68792
+        mmTop = 13758
+        mmWidth = 14552
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel45: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label9'
+        Caption = 'Valor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 132292
+        mmTop = 13758
+        mmWidth = 7673
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLine35: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line7'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 10580
+        mmLeft = 193411
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel46: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label10'
+        Caption = 'Telefone:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 120386
+        mmTop = 1058
+        mmWidth = 12171
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppDBText29: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText9'
+        DataField = 'TELEFONE'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 3440
+        mmLeft = 134152
+        mmTop = 1058
+        mmWidth = 17198
+        BandType = 0
+        LayerName = Foreground2
+      end
+      object ppLabel47: TppLabel
+        DesignLayer = ppDesignLayer3
+        UserName = 'Label11'
+        OnGetText = ppLabel47GetText
+        Caption = 'Label11'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 154256
+        mmTop = 5821
+        mmWidth = 11642
+        BandType = 0
+        LayerName = Foreground2
+      end
+    end
+    object ppDetailBand3: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 3969
+      mmPrintPosition = 0
+      object ppLine36: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line8'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4219
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine37: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line9'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 1319
+        mmLeft = 0
+        mmTop = 2648
+        mmWidth = 197300
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine38: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line10'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 193707
+        mmTop = 0
+        mmWidth = 3954
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText30: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText5'
+        DataField = 'ID'
+        DataPipeline = ppDBOrcamentoDetalhe
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamentoDetalhe'
+        mmHeight = 3703
+        mmLeft = 1582
+        mmTop = 0
+        mmWidth = 7658
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine39: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line19'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 10318
+        mmTop = 0
+        mmWidth = 1039
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine40: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line20'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 28600
+        mmTop = 0
+        mmWidth = 1039
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText31: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText6'
+        DataField = 'CODIGOPRODUTO'
+        DataPipeline = ppDBOrcamentoDetalhe
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamentoDetalhe'
+        mmHeight = 3703
+        mmLeft = 11919
+        mmTop = 0
+        mmWidth = 15608
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText32: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText7'
+        DataField = 'NOMEPRODUTO'
+        DataPipeline = ppDBOrcamentoDetalhe
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamentoDetalhe'
+        mmHeight = 3703
+        mmLeft = 30453
+        mmTop = 0
+        mmWidth = 90073
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppDBText33: TppDBText
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBText8'
+        DataField = 'VALOR'
+        DataPipeline = ppDBOrcamentoDetalhe
+        DisplayFormat = '#,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamentoDetalhe'
+        mmHeight = 3704
+        mmLeft = 124356
+        mmTop = 0
+        mmWidth = 24620
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine41: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line201'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 121852
+        mmTop = 0
+        mmWidth = 1834
+        BandType = 4
+        LayerName = Foreground2
+      end
+      object ppLine42: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line22'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 149795
+        mmTop = 0
+        mmWidth = 1834
+        BandType = 4
+        LayerName = Foreground2
+      end
+    end
+    object ppFooterBand3: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 22490
+      mmPrintPosition = 0
+      object ppLine43: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line25'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 16424
+        mmLeft = 0
+        mmTop = 6066
+        mmWidth = 3954
+        BandType = 8
+        LayerName = Foreground2
+      end
+      object ppLine44: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line27'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 16404
+        mmLeft = 193679
+        mmTop = 6086
+        mmWidth = 3969
+        BandType = 8
+        LayerName = Foreground2
+      end
+      object ppDBMemo4: TppDBMemo
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBMemo1'
+        CharWrap = False
+        DataField = 'OBSERVACOES'
+        DataPipeline = ppDBOrcamento
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        RemoveEmptyLines = False
+        TextAlignment = taFullJustified
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamento'
+        mmHeight = 13213
+        mmLeft = 1315
+        mmTop = 7950
+        mmWidth = 194734
+        BandType = 8
+        LayerName = Foreground2
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+        mmLeading = 0
+      end
+      object ppLine45: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line26'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 18522
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground2
+      end
+      object ppLine46: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line29'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 1584
+        mmLeft = 0
+        mmTop = 6095
+        mmWidth = 197300
+        BandType = 8
+        LayerName = Foreground2
+      end
+    end
+    object ppSummaryBand1: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 4498
+      mmPrintPosition = 0
+      object ppDBCalc2: TppDBCalc
+        DesignLayer = ppDesignLayer3
+        UserName = 'DBCalc1'
+        DataField = 'VALOR'
+        DataPipeline = ppDBOrcamentoDetalhe
+        DisplayFormat = '#,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'ppDBOrcamentoDetalhe'
+        mmHeight = 4498
+        mmLeft = 124349
+        mmTop = 0
+        mmWidth = 24088
+        BandType = 7
+        LayerName = Foreground2
+      end
+      object ppLine47: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line21'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4219
+        BandType = 7
+        LayerName = Foreground2
+      end
+      object ppLine48: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line23'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 1319
+        mmLeft = 0
+        mmTop = 3180
+        mmWidth = 197300
+        BandType = 7
+        LayerName = Foreground2
+      end
+      object ppLine49: TppLine
+        DesignLayer = ppDesignLayer3
+        UserName = 'Line24'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 193709
+        mmTop = 0
+        mmWidth = 3954
+        BandType = 7
+        LayerName = Foreground2
+      end
+    end
+    object ppDesignLayers3: TppDesignLayers
+      object ppDesignLayer3: TppDesignLayer
+        UserName = 'Foreground2'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList3: TppParameterList
+    end
+  end
+  object dtsOrcamento: TDataSource
+    DataSet = qryOrcamento
+    Left = 98
+    Top = 111
+  end
+  object qryOrcamento: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      
+        'select O.*, P.NOME AS NOMCLIENTE, U.USERNAME, COALESCE(P.TELRESI' +
+        'DENCIAL,P.TELCELULAR) AS TELEFONE   from TABORCAMENTO O'
+      'LEFT JOIN TABPERFIL P ON (O.CODIGOCLIENTE = P.CODIGO)'
+      'LEFT JOIN TABUSUARIOS U ON (O.CODIGOUSUARIO = U.CODIGO)'
+      'where O.CODIGO = :CODIGO'
+      'order by O.Codigo')
+    Left = 62
+    Top = 111
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    object qryOrcamentoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABORCAMENTO"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryOrcamentoDATACADASTRO: TDateField
+      FieldName = 'DATACADASTRO'
+      Origin = '"TABORCAMENTO"."DATACADASTRO"'
+    end
+    object qryOrcamentoCODIGOUSUARIO: TIntegerField
+      FieldName = 'CODIGOUSUARIO'
+      Origin = '"TABORCAMENTO"."CODIGOUSUARIO"'
+    end
+    object qryOrcamentoCODIGOCLIENTE: TIntegerField
+      FieldName = 'CODIGOCLIENTE'
+      Origin = '"TABORCAMENTO"."CODIGOCLIENTE"'
+    end
+    object qryOrcamentoOBSERVACOES: TIBStringField
+      FieldName = 'OBSERVACOES'
+      Origin = '"TABORCAMENTO"."OBSERVACOES"'
+      Size = 100
+    end
+    object qryOrcamentoCODIGOSITUACAO: TIntegerField
+      FieldName = 'CODIGOSITUACAO'
+      Origin = '"TABORCAMENTO"."CODIGOSITUACAO"'
+    end
+    object qryOrcamentoCODIGOPEDIDO: TIntegerField
+      FieldName = 'CODIGOPEDIDO'
+      Origin = '"TABORCAMENTO"."CODIGOPEDIDO"'
+    end
+    object qryOrcamentoNOMCLIENTE: TIBStringField
+      FieldName = 'NOMCLIENTE'
+      Origin = '"TABPERFIL"."NOME"'
+      Size = 50
+    end
+    object qryOrcamentoUSERNAME: TIBStringField
+      FieldName = 'USERNAME'
+      Origin = '"TABUSUARIOS"."USERNAME"'
+    end
+    object qryOrcamentoTELEFONE: TIBStringField
+      FieldName = 'TELEFONE'
+      ProviderFlags = []
+      Size = 15
+    end
+  end
+  object qryOrcamentoDetalhe: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    DataSource = dtsOrcamento
+    SQL.Strings = (
+      
+        'select D.*, P.DESCRICAO AS NOMEPRODUTO from TABORCAMENTODETALHE ' +
+        ' D'
+      'LEFT JOIN TABPRODUTOS P ON (D.CODIGOPRODUTO = P.CODIGO)'
+      'where D.CODIGO= :CODIGO'
+      'order by D.ID')
+    Left = 59
+    Top = 157
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+        Size = 4
+      end>
+    object qryOrcamentoDetalheCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABORCAMENTODETALHE"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryOrcamentoDetalheID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"TABORCAMENTODETALHE"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryOrcamentoDetalheCODIGOPRODUTO: TIntegerField
+      FieldName = 'CODIGOPRODUTO'
+      Origin = '"TABORCAMENTODETALHE"."CODIGOPRODUTO"'
+    end
+    object qryOrcamentoDetalheVALOR: TIBBCDField
+      FieldName = 'VALOR'
+      Origin = '"TABORCAMENTODETALHE"."VALOR"'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object qryOrcamentoDetalheNOMEPRODUTO: TIBStringField
+      FieldName = 'NOMEPRODUTO'
+      Origin = '"TABPRODUTOS"."DESCRICAO"'
+      Size = 200
+    end
+  end
+  object dtsOrcamentoDetalhe: TDataSource
+    DataSet = qryOrcamentoDetalhe
+    Left = 98
+    Top = 157
+  end
+  object qryBoleto: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      
+        'SELECT F.CODIGO, F.DATA, F.CODIGOCLIENTE, P.NOME AS NOMECLIENTE,' +
+        ' P.CPF,'
+      
+        '       P.CODIGOBANCO, P.NOME AS NOMEBANCO, P.OPERACAO_CONTA, P.A' +
+        'GENCIA, P.NUMERO_CONTA,'
+      '       SUM(D.VALOR) AS VALOR'
+      '  FROM TABFINANCEIRO F'
+      ' INNER JOIN TABFINANCEIRODETALHE D ON (F.CODIGO = D.CODIGO)'
+      ' INNER JOIN TABPERFIL P ON (F.CODIGOCLIENTE = P.CODIGO)'
+      '  LEFT JOIN TABBANCO B ON (P.CODIGOBANCO = B.CODIGO)'
+      ''
+      'WHERE F.CODIGO = :CODIGO'
+      ''
+      ''
+      ' GROUP BY 1,2,3,4,5,6,7,8,9,10'
+      '')
+    Left = 51
+    Top = 226
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    object qryBoletoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABFINANCEIRO"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryBoletoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABFINANCEIRO"."DATA"'
+    end
+    object qryBoletoCODIGOCLIENTE: TIntegerField
+      FieldName = 'CODIGOCLIENTE'
+      Origin = '"TABFINANCEIRO"."CODIGOCLIENTE"'
+    end
+    object qryBoletoNOMECLIENTE: TIBStringField
+      FieldName = 'NOMECLIENTE'
+      ProviderFlags = []
+      Size = 50
+    end
+    object qryBoletoCPF: TIBStringField
+      FieldName = 'CPF'
+      Origin = '"TABPERFIL"."CPF"'
+      Size = 15
+    end
+    object qryBoletoCODIGOBANCO: TIntegerField
+      FieldName = 'CODIGOBANCO'
+      Origin = '"TABPERFIL"."CODIGOBANCO"'
+    end
+    object qryBoletoNOMEBANCO: TIBStringField
+      FieldName = 'NOMEBANCO'
+      ProviderFlags = []
+      Size = 50
+    end
+    object qryBoletoOPERACAO_CONTA: TIBStringField
+      FieldName = 'OPERACAO_CONTA'
+      Origin = '"TABPERFIL"."OPERACAO_CONTA"'
+      Size = 10
+    end
+    object qryBoletoAGENCIA: TIBStringField
+      FieldName = 'AGENCIA'
+      Origin = '"TABPERFIL"."AGENCIA"'
+      Size = 10
+    end
+    object qryBoletoNUMERO_CONTA: TIBStringField
+      FieldName = 'NUMERO_CONTA'
+      Origin = '"TABPERFIL"."NUMERO_CONTA"'
+    end
+    object qryBoletoVALOR: TIBBCDField
+      FieldName = 'VALOR'
+      ProviderFlags = []
+      Precision = 18
+      Size = 4
+    end
+  end
+  object qryBoletoDetalhe: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      
+        'SELECT C.CODIGO AS CODIGOCONTRATO, D.CODIGOPRODUTO, P.DESCRICAO ' +
+        'AS NOMEPRODUTO, D.VALOR'
+      '  FROM TABFINANCEIRO F'
+      
+        ' INNER JOIN TABMOVIMENTACAOCONTRATO M ON (F.CODIGO = M.CODIGOREG' +
+        'ISTRO AND M.TIPO = 6)'
+      ' INNER JOIN TABCONTRATO C ON (C.CODIGO = M.CODIGO)'
+      ' INNER JOIN TABCONTRATODETALHE D ON (C.CODIGO = D.CODIGO)'
+      ' INNER JOIN TABPRODUTOS P ON (D.CODIGOPRODUTO = P.CODIGO)'
+      ''
+      'WHERE F.CODIGO = :CODIGO'
+      ''
+      'ORDER BY D.CODIGOPRODUTO')
+    Left = 49
+    Top = 272
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+        Size = 4
+      end>
+    object qryBoletoDetalheCODIGOCONTRATO: TIntegerField
+      FieldName = 'CODIGOCONTRATO'
+      Origin = '"TABCONTRATO"."CODIGO"'
+      Required = True
+    end
+    object qryBoletoDetalheCODIGOPRODUTO: TIntegerField
+      FieldName = 'CODIGOPRODUTO'
+      Origin = '"TABCONTRATODETALHE"."CODIGOPRODUTO"'
+    end
+    object qryBoletoDetalheNOMEPRODUTO: TIBStringField
+      FieldName = 'NOMEPRODUTO'
+      Origin = '"TABPRODUTOS"."DESCRICAO"'
+      Size = 200
+    end
+    object qryBoletoDetalheVALOR: TIBBCDField
+      FieldName = 'VALOR'
+      Origin = '"TABCONTRATODETALHE"."VALOR"'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object dtsBoletoDetalhe: TDataSource
+    DataSet = qryBoletoDetalhe
+    Left = 87
+    Top = 272
+  end
+  object dtsBoleto: TDataSource
+    DataSet = qryBoleto
+    Left = 87
+    Top = 226
+  end
+  object pipBoleto: TppDBPipeline
+    DataSource = dtsBoleto
+    UserName = 'pipBoleto'
+    Left = 123
+    Top = 226
+  end
+  object pipBoletoDetalhe: TppDBPipeline
+    DataSource = dtsBoletoDetalhe
+    UserName = 'pipBoletoDetalhe'
+    Left = 125
+    Top = 269
+  end
+  object rbiBoleto: TppReport
+    AutoStop = False
+    DataPipeline = pipBoleto
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OnPreviewFormCreate = rbiOrcamentoPreviewFormCreate
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = False
+    ThumbnailSettings.Visible = False
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 160
+    Top = 224
+    Version = '16.01'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipBoleto'
+    object ppTitleBand2: TppTitleBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 12965
+      mmPrintPosition = 0
+      object ppLine50: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line1'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = BandLayer4
+      end
+      object ppLine51: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 1
+        LayerName = BandLayer4
+      end
+      object ppLine52: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line3'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 8991
+        mmWidth = 197300
+        BandType = 1
+        LayerName = BandLayer4
+      end
+      object ppLine53: TppLine
+        DesignLayer = ppDesignLayer4
+        UserName = 'Line4'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 193411
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = BandLayer4
+      end
+      object ppLabel48: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label1'
+        Caption = 'BOLETO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 13
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5557
+        mmLeft = 85461
+        mmTop = 4233
+        mmWidth = 17991
+        BandType = 1
+        LayerName = BandLayer4
+      end
+    end
+    object ppHeaderBand4: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 42598
+      mmPrintPosition = 0
+      object ppLabel49: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label49'
+        Caption = 'R$'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 42575
+        mmTop = 3954
+        mmWidth = 5556
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText34: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText34'
+        DataField = 'VALOR'
+        DataPipeline = pipBoleto
+        DisplayFormat = '#,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 5027
+        mmLeft = 50512
+        mmTop = 3954
+        mmWidth = 34396
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel53: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label53'
+        Caption = 'Data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 5027
+        mmLeft = 90752
+        mmTop = 3953
+        mmWidth = 9261
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText38: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText38'
+        DataField = 'DATA'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 12
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 5027
+        mmLeft = 102400
+        mmTop = 3953
+        mmWidth = 34396
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel54: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label54'
+        Caption = 'Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 13481
+        mmWidth = 12435
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel55: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label55'
+        Caption = 'CPF'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 17979
+        mmWidth = 5556
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel56: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label56'
+        Caption = 'Banco'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 22477
+        mmWidth = 8731
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel57: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label57'
+        Caption = 'Opera'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 26975
+        mmWidth = 13758
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel58: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label58'
+        Caption = 'Ag'#234'ncia'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 31473
+        mmWidth = 11641
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppLabel59: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label59'
+        Caption = 'Conta'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3704
+        mmLeft = 794
+        mmTop = 35971
+        mmWidth = 8466
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText39: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText39'
+        DataField = 'NOMECLIENTE'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 13485
+        mmWidth = 78846
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText40: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText40'
+        DataField = 'CPF'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 17983
+        mmWidth = 39423
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText41: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText401'
+        DataField = 'NOMEBANCO'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 22480
+        mmWidth = 39423
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText42: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText42'
+        DataField = 'OPERACAO_CONTA'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 26978
+        mmWidth = 39423
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText43: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText43'
+        DataField = 'AGENCIA'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 31476
+        mmWidth = 39423
+        BandType = 0
+        LayerName = BandLayer4
+      end
+      object ppDBText44: TppDBText
+        DesignLayer = ppDesignLayer4
+        UserName = 'DBText44'
+        DataField = 'NUMERO_CONTA'
+        DataPipeline = pipBoleto
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        DataPipelineName = 'pipBoleto'
+        mmHeight = 3703
+        mmLeft = 16930
+        mmTop = 35971
+        mmWidth = 39423
+        BandType = 0
+        LayerName = BandLayer4
+      end
+    end
+    object ppDetailBand4: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      PrintHeight = phDynamic
+      mmBottomOffset = 0
+      mmHeight = 5027
+      mmPrintPosition = 0
+      object ppSubReport1: TppSubReport
+        DesignLayer = ppDesignLayer4
+        UserName = 'SubReport1'
+        ExpandAll = False
+        NewPrintJob = False
+        OutlineSettings.CreateNode = True
+        TraverseAllData = False
+        DataPipelineName = 'pipBoletoDetalhe'
+        mmHeight = 5027
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 4
+        LayerName = BandLayer4
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+        object ppChildReport1: TppChildReport
+          AutoStop = False
+          DataPipeline = pipBoletoDetalhe
+          PrinterSetup.BinName = 'Default'
+          PrinterSetup.DocumentName = 'Report'
+          PrinterSetup.PaperName = 'A4'
+          PrinterSetup.PrinterName = 'Default'
+          PrinterSetup.SaveDeviceSettings = False
+          PrinterSetup.mmMarginBottom = 6350
+          PrinterSetup.mmMarginLeft = 6350
+          PrinterSetup.mmMarginRight = 6350
+          PrinterSetup.mmMarginTop = 6350
+          PrinterSetup.mmPaperHeight = 297000
+          PrinterSetup.mmPaperWidth = 210000
+          PrinterSetup.PaperSize = 9
+          Version = '16.01'
+          mmColumnWidth = 0
+          DataPipelineName = 'pipBoletoDetalhe'
+          object ppTitleBand3: TppTitleBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 4498
+            mmPrintPosition = 0
+            object ppLine83: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line83'
+              ParentWidth = True
+              Weight = 0.750000000000000000
+              mmHeight = 259
+              mmLeft = 0
+              mmTop = 4220
+              mmWidth = 197300
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine85: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line85'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 4499
+              mmLeft = 0
+              mmTop = 0
+              mmWidth = 4219
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine86: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line86'
+              Position = lpRight
+              Weight = 0.750000000000000000
+              mmHeight = 4498
+              mmLeft = 193411
+              mmTop = 0
+              mmWidth = 4233
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine88: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line88'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 4499
+              mmLeft = 17710
+              mmTop = 0
+              mmWidth = 4219
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine89: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line89'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 4499
+              mmLeft = 110313
+              mmTop = 0
+              mmWidth = 4219
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine90: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line90'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 4499
+              mmLeft = 138359
+              mmTop = 0
+              mmWidth = 4219
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLabel50: TppLabel
+              DesignLayer = ppDesignLayer5
+              UserName = 'Label50'
+              Caption = 'Produto'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = [fsBold]
+              FormField = False
+              TextAlignment = taCentered
+              Transparent = True
+              mmHeight = 3440
+              mmLeft = 2893
+              mmTop = 780
+              mmWidth = 11907
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLabel51: TppLabel
+              DesignLayer = ppDesignLayer5
+              UserName = 'Label51'
+              Caption = 'Descri'#231#227'o'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = [fsBold]
+              FormField = False
+              Transparent = True
+              mmHeight = 3440
+              mmLeft = 57662
+              mmTop = 780
+              mmWidth = 14552
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLabel52: TppLabel
+              DesignLayer = ppDesignLayer5
+              UserName = 'Label52'
+              Caption = 'Valor'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = [fsBold]
+              FormField = False
+              TextAlignment = taCentered
+              Transparent = True
+              mmHeight = 3440
+              mmLeft = 120632
+              mmTop = 780
+              mmWidth = 7673
+              BandType = 1
+              LayerName = Foreground3
+            end
+            object ppLine91: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line91'
+              ParentWidth = True
+              Weight = 0.750000000000000000
+              mmHeight = 2114
+              mmLeft = 0
+              mmTop = 0
+              mmWidth = 197300
+              BandType = 1
+              LayerName = Foreground3
+            end
+          end
+          object ppDetailBand5: TppDetailBand
+            Background1.Brush.Style = bsClear
+            Background2.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 3969
+            mmPrintPosition = 0
+            object ppLine54: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line54'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 3969
+              mmLeft = 0
+              mmTop = 0
+              mmWidth = 4219
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppLine55: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line55'
+              ParentWidth = True
+              Position = lpBottom
+              Weight = 0.750000000000000000
+              mmHeight = 1319
+              mmLeft = 0
+              mmTop = 2646
+              mmWidth = 197300
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppLine64: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line101'
+              Position = lpRight
+              Weight = 0.750000000000000000
+              mmHeight = 3969
+              mmLeft = 193675
+              mmTop = 0
+              mmWidth = 3954
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppLine80: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line202'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 3969
+              mmLeft = 17710
+              mmTop = 0
+              mmWidth = 1039
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppDBText35: TppDBText
+              DesignLayer = ppDesignLayer5
+              UserName = 'DBText35'
+              DataField = 'CODIGOPRODUTO'
+              DataPipeline = pipBoletoDetalhe
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = []
+              ParentDataPipeline = False
+              TextAlignment = taCentered
+              Transparent = True
+              DataPipelineName = 'pipBoletoDetalhe'
+              mmHeight = 3703
+              mmLeft = 1041
+              mmTop = 0
+              mmWidth = 15608
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppDBText36: TppDBText
+              DesignLayer = ppDesignLayer5
+              UserName = 'DBText36'
+              DataField = 'NOMEPRODUTO'
+              DataPipeline = pipBoletoDetalhe
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = []
+              ParentDataPipeline = False
+              Transparent = True
+              DataPipelineName = 'pipBoletoDetalhe'
+              mmHeight = 3703
+              mmLeft = 19297
+              mmTop = 0
+              mmWidth = 90073
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppDBText37: TppDBText
+              DesignLayer = ppDesignLayer5
+              UserName = 'DBText37'
+              DataField = 'VALOR'
+              DataPipeline = pipBoletoDetalhe
+              DisplayFormat = '#,##0.00'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Name = 'Tahoma'
+              Font.Size = 8
+              Font.Style = []
+              ParentDataPipeline = False
+              TextAlignment = taCentered
+              Transparent = True
+              DataPipelineName = 'pipBoletoDetalhe'
+              mmHeight = 3704
+              mmLeft = 112694
+              mmTop = 0
+              mmWidth = 24620
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppLine81: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line81'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 3969
+              mmLeft = 110313
+              mmTop = 0
+              mmWidth = 1834
+              BandType = 4
+              LayerName = Foreground3
+            end
+            object ppLine82: TppLine
+              DesignLayer = ppDesignLayer5
+              UserName = 'Line82'
+              Position = lpLeft
+              Weight = 0.750000000000000000
+              mmHeight = 3969
+              mmLeft = 138359
+              mmTop = 0
+              mmWidth = 1834
+              BandType = 4
+              LayerName = Foreground3
+            end
+          end
+          object ppSummaryBand3: TppSummaryBand
+            Background.Brush.Style = bsClear
+            mmBottomOffset = 0
+            mmHeight = 0
+            mmPrintPosition = 0
+          end
+          object ppDesignLayers5: TppDesignLayers
+            object ppDesignLayer5: TppDesignLayer
+              UserName = 'Foreground3'
+              LayerType = ltBanded
+              Index = 0
+            end
+          end
+        end
+      end
+    end
+    object ppFooterBand4: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 5292
+      mmPrintPosition = 0
+      object ppLabel60: TppLabel
+        DesignLayer = ppDesignLayer4
+        UserName = 'Label60'
+        Caption = 'Pago em: _____/_____/_________'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Arial'
+        Font.Size = 10
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 4234
+        mmLeft = 0
+        mmTop = 529
+        mmWidth = 54504
+        BandType = 8
+        LayerName = BandLayer4
+      end
+    end
+    object ppSummaryBand2: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppDesignLayers4: TppDesignLayers
+      object ppDesignLayer4: TppDesignLayer
+        UserName = 'BandLayer4'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList4: TppParameterList
+    end
+  end
+  object qryContratoTerceiro: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      
+        'select T.CODIGO, T.versao, T.CODIGOFORNECEDOR, pe.nome as nomefo' +
+        'rnecedor, pe.cpf, COALESCE(Pe.TELRESIDENCIAL,Pe.TELCELULAR) AS T' +
+        'ELEFONE,'
+      
+        '       P.DATAAQUISICAO, P.CODIGO AS CODIGOPRODUTO, P.DESCRICAO A' +
+        'S NOMEPRODUTO, P.VALORALUGUEL1'
+      ''
+      'from TABCONTRATOTERCEIROS T'
+      'left join TABPRODUTOS P on (P.IDPERFIL = T.CODIGOFORNECEDOR)'
+      'left join tabperfil pe on (t.codigofornecedor = pe.codigo)'
+      'where P.ORIGEM = '#39'T'#39
+      ''
+      'AND T.CODIGO = :CODIGO'
+      '  ')
+    Left = 47
+    Top = 326
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    object qryContratoTerceiroCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABCONTRATOTERCEIROS"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryContratoTerceiroVERSAO: TIntegerField
+      FieldName = 'VERSAO'
+      Origin = '"TABCONTRATOTERCEIROS"."VERSAO"'
+    end
+    object qryContratoTerceiroCODIGOFORNECEDOR: TIntegerField
+      FieldName = 'CODIGOFORNECEDOR'
+      Origin = '"TABCONTRATOTERCEIROS"."CODIGOFORNECEDOR"'
+    end
+    object qryContratoTerceiroNOMEFORNECEDOR: TIBStringField
+      FieldName = 'NOMEFORNECEDOR'
+      Origin = '"TABPERFIL"."NOME"'
+      Size = 50
+    end
+    object qryContratoTerceiroCPF: TIBStringField
+      FieldName = 'CPF'
+      Origin = '"TABPERFIL"."CPF"'
+      Size = 15
+    end
+    object qryContratoTerceiroTELEFONE: TIBStringField
+      FieldName = 'TELEFONE'
+      ProviderFlags = []
+      Size = 15
+    end
+    object qryContratoTerceiroDATAAQUISICAO: TDateField
+      FieldName = 'DATAAQUISICAO'
+      Origin = '"TABPRODUTOS"."DATAAQUISICAO"'
+    end
+    object qryContratoTerceiroCODIGOPRODUTO: TIntegerField
+      FieldName = 'CODIGOPRODUTO'
+      Origin = '"TABPRODUTOS"."CODIGO"'
+    end
+    object qryContratoTerceiroNOMEPRODUTO: TIBStringField
+      FieldName = 'NOMEPRODUTO'
+      Origin = '"TABPERFIL"."NOME"'
+      Size = 50
+    end
+    object qryContratoTerceiroVALORALUGUEL1: TIBBCDField
+      FieldName = 'VALORALUGUEL1'
+      Origin = '"TABPRODUTOS"."VALORALUGUEL1"'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object dtsContratoTerceiro: TDataSource
+    DataSet = qryContratoTerceiro
+    Left = 83
+    Top = 326
+  end
+  object pipContratoTerceiro: TppDBPipeline
+    DataSource = dtsContratoTerceiro
+    UserName = 'pipContratoTerceiro'
+    Left = 119
+    Top = 326
+  end
+  object rbiContratoTerceiro: TppReport
+    AutoStop = False
+    DataPipeline = pipContratoTerceiro
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'A4'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.SaveDeviceSettings = False
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 297000
+    PrinterSetup.mmPaperWidth = 210000
+    PrinterSetup.PaperSize = 9
+    ArchiveFileName = '($MyDocuments)\ReportArchive.raf'
+    DeviceType = 'Screen'
+    DefaultFileDeviceType = 'PDF'
+    EmailSettings.ReportFormat = 'PDF'
+    LanguageID = 'Default'
+    OnPreviewFormCreate = rbiOrcamentoPreviewFormCreate
+    OpenFile = False
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    ThumbnailSettings.Enabled = False
+    ThumbnailSettings.Visible = False
+    ThumbnailSettings.DeadSpace = 30
+    PDFSettings.EmbedFontOptions = [efUseSubset]
+    PDFSettings.EncryptSettings.AllowCopy = True
+    PDFSettings.EncryptSettings.AllowInteract = True
+    PDFSettings.EncryptSettings.AllowModify = True
+    PDFSettings.EncryptSettings.AllowPrint = True
+    PDFSettings.EncryptSettings.Enabled = False
+    PDFSettings.EncryptSettings.KeyLength = kl40Bit
+    PDFSettings.FontEncoding = feAnsi
+    PDFSettings.ImageCompressionLevel = 25
+    RTFSettings.DefaultFont.Charset = DEFAULT_CHARSET
+    RTFSettings.DefaultFont.Color = clWindowText
+    RTFSettings.DefaultFont.Height = -13
+    RTFSettings.DefaultFont.Name = 'Arial'
+    RTFSettings.DefaultFont.Style = []
+    TextFileName = '($MyDocuments)\Report.pdf'
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    XLSSettings.AppName = 'ReportBuilder'
+    XLSSettings.Author = 'ReportBuilder'
+    XLSSettings.Subject = 'Report'
+    XLSSettings.Title = 'Report'
+    Left = 154
+    Top = 325
+    Version = '16.01'
+    mmColumnWidth = 0
+    DataPipelineName = 'pipContratoTerceiro'
+    object ppTitleBand4: TppTitleBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 12965
+      mmPrintPosition = 0
+      object ppLine56: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line1'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = BandLayer6
+      end
+      object ppLine57: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line2'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 197300
+        BandType = 1
+        LayerName = BandLayer6
+      end
+      object ppLine58: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line3'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 0
+        mmTop = 8991
+        mmWidth = 197300
+        BandType = 1
+        LayerName = BandLayer6
+      end
+      object ppLine59: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line4'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 12965
+        mmLeft = 193411
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 1
+        LayerName = BandLayer6
+      end
+      object ppLabel61: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label1'
+        Caption = 'CONTRATO de TERCEIRO '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 13
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 5557
+        mmLeft = 74596
+        mmTop = 4233
+        mmWidth = 57150
+        BandType = 1
+        LayerName = BandLayer6
+      end
+    end
+    object ppHeaderBand5: TppHeaderBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 53181
+      mmPrintPosition = 0
+      object ppLine60: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line5'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 48953
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel62: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label2'
+        Caption = 'CT N'#186
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 1588
+        mmTop = 1058
+        mmWidth = 7408
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText45: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText1'
+        DataField = 'CODIGO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3438
+        mmLeft = 10048
+        mmTop = 1056
+        mmWidth = 17198
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel64: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label4'
+        Caption = 'ID-AMV n'#186
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 1588
+        mmTop = 5821
+        mmWidth = 13229
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText47: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText3'
+        DataField = 'CODIGOFORNECEDOR'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 15608
+        mmTop = 5818
+        mmWidth = 14552
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine62: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line11'
+        ParentWidth = True
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 48736
+        mmWidth = 197300
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine63: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line12'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 259
+        mmLeft = 0
+        mmTop = 52921
+        mmWidth = 197300
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine65: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line13'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 0
+        mmTop = 48682
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine66: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line14'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 4498
+        mmLeft = 193415
+        mmTop = 48682
+        mmWidth = 4233
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine67: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line15'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 20137
+        mmTop = 48682
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine68: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line16'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 38405
+        mmTop = 48682
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine69: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line17'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 131664
+        mmTop = 48682
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine70: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line18'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 4499
+        mmLeft = 167302
+        mmTop = 48682
+        mmWidth = 4219
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel66: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label6'
+        Caption = 'Data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 3969
+        mmTop = 49213
+        mmWidth = 7144
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel67: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label7'
+        Caption = 'C'#243'digo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 23813
+        mmTop = 49213
+        mmWidth = 10054
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel68: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label8'
+        Caption = 'Produto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 78581
+        mmTop = 49213
+        mmWidth = 11907
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel69: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label9'
+        Caption = 'Valor m'#225'ximo aluguel'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = [fsBold]
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 133624
+        mmTop = 49213
+        mmWidth = 32279
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLine71: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line7'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 48949
+        mmLeft = 193411
+        mmTop = 0
+        mmWidth = 4233
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel70: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label10'
+        Caption = 'VERS'#195'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 38365
+        mmTop = 1058
+        mmWidth = 10583
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText49: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText9'
+        DataField = 'VERSAO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 50538
+        mmTop = 1058
+        mmWidth = 17198
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel72: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label72'
+        Caption = 'CEDENTE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 38368
+        mmTop = 5821
+        mmWidth = 11906
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel63: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label63'
+        Caption = 'CPF'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 1588
+        mmTop = 10842
+        mmWidth = 5027
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppLabel65: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label65'
+        Caption = 'FONE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 38362
+        mmTop = 10848
+        mmWidth = 7144
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText46: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText46'
+        DataField = 'NOMEFORNECEDOR'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 51333
+        mmTop = 5821
+        mmWidth = 91017
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText48: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText48'
+        DataField = 'CPF'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 7392
+        mmTop = 10853
+        mmWidth = 29657
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppDBText54: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText54'
+        DataField = 'TELEFONE'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 46567
+        mmTop = 10848
+        mmWidth = 28046
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppMemo1: TppMemo
+        DesignLayer = ppDesignLayer6
+        UserName = 'Memo1'
+        ForceJustifyLastLine = True
+        Caption = 'Memo1'
+        CharWrap = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        Lines.Strings = (
+          
+            'Venho atrav'#233's deste colocar os produtos abaixo '#224' disposi'#231#227'o da A' +
+            'MV para alugar em troca de uma remunera'#231#227'o por aluguel de 25% do' +
+            ' valor l'#237'quido '
+          'cobrado pelo aluguel. '
+          
+            'Valor esse a ser depositado na minha conta corrente ou outra aut' +
+            'orizada, conforme dados preenchidos por mim, no cadastro de perf' +
+            'il da AMV sob a '
+          'ID-AMV n'#176)
+        RemoveEmptyLines = False
+        Transparent = True
+        mmHeight = 13751
+        mmLeft = 1585
+        mmTop = 17463
+        mmWidth = 194469
+        BandType = 0
+        LayerName = BandLayer6
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+        mmLeading = 0
+      end
+      object ppDBText55: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText55'
+        DataField = 'CODIGO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        VerticalAlignment = avCenter
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3703
+        mmLeft = 16140
+        mmTop = 27509
+        mmWidth = 17198
+        BandType = 0
+        LayerName = BandLayer6
+      end
+      object ppMemo2: TppMemo
+        DesignLayer = ppDesignLayer6
+        UserName = 'Memo2'
+        ForceJustifyLastLine = True
+        Caption = 'Memo2'
+        CharWrap = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        Lines.Strings = (
+          
+            'Valor esse a ser depositado  at'#233' no m'#225'ximo 30 dias , ap'#243's total ' +
+            'recebimento  e ter sido liberado na conta da AMV. '
+          ' '
+          
+            'Eu cedente assumo total responsabilidade pelo desgaste do produt' +
+            'o com essa atividade , e desde j'#225' isento qualquer responsabilida' +
+            'de e pedido de '
+          'indeniza'#231#227'o a AMV. ')
+        RemoveEmptyLines = False
+        Transparent = True
+        mmHeight = 15053
+        mmLeft = 1590
+        mmTop = 32270
+        mmWidth = 194469
+        BandType = 0
+        LayerName = BandLayer6
+        mmBottomOffset = 0
+        mmOverFlowOffset = 0
+        mmStopPosition = 0
+        mmMinHeight = 0
+        mmLeading = 0
+      end
+    end
+    object ppDetailBand6: TppDetailBand
+      Background1.Brush.Style = bsClear
+      Background2.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 3969
+      mmPrintPosition = 0
+      object ppLine72: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line8'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3704
+        mmLeft = 0
+        mmTop = 0
+        mmWidth = 4219
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine73: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line9'
+        ParentWidth = True
+        Position = lpBottom
+        Weight = 0.750000000000000000
+        mmHeight = 1319
+        mmLeft = 0
+        mmTop = 2648
+        mmWidth = 197300
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine74: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line10'
+        Position = lpRight
+        Weight = 0.750000000000000000
+        mmHeight = 3704
+        mmLeft = 193707
+        mmTop = 0
+        mmWidth = 3954
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText50: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText5'
+        DataField = 'DATAAQUISICAO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3703
+        mmLeft = 1582
+        mmTop = 0
+        mmWidth = 17463
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine75: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line19'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 20123
+        mmTop = 0
+        mmWidth = 1039
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine76: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line20'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 38405
+        mmTop = 0
+        mmWidth = 1039
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText51: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText6'
+        DataField = 'CODIGOPRODUTO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3703
+        mmLeft = 21724
+        mmTop = 0
+        mmWidth = 15608
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText52: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText7'
+        DataField = 'NOMEPRODUTO'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3703
+        mmLeft = 40258
+        mmTop = 0
+        mmWidth = 90073
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppDBText53: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText8'
+        DataField = 'VALORALUGUEL1'
+        DataPipeline = pipContratoTerceiro
+        DisplayFormat = '#,##0.00'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3704
+        mmLeft = 134161
+        mmTop = 0
+        mmWidth = 31510
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine77: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line201'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 131657
+        mmTop = 0
+        mmWidth = 1834
+        BandType = 4
+        LayerName = BandLayer6
+      end
+      object ppLine78: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line22'
+        Position = lpLeft
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 167285
+        mmTop = 0
+        mmWidth = 1834
+        BandType = 4
+        LayerName = BandLayer6
+      end
+    end
+    object ppFooterBand5: TppFooterBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 52652
+      mmPrintPosition = 0
+      object ppLabel71: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label71'
+        Caption = 'VIT'#211'RIA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 70921
+        mmTop = 6611
+        mmWidth = 11113
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppLabel73: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label73'
+        Caption = '____/_____/_________'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3439
+        mmLeft = 84415
+        mmTop = 6611
+        mmWidth = 30692
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppLine61: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line61'
+        Weight = 0.750000000000000000
+        mmHeight = 3969
+        mmLeft = 56631
+        mmTop = 22759
+        mmWidth = 78581
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppLabel74: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label74'
+        Caption = 'Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 89703
+        mmTop = 23816
+        mmWidth = 10848
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppDBText56: TppDBText
+        DesignLayer = ppDesignLayer6
+        UserName = 'DBText56'
+        DataField = 'NOMEFORNECEDOR'
+        DataPipeline = pipContratoTerceiro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        ParentDataPipeline = False
+        TextAlignment = taCentered
+        Transparent = True
+        DataPipelineName = 'pipContratoTerceiro'
+        mmHeight = 3440
+        mmLeft = 51329
+        mmTop = 27516
+        mmWidth = 91017
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppLabel76: TppLabel
+        DesignLayer = ppDesignLayer6
+        UserName = 'Label76'
+        Caption = 'ACHEI MEU VESTIDO EIRELI'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = 'Tahoma'
+        Font.Size = 8
+        Font.Style = []
+        FormField = False
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 3440
+        mmLeft = 78581
+        mmTop = 39424
+        mmWidth = 35983
+        BandType = 8
+        LayerName = BandLayer6
+      end
+      object ppLine79: TppLine
+        DesignLayer = ppDesignLayer6
+        UserName = 'Line79'
+        Weight = 0.750000000000000000
+        mmHeight = 2379
+        mmLeft = 56627
+        mmTop = 38640
+        mmWidth = 78581
+        BandType = 8
+        LayerName = BandLayer6
+      end
+    end
+    object ppSummaryBand4: TppSummaryBand
+      Background.Brush.Style = bsClear
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppDesignLayers6: TppDesignLayers
+      object ppDesignLayer6: TppDesignLayer
+        UserName = 'BandLayer6'
+        LayerType = ltBanded
+        Index = 0
+      end
+    end
+    object ppParameterList5: TppParameterList
+    end
+  end
+end

@@ -1,0 +1,25 @@
+Stat Connected.
+Sent 13/04/2016 22:49:32: PROPFIND / HTTP/1.1
+Content-Type: application/xml; charset=utf-8
+Content-Length: 126
+Depth: 0
+Host: caldav.icloud.com
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: identity
+User-Agent: Mozilla/5.0
+Authorization: Basic bGFzaWV0ZWxpbWFAZ21haWwuY29tOk4xNmwyMGw1Mg==
+
+
+Sent 13/04/2016 22:49:32: <?xml version="1.0" encoding="utf-8" ?><D:propfind xmlns:D="DAV:"><D:prop>   <D:current-user-principal/></D:prop></D:propfind>
+Recv 13/04/2016 22:49:32: HTTP/1.1 401 Unauthorized
+Content-Type: text/html;charset=utf-8
+WWW-Authenticate: x-mobileme-authtoken realm="MMCalDav"
+WWW-Authenticate: basic realm="MMCalDav"
+Server: iCloudCalendarServer 16B75
+Date: Thu, 14 Apr 2016 01:49:33 GMT
+X-Responding-Server: st14p37ic-ztbu03213101 11 a63660a6f7d1a25b5a7ed66dab0da843
+X-Transaction-Id: 2299d6f0-01e3-11e6-af71-008cfae6426c
+Content-Length: 141
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+<html><head><title>Unauthorized</title></head><body><h1>Unauthorized</h1><p>You are not authorized to access this resource.</p></body></html>

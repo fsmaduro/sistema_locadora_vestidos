@@ -1,0 +1,32 @@
+unit untInfVersao;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs;
+
+type
+  TfrmInfVersao = class(TForm)
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmInfVersao: TfrmInfVersao;
+
+implementation
+
+uses funcao;
+
+{$R *.dfm}
+
+procedure TfrmInfVersao.FormCreate(Sender: TObject);
+begin
+   Caption := CaptionTela('INFORMAÇÕES SOBRE ALTERAÇÕES NA TELA');
+end;
+
+end.

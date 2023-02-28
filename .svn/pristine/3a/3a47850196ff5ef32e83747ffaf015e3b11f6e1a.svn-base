@@ -1,0 +1,580 @@
+unit untConsultaProdutos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, cxStyles, dxSkinsCore, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
+  cxEdit, DB, cxDBData, cxCheckBox, Menus, cxLookAndFeelPainters, StdCtrls,
+  cxButtons, cxGridLevel, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxClasses, cxControls, cxGridCustomView, cxGrid,
+  dxGDIPlusClasses, IBCustomDataSet, IBQuery, cxButtonEdit, DBTables, rxMemTable, cxVariants, untDados;
+
+type
+  TfrmConsultaProdutos = class(TForm)
+    pnlTitulo: TPanel;
+    pnlSelecionados: TPanel;
+    Panel5: TPanel;
+    Panel1: TPanel;
+    cxButton5: TcxButton;
+    cxButton2: TcxButton;
+    cxGrid1: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    btnFiltros: TcxButton;
+    qryConsulta: TIBQuery;
+    dtsConsulta: TDataSource;
+    qryConsultaCODIGO: TIntegerField;
+    qryConsultaDESCRICAO: TIBStringField;
+    qryConsultaDATAAQUISICAO: TDateField;
+    qryConsultaDETALHE: TIBStringField;
+    qryProdutoFoto: TIBQuery;
+    qryProdutoFotoCODIGOPRODUTO: TIntegerField;
+    qryProdutoFotoID: TIntegerField;
+    qryProdutoFotoCODIGOTIPOFOTO: TIntegerField;
+    qryProdutoFotoURLFOTO: TMemoField;
+    qryProdutoFotoDESCRICAO: TIBStringField;
+    pnlZoom: TPanel;
+    imgZoom: TImage;
+    mmSelecionados: TMemoryTable;
+    mmSelecionadosCODIGO: TIntegerField;
+    mmSelecionadosNOME: TStringField;
+    mmSelecionadosSELECTED: TBooleanField;
+    dtsSelecionados: TDataSource;
+    cxGridDBTableView1CODIGO: TcxGridDBColumn;
+    cxGridDBTableView1NOME: TcxGridDBColumn;
+    cxGridDBTableView1SELECTED: TcxGridDBColumn;
+    qryConsultaSelecionado: TBooleanField;
+    qryConsultaPREFERENCIA: TMemoField;
+    qryConsultaREFERENCIA: TIBStringField;
+    qryConsultaTAMANHOS: TIBStringField;
+    cxButton1: TcxButton;
+    qryConsultaPRODUTOBLOQUEADO: TIntegerField;
+    qryConsultaVALORALUGUEL1: TIBBCDField;
+    cxButton3: TcxButton;
+    PopupMenu1: TPopupMenu;
+    ImprimirLista1: TMenuItem;
+    ExportarLista1: TMenuItem;
+    grdPainel: TcxGrid;
+    grdPainelDBTableView1: TcxGridDBTableView;
+    grdPainelDBTableView1CODIGO: TcxGridDBColumn;
+    grdPainelDBTableView1Column3: TcxGridDBColumn;
+    grdPainelDBTableView1Column1: TcxGridDBColumn;
+    grdPainelDBTableView1DATAAQUISICAO: TcxGridDBColumn;
+    grdPainelDBTableView1DESCRICAO: TcxGridDBColumn;
+    grdPainelDBTableView1Column2: TcxGridDBColumn;
+    grdPainelDBTableView1TAMANHOS: TcxGridDBColumn;
+    grdPainelDBTableView1Column5: TcxGridDBColumn;
+    grdPainelDBTableView1Column4: TcxGridDBColumn;
+    grdPainelDBTableView1Column6: TcxGridDBColumn;
+    grdPainelLevel1: TcxGridLevel;
+    pnlFotos: TPanel;
+    ScrollBox1: TScrollBox;
+    imgFoto1: TImage;
+    lblFoto1: TLabel;
+    imgFoto2: TImage;
+    lblFoto2: TLabel;
+    imgFoto4: TImage;
+    lblFoto4: TLabel;
+    imgFoto3: TImage;
+    lblFoto3: TLabel;
+    imgFoto5: TImage;
+    lblFoto5: TLabel;
+    lblFoto6: TLabel;
+    imgFoto6: TImage;
+    lblFoto7: TLabel;
+    imgFoto7: TImage;
+    lblFoto8: TLabel;
+    imgFoto8: TImage;
+    lblFoto9: TLabel;
+    imgFoto9: TImage;
+    lblFoto10: TLabel;
+    imgFoto10: TImage;
+    Edit1: TEdit;
+    pnlBtnProdutos: TPanel;
+    cxButton4: TcxButton;
+    cxButton6: TcxButton;
+    Splitter1: TSplitter;
+    procedure FormShow(Sender: TObject);
+    procedure pnlFotosExit(Sender: TObject);
+    procedure grdPainelDBTableView1Column1PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure imgFoto1Click(Sender: TObject);
+    procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
+      var Resize: Boolean);
+    procedure qryConsultaCalcFields(DataSet: TDataSet);
+    procedure cxGridDBTableView1SELECTEDPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure qryConsultaBeforeOpen(DataSet: TDataSet);
+    procedure cxButton1Click(Sender: TObject);
+    procedure grdPainelDBTableView1CODIGOPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure grdPainelDBTableView1CustomDrawCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+    procedure grdPainelDBTableView1Column6PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure cxButton3Click(Sender: TObject);
+    procedure ImprimirLista1Click(Sender: TObject);
+    procedure ExportarLista1Click(Sender: TObject);
+    procedure edtIncrementalChange(Sender: TObject);
+  private
+    vDataEvento, vDataAgenda: TDate;
+    vID, vIDEvento : Integer;
+    vCodigoPerfil: Integer;
+    vCodigoPedido: Integer;
+    vUrlFoto: String;
+    procedure CarregarFotos();
+    procedure SelecionarProduto();
+    { Private declarations }
+  public
+    ProdutosSelecionados: Array of Integer;
+    _porArara, _porPedido, _porCadastro: Boolean;
+    _CodigoAgenda, _CodigoPedido, _IdPed: Integer;
+    CodigoSelecionado: Integer;
+    { Public declarations }
+  end;
+
+var
+  frmConsultaProdutos: TfrmConsultaProdutos;
+
+implementation
+
+uses form_cadastro_produto, untAcompanhaHistoricoProduto, funcao;
+
+{$R *.dfm}
+
+procedure TfrmConsultaProdutos.CarregarFotos();
+var
+  lblAuxy : Tlabel;
+  imgAuxy : TImage;
+begin
+  qryProdutoFoto.Close;
+  qryProdutoFoto.ParamByName('codigo').AsInteger := qryConsultaCODIGO.AsInteger;
+  qryProdutoFoto.Open;
+
+  lblFoto1.Visible  := False;  imgFoto1.Visible  := False;
+  lblFoto2.Visible  := False;  imgFoto2.Visible  := False;
+  lblFoto3.Visible  := False;  imgFoto3.Visible  := False;
+  lblFoto4.Visible  := False;  imgFoto4.Visible  := False;
+  lblFoto5.Visible  := False;  imgFoto5.Visible  := False;
+  lblFoto6.Visible  := False;  imgFoto6.Visible  := False;
+  lblFoto7.Visible  := False;  imgFoto7.Visible  := False;
+  lblFoto8.Visible  := False;  imgFoto8.Visible  := False;
+  lblFoto9.Visible  := False;  imgFoto9.Visible  := False;
+  lblFoto10.Visible := False;  imgFoto10.Visible := False;
+
+  while not qryProdutoFoto.Eof do
+  begin
+
+    Case qryProdutoFoto.RecNo of
+      1 : begin
+        lblAuxy := lblFoto1;
+        imgAuxy := imgFoto1;
+      end;
+      2 : begin
+        lblAuxy := lblFoto2;
+        imgAuxy := imgFoto2;
+      end;
+      3 : begin
+        lblAuxy := lblFoto3;
+        imgAuxy := imgFoto3;
+      end;
+      4 : begin
+        lblAuxy := lblFoto4;
+        imgAuxy := imgFoto4;
+      end;
+      5 : begin
+        lblAuxy := lblFoto5;
+        imgAuxy := imgFoto5;
+      end;
+      6 : begin
+        lblAuxy := lblFoto6;
+        imgAuxy := imgFoto6;
+      end;
+      7 : begin
+        lblAuxy := lblFoto7;
+        imgAuxy := imgFoto7;
+      end;
+      8 : begin
+        lblAuxy := lblFoto8;
+        imgAuxy := imgFoto8;
+      end;
+      9 : begin
+        lblAuxy := lblFoto9;
+        imgAuxy := imgFoto9;
+      end;
+      10 : begin
+        lblAuxy := lblFoto10;
+        imgAuxy := imgFoto10;
+      end;
+    End;
+
+    lblAuxy.Caption := qryProdutoFotoDESCRICAO.Text;
+    imgAuxy.Picture.LoadFromFile(vUrlFoto+qryProdutoFotoURLFOTO.AsString);
+
+    lblAuxy.Visible := True;
+    imgAuxy.Visible := True;
+
+    qryProdutoFoto.Next;
+  end;
+
+  pnlFotos.Visible := True;
+  Edit1.SetFocus;
+end;
+
+procedure TfrmConsultaProdutos.cxButton1Click(Sender: TObject);
+var
+  i, CodigoProduto, Bloqueado : Integer;
+  Descricao : String;
+begin
+
+
+  try
+    if not mmSelecionados.Active then
+      mmSelecionados.Open();
+
+    grdPainelDBTableView1.Controller.SelectAll;
+
+    for i:=0 to grdPainelDBTableView1.Controller.SelectedRowCount - 1 do
+    begin
+
+      CodigoProduto := grdPainelDBTableView1.Controller.SelectedRows[i].Values[grdPainelDBTableView1CODIGO.Index];
+      Descricao := grdPainelDBTableView1.Controller.SelectedRows[i].Values[grdPainelDBTableView1DESCRICAO.Index];
+
+      try
+        Bloqueado := grdPainelDBTableView1.Controller.SelectedRows[i].Values[grdPainelDBTableView1Column4.Index];
+      except
+        Bloqueado := 0;
+      end;
+
+      if not mmSelecionados.Locate('CODIGO',CodigoProduto,[]) then
+      begin
+
+        if Bloqueado = 0 then
+        begin
+          mmSelecionados.Insert();
+          mmSelecionadosCODIGO.AsInteger := CodigoProduto;
+          mmSelecionadosNOME.Text := Descricao;
+          mmSelecionadosSELECTED.AsBoolean := True;
+          mmSelecionados.Post();
+
+          qryConsultaSelecionado.AsBoolean := True;
+        end;
+
+      end;
+
+    end;
+  finally
+    grdPainelDBTableView1.Controller.ClearSelection;
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.cxButton2Click(Sender: TObject);
+begin
+  if not _porCadastro then
+  begin
+    SetLength(ProdutosSelecionados,mmSelecionados.RecordCount);
+    mmSelecionados.First;
+    while not mmSelecionados.Eof do
+    begin
+      ProdutosSelecionados[mmSelecionados.RecNo - 1] := mmSelecionadosCODIGO.AsInteger;
+      mmSelecionados.Next;
+    end;
+  end
+  else
+    CodigoSelecionado := qryConsultaCODIGO.AsInteger;
+  Close;
+end;
+
+procedure TfrmConsultaProdutos.cxButton3Click(Sender: TObject);
+begin
+
+  if not mmSelecionados.Active then
+    mmSelecionados.Open();
+
+  While not mmSelecionados.Eof do
+    mmSelecionados.Delete;
+
+  While not qryConsulta.Eof do
+  begin
+    qryConsultaSelecionado.AsBoolean := False;
+    qryConsulta.Next;
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.cxButton5Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmConsultaProdutos.cxGridDBTableView1SELECTEDPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+
+  qryConsulta.Locate('CODIGO',mmSelecionadosCODIGO.AsInteger,[]);
+  qryConsultaSelecionado.AsBoolean := False;
+  mmSelecionados.Delete;
+  
+end;
+
+procedure TfrmConsultaProdutos.edtIncrementalChange(Sender: TObject);
+begin
+//  if Trim(edtIncremental.Text) <> '' then
+//  begin
+//    qryConsulta.Close;
+//    qryConsulta.SQL.Strings[qryConsulta.SQL.IndexOf('--where incremental') + 1] :=
+//       ' and p.descricao like '+QuotedSTr('%'+edtIncremental.Text+'%');
+//    qryConsulta.Open;
+//  end
+//  else
+//  begin
+//    qryConsulta.Close;
+//    qryConsulta.SQL.Strings[qryConsulta.SQL.IndexOf('--where incremental') + 1] := '';
+//    qryConsulta.Open;
+//  end;
+end;
+
+procedure TfrmConsultaProdutos.ExportarLista1Click(Sender: TObject);
+begin
+  ExportarGrid(grdPainel);
+end;
+
+procedure TfrmConsultaProdutos.FormCanResize(Sender: TObject; var NewWidth,
+  NewHeight: Integer; var Resize: Boolean);
+begin
+//  if pnlZoom.Visible then
+//  begin
+//    pnlZoom.Left := 656;
+//    if Width > 1025 then
+//      pnlZoom.Width := Width - 656
+//    else
+//      pnlZoom.Width := 361;
+//  end;
+end;
+
+procedure TfrmConsultaProdutos.FormShow(Sender: TObject);
+begin
+  TOP := 122;
+  LEFT := 0;
+
+  vUrlFoto := Dados.ValidaURL(tuProduto);
+
+  btnFiltros.Visible := not _porArara;
+
+  if _porArara then
+  begin
+
+    dados.Geral.Close;
+    dados.Geral.SQL.text := 'SELECT P.data, p.idperfil, p.idpedidoagenda, P.IDEVENTO FROM tabagenda P WHERE P.CODIGO = '+intToStr(_CodigoAgenda);
+    dados.Geral.Open;
+    vDataAgenda   := dados.geral.Fields[0].AsDateTime;
+    vCodigoPerfil := dados.geral.Fields[1].AsInteger;
+    vCodigoPedido := dados.geral.Fields[2].AsInteger;
+    vIDEvento     := dados.geral.Fields[3].AsInteger;
+
+    dados.Geral.Close;
+    dados.Geral.SQL.text := 'SELECT COALESCE(EV.DATAEVENTO,pe.DATAEVENTO) AS DATAEVENTO, ac.ID '+
+                            '  FROM tabpedidoagendamento pe '+
+                            '  left join TABACOMPANHANTESPEDIDOAGENDA AC ON (pe.CODIGO = AC.CODIGOPEDIDO AND AC.CODIGOPERFIL =0'+intToStr(vCodigoPerfil)+') '+
+                            '  left join TABPEDIDOAGENDAMENTOEVENTOS EV ON (EV.CODIGO = PE.CODIGO AND EV.ID = AC.IDEVENTO) '+
+                            '  WHERE Pe.CODIGO = '+intToStr(vCodigoPedido) +
+                            '  AND COALESCE(AC.IDEVENTO,0) = '+intToStr(vIDEvento);
+    dados.Geral.Open;
+
+    vDataEvento := dados.geral.Fields[0].AsDateTime;
+
+    vID := dados.geral.Fields[1].AsInteger;
+  end
+  else
+  if _porPedido then
+  begin
+
+    Dados.Geral.Close;
+    Dados.Geral.SQL.Text := ' SELECT P.DATAEVENTO, A.CODIGOPERFIL '+
+                            '   FROM TABPEDIDOAGENDAMENTO P '+
+                            '  INNER JOIN TABACOMPANHANTESPEDIDOAGENDA A ON (P.CODIGO =A.CODIGOPEDIDO) '+
+                            '  WHERE P.CODIGO ='+ intToStr(_CodigoPedido) +
+                            '    AND A.ID = '+intToStr(_IdPed);
+    Dados.Geral.Open;
+
+    vDataAgenda   := dados.geral.Fields[0].AsDateTime;
+    vCodigoPerfil := dados.geral.Fields[1].AsInteger;
+    vCodigoPedido := _CodigoPedido;
+    vDataEvento   := vDataAgenda;
+    vID           := _IdPed;
+
+
+  end
+  else
+  if _porCadastro then
+  begin
+    vDataAgenda   := 0;
+    vCodigoPerfil := 0;
+    vCodigoPedido := 0;
+    vDataEvento   := 0;
+    vID           := 0;
+
+    pnlSelecionados.Visible := False;
+    pnlBtnProdutos.Visible := True;
+    pnlZoom.Visible := True;
+  end;
+
+  mmSelecionados.Close;
+  mmSelecionados.Open;
+
+  qryConsulta.Close;
+  qryConsulta.Open;
+
+  SetLength(ProdutosSelecionados,0);
+end;
+
+procedure TfrmConsultaProdutos.grdPainelDBTableView1CODIGOPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  if (qryConsultaCODIGO.AsInteger > 0) and not _porCadastro then
+  begin
+    if Application.FindComponent('cadastro_produto') = Nil then
+           Application.CreateForm(Tcadastro_produto, cadastro_produto);
+
+    cadastro_produto.Show;
+
+    cadastro_produto.qryProduto.Locate('CODIGO',qryConsultaCODIGO.Text,[]);
+  end;
+end;
+
+procedure TfrmConsultaProdutos.grdPainelDBTableView1Column1PropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  if AButtonIndex = 1 then
+    CarregarFotos()
+  else if _porCadastro then
+    cxButton2Click(self)
+  else
+    SelecionarProduto();
+end;
+
+procedure TfrmConsultaProdutos.grdPainelDBTableView1Column6PropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+
+  if Assigned(frmAcompanhaHistoricoProduto) then
+    FreeAndNil(frmAcompanhaHistoricoProduto);
+
+  Application.CreateForm(TfrmAcompanhaHistoricoProduto, frmAcompanhaHistoricoProduto);
+
+  With frmAcompanhaHistoricoProduto do
+  begin
+    Show;
+    cbProduto.KeyValue := qryConsultaCODIGO.AsInteger;
+    cxButton1.Click;
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.grdPainelDBTableView1CustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+var
+  Bloqueado: Integer;
+begin
+
+  try
+    Bloqueado := VarAsType(AViewInfo.GridRecord.DisplayTexts[grdPainelDBTableView1Column4.Index], varInteger);
+  except
+    Bloqueado := 0;
+  end;
+
+  if Bloqueado = 1 then
+    ACanvas.Brush.Color := clRed;
+end;
+
+procedure TfrmConsultaProdutos.SelecionarProduto();
+begin
+
+  if qryConsultaPRODUTOBLOQUEADO.AsInteger = 1 then
+  begin
+    application.MessageBox(PChar('Produto bloqueado para o período!'),'Erro!',MB_OK+MB_ICONERROR);
+    Abort;
+  end;
+
+  if not mmSelecionados.Active then
+    mmSelecionados.Open();
+
+  if not mmSelecionados.Locate('CODIGO',qryConsultaCODIGO.AsInteger,[]) then
+  begin
+    mmSelecionados.Insert();
+    mmSelecionadosCODIGO.Text := qryConsultaCODIGO.Text;
+    mmSelecionadosNOME.Text := qryConsultaDESCRICAO.Text;
+    mmSelecionadosSELECTED.AsBoolean := True;
+    mmSelecionados.Post();
+
+    qryConsultaSelecionado.AsBoolean := True;
+  end;     
+end;
+
+procedure TfrmConsultaProdutos.imgFoto1Click(Sender: TObject);
+begin
+  if Width > 1025 then
+    pnlZoom.Width := Width - 656
+  else
+    pnlZoom.Width := 361;
+  imgZoom.Picture := (Sender as TImage).Picture;
+  pnlZoom.Visible := True;
+  pnlSelecionados.Visible := False;
+end;
+
+procedure TfrmConsultaProdutos.ImprimirLista1Click(Sender: TObject);
+begin
+  ImprimirGrid(grdPainel,'Listagem de Produtos');
+end;
+
+procedure TfrmConsultaProdutos.pnlFotosExit(Sender: TObject);
+begin
+  pnlFotos.Visible := False;
+  pnlZoom.Visible := False;
+  if not _porCadastro then
+    pnlSelecionados.Visible := True;
+end;
+
+procedure TfrmConsultaProdutos.qryConsultaBeforeOpen(DataSet: TDataSet);
+begin
+  if (_porArara) or (_porPedido) then
+  begin
+//    qryConsulta.SQL.Strings[qryConsulta.sql.IndexOf('--x1')+1] :=
+//        'and not Exists( '+
+//        '     select * from viewhistoricoproduto vw '+
+//        '      where ((:DATA_AGENDA between vw.datainicio and vw.datafim) '+
+//        '          or (:DATA_EVENTO between vw.datainicio and vw.datafim)) '+
+//        '         and (vw.codigoproduto = p.codigo) '+
+//        '         )';
+      qryConsulta.SQL.Strings[qryConsulta.sql.IndexOf('--x2')+1] :=
+        'and (Select resultado from PROC_PRODUTO_COMPATIVEL_PEDIDO(p.codigo,:codigopedido,:codigoperfil,:id)) = 1';
+
+    qryConsulta.ParamByName('DATA_AGENDA').AsDateTime := vDataAgenda;
+    qryConsulta.ParamByName('DATA_EVENTO').AsDateTime := vDataEvento;
+    qryConsulta.ParamByName('codigopedido').AsInteger := vCodigoPedido;
+    qryConsulta.ParamByName('codigoperfil').AsInteger := vCodigoPerfil;
+    qryConsulta.ParamByName('ID').AsInteger := vID;
+
+  end
+  else
+  begin
+    qryConsulta.SQL.Strings[qryConsulta.sql.IndexOf('--x1')+1] := '';
+    qryConsulta.SQL.Strings[qryConsulta.sql.IndexOf('--x2')+1] := '';
+  end;
+end;
+
+procedure TfrmConsultaProdutos.qryConsultaCalcFields(DataSet: TDataSet);
+begin
+  qryConsultaSelecionado.AsBoolean := mmSelecionados.Locate('CODIGO',qryConsultaCODIGO.AsInteger,[]);
+end;
+
+end.

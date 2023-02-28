@@ -1,0 +1,1077 @@
+object frmAplication: TfrmAplication
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'SyncAMV Agenda'
+  ClientHeight = 354
+  ClientWidth = 612
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  WindowState = wsMinimized
+  OnCloseQuery = FormCloseQuery
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 612
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'SyncAMV Agenda'
+    Color = 16761281
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -27
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 0
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 297
+    Width = 612
+    Height = 57
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = 16761281
+    ParentBackground = False
+    TabOrder = 1
+    object SpeedButton1: TSpeedButton
+      Left = 6
+      Top = 2
+      Width = 201
+      Height = 53
+      Caption = 'Iniciar Todos'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = SpeedButton1Click
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 213
+      Top = 2
+      Width = 201
+      Height = 53
+      Caption = 'Parar Todos'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = SpeedButton2Click
+    end
+    object SpeedButton3: TSpeedButton
+      Left = 469
+      Top = 2
+      Width = 142
+      Height = 26
+      Caption = 'Recolher'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = SpeedButton3Click
+    end
+    object SpeedButton4: TSpeedButton
+      Left = 470
+      Top = 29
+      Width = 142
+      Height = 26
+      Caption = 'Fechar'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = SpeedButton4Click
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 41
+    Width = 612
+    Height = 256
+    Align = alClient
+    BevelOuter = bvNone
+    Color = 16773874
+    ParentBackground = False
+    TabOrder = 2
+    object Panel4: TPanel
+      Left = 0
+      Top = 0
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 0
+      object lblConta1: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object btnIniciar1: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+      object btnParar1: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object lblStatus1: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+    end
+    object Panel5: TPanel
+      Left = 0
+      Top = 51
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 1
+      object lblConta3: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus3: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar3: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar3: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel6: TPanel
+      Left = 0
+      Top = 102
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 2
+      object lblConta5: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus5: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar5: TSpeedButton
+        Left = 85
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar5: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel7: TPanel
+      Left = 0
+      Top = 153
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 3
+      object lblConta7: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus7: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar7: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar7: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel8: TPanel
+      Left = 0
+      Top = 204
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 4
+      object lblConta9: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus9: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar9: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar9: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel9: TPanel
+      Left = 306
+      Top = 0
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 5
+      object lblConta2: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus2: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar2: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar2: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel10: TPanel
+      Left = 306
+      Top = 51
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 6
+      object lblConta4: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus4: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar4: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar4: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel11: TPanel
+      Left = 306
+      Top = 102
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 7
+      object lblConta6: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus6: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar6: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar6: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel12: TPanel
+      Left = 306
+      Top = 153
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 8
+      object lblConta8: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus8: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar8: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar8: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+    object Panel13: TPanel
+      Left = 306
+      Top = 204
+      Width = 305
+      Height = 51
+      BevelOuter = bvLowered
+      Ctl3D = True
+      ParentCtl3D = False
+      TabOrder = 9
+      object lblConta10: TLabel
+        Left = 5
+        Top = 1
+        Width = 295
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblStatus10: TLabel
+        Left = 2
+        Top = 35
+        Width = 301
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = lblStatus1Click
+      end
+      object btnParar10: TSpeedButton
+        Left = 86
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Parar'
+        Enabled = False
+        OnClick = btnParar1Click
+      end
+      object btnIniciar10: TSpeedButton
+        Left = 4
+        Top = 17
+        Width = 79
+        Height = 19
+        Caption = 'Iniciar'
+        OnClick = btnIniciar1Click
+      end
+    end
+  end
+  object SQLConnection1: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 184
+    Top = 137
+  end
+  object qryConta1_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection1
+    Left = 512
+    Top = 9
+  end
+  object TrayIcon1: TTrayIcon
+    BalloonTitle = 'SyncAMV Agenda'
+    BalloonFlags = bfInfo
+    Visible = True
+    OnClick = TrayIcon1Click
+    Left = 224
+    Top = 89
+  end
+  object qryConta1_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection1
+    Left = 544
+    Top = 9
+  end
+  object qryContas: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      'Select * from TABCONTASSINCAGENDA')
+    SQLConnection = SQLConnection1
+    Left = 352
+    Top = 81
+    object qryContasUSERNAME: TStringField
+      FieldName = 'USERNAME'
+      Required = True
+      Size = 100
+    end
+    object qryContasSENHA: TStringField
+      FieldName = 'SENHA'
+      Size = 50
+    end
+    object qryContasREMINDER_METODO: TIntegerField
+      FieldName = 'REMINDER_METODO'
+    end
+    object qryContasREMINDER_VALOR: TIntegerField
+      FieldName = 'REMINDER_VALOR'
+    end
+    object qryContasREMINDER_PERIODO: TIntegerField
+      FieldName = 'REMINDER_PERIODO'
+    end
+    object qryContasAGENDAS_SINCRONIZADAS: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'AGENDAS_SINCRONIZADAS'
+      Calculated = True
+    end
+  end
+  object qryConta2_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection2
+    Left = 512
+    Top = 41
+  end
+  object qryConta2_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection2
+    Left = 544
+    Top = 41
+  end
+  object qryConta4_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection4
+    Left = 512
+    Top = 105
+  end
+  object qryConta4_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection4
+    Left = 544
+    Top = 105
+  end
+  object qryConta3_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection3
+    Left = 544
+    Top = 73
+  end
+  object qryConta3_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection3
+    Left = 512
+    Top = 73
+  end
+  object qryConta8_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection8
+    Left = 512
+    Top = 233
+  end
+  object qryConta8_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection8
+    Left = 544
+    Top = 233
+  end
+  object qryConta7_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection7
+    Left = 544
+    Top = 201
+  end
+  object qryConta7_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection7
+    Left = 512
+    Top = 201
+  end
+  object qryConta6_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection6
+    Left = 544
+    Top = 169
+  end
+  object qryConta6_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection6
+    Left = 512
+    Top = 169
+  end
+  object qryConta5_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection5
+    Left = 512
+    Top = 137
+  end
+  object qryConta5_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection5
+    Left = 544
+    Top = 137
+  end
+  object qryConta9_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection9
+    Left = 544
+    Top = 265
+  end
+  object qryConta9_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection9
+    Left = 512
+    Top = 265
+  end
+  object qryConta10_1: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection10
+    Left = 512
+    Top = 297
+  end
+  object qryConta10_2: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConnection10
+    Left = 544
+    Top = 297
+  end
+  object SQLConnection2: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 184
+    Top = 185
+  end
+  object SQLConnection3: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 184
+    Top = 225
+  end
+  object SQLConnection4: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 184
+    Top = 265
+  end
+  object SQLConnection5: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 184
+    Top = 313
+  end
+  object SQLConnection6: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 216
+    Top = 137
+  end
+  object SQLConnection7: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 216
+    Top = 185
+  end
+  object SQLConnection8: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 216
+    Top = 225
+  end
+  object SQLConnection9: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 216
+    Top = 265
+  end
+  object SQLConnection10: TSQLConnection
+    ConnectionName = 'FBConnection'
+    DriverName = 'Firebird'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Firebird'
+      'Database=192.168.0.4:D:\bd\AMVSYSTEM.GDB'
+      'RoleName=RoleName'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'ServerCharSet='
+      'SQLDialect=3'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'BlobSize=-1'
+      'CommitRetain=True'
+      'WaitOnLocks=True'
+      'IsolationLevel=ReadCommitted'
+      'Trim Char=False')
+    Left = 216
+    Top = 313
+  end
+end

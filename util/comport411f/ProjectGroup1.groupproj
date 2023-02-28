@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{1306ccad-e2eb-4f6d-aeca-3e2dd0425bb5}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="Source\CPortLibD2007.dproj" />
+    <Projects Include="Source\DsgnCPortD2007.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="CPortLibD2007">
+    <MSBuild Projects="Source\CPortLibD2007.dproj" Targets="" />
+  </Target>
+  <Target Name="CPortLibD2007:Clean">
+    <MSBuild Projects="Source\CPortLibD2007.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="CPortLibD2007:Make">
+    <MSBuild Projects="Source\CPortLibD2007.dproj" Targets="Make" />
+  </Target>
+  <Target Name="DsgnCPortD2007">
+    <MSBuild Projects="Source\DsgnCPortD2007.dproj" Targets="" />
+  </Target>
+  <Target Name="DsgnCPortD2007:Clean">
+    <MSBuild Projects="Source\DsgnCPortD2007.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="DsgnCPortD2007:Make">
+    <MSBuild Projects="Source\DsgnCPortD2007.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="CPortLibD2007;DsgnCPortD2007" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="CPortLibD2007:Clean;DsgnCPortD2007:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="CPortLibD2007:Make;DsgnCPortD2007:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

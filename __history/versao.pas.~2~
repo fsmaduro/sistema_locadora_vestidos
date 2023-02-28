@@ -1,0 +1,19 @@
+unit versao;
+
+interface
+
+uses untControleVersao, funcao;
+
+   Procedure Inicializar();
+
+implementation
+
+var
+   ControleVersao: TControleVersao;
+
+Procedure Inicializar();
+begin
+  ControleVersao := TControleVersao.Create(nil);
+end;
+
+end.

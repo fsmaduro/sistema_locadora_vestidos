@@ -1,0 +1,84 @@
+object frmAguarde: TfrmAguarde
+  Left = 245
+  Top = 177
+  BorderIcons = []
+  BorderStyle = bsNone
+  ClientHeight = 117
+  ClientWidth = 247
+  Color = 16312551
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDefault
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 247
+    Height = 117
+    Align = alClient
+    BevelInner = bvLowered
+    Color = 9961471
+    ParentBackground = False
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 4
+      Top = 6
+      Width = 94
+      Height = 22
+      Alignment = taCenter
+      Caption = 'Aguarde...'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -19
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object lblMensagem: TLabel
+      Left = 4
+      Top = 38
+      Width = 237
+      Height = 16
+      AutoSize = False
+      Caption = 'fsdf'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object Gauge: TGauge
+      Left = 4
+      Top = 60
+      Width = 237
+      Height = 27
+      BackColor = 13828095
+      ForeColor = 56797
+      Progress = 0
+    end
+    object lblProcesso: TLabel
+      Left = 4
+      Top = 94
+      Width = 237
+      Height = 16
+      AutoSize = False
+      Caption = 'sdf'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+    end
+  end
+end

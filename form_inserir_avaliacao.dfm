@@ -1,0 +1,1095 @@
+object inserir_avaliacao: Tinserir_avaliacao
+  Left = 185
+  Top = 175
+  BorderIcons = [biSystemMenu, biHelp]
+  BorderStyle = bsSingle
+  Caption = 'AMVSystem 1.0 | AVALIAR'
+  ClientHeight = 469
+  ClientWidth = 555
+  Color = 16312551
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object grdManequim: TwwDBGrid
+    Left = 0
+    Top = 108
+    Width = 555
+    Height = 189
+    ControlType.Strings = (
+      'valor;CustomEdit;cmbManequim1;F'
+      'VALOR;CustomEdit;wwDBLookupCombo1;F')
+    Selected.Strings = (
+      'CODIGOAVALIACAO'#9'6'#9'C'#243'digo'#9'F'
+      'DESCRICAO'#9'30'#9'Descri'#231#227'o'#9'F'
+      'VALOR'#9'8'#9'Valor'#9'F'#9'Resultado'
+      'DESCRICAORESULTADO'#9'40'#9'Descri'#231#227'o'#9'T'#9'Resultado')
+    IniAttributes.Delimiter = ';;'
+    TitleColor = 16312551
+    FixedCols = 1
+    ShowHorzScrollBar = True
+    Align = alClient
+    Color = 16644087
+    Ctl3D = True
+    DataSource = dtsAvaliacaoPerfil
+    KeyOptions = [dgAllowInsert]
+    Options = [dgEditing, dgTitles, dgTabs, dgConfirmDelete, dgCancelOnExit, dgWordWrap]
+    ParentCtl3D = False
+    TabOrder = 1
+    TitleAlignment = taLeftJustify
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    TitleLines = 2
+    TitleButtons = False
+    UseTFields = False
+    FooterColor = 16312551
+    FooterCellColor = 16312551
+    PadColumnStyle = pcsPlain
+  end
+  object wwDBLookupCombo1: TwwDBLookupCombo
+    Left = 34
+    Top = 177
+    Width = 121
+    Height = 21
+    DropDownAlignment = taLeftJustify
+    Selected.Strings = (
+      'VALOR'#9'6'#9'Valor'#9'F'
+      'DESCRICAO'#9'50'#9'Descri'#231#227'o'#9#9)
+    DataField = 'VALOR'
+    DataSource = dtsAvaliacaoPerfil
+    LookupTable = qryAvaliacaoCombo
+    LookupField = 'VALOR'
+    Style = csDropDownList
+    TabOrder = 2
+    AutoDropDown = False
+    ShowButton = True
+    PreciseEditRegion = False
+    AllowClearKey = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 297
+    Width = 555
+    Height = 172
+    Align = alBottom
+    Color = 16312551
+    ParentBackground = False
+    TabOrder = 3
+    object btn_ok: TSpeedButton
+      Left = 155
+      Top = 114
+      Width = 76
+      Height = 54
+      Caption = '&OK'
+      Flat = True
+      Glyph.Data = {
+        460E0000424D460E0000000000003600000028000000280000001E0000000100
+        180000000000100E0000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFF5EBB7206A43A0FA9440FAA460FAD480FAF490FB1
+        4C0CB24C34BD65C9EBD3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFDFF0E110A03A00A54100A54000A84100A94300AA4500AC4600AE4800B04A13
+        B24BBDE7C9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80C486009D3400
+        A53E00A74000AA4400AD4700AF4904B04C05B24E00AE4600AF490BB046B3E4C1
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFBFDFB37A54B07B75268ECAF79F2BC79F5BF
+        79F9C47DFAC885FACB8CFACE66E5A908B04C00AD4500AC4189D59EFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFD9EBD909952A2AD37D85FFD789FFD58BFFD489FFD382FFD077FF
+        CC6DFFC886FFD56FE8B00BB14F00AA4200AC418AD59FFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FC6
+        94009E3242EA9E6AFFCA69FFC56AFFC669FFC564FFC45CFFC151FFBC45FFB86C
+        FFCC66EDB312BB5C00A84107AC4481D195FAFDFBFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0F8F126983708B34B47FCB454
+        FFBF57FFBE58FFBF57FFBE52FFBD4CFFBA43FFB738FFB325FFAB49FFBE5CF9BC
+        0DC16000A74000A94062C17BF8FCF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFB2D9B6008B1F1BD4763EFFBB41FFB645FFB746FFB8
+        45FFB741FFB63CFFB434FFB12BFFAE1EFFA90BFFA12BFFB141FCB408C15E00A5
+        3F00A83F54BD6FF5FBF6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF50AB5E00972E1CEF952AFFB12EFFAF31FFB032FFB031FFB02EFFAF29FF
+        AD22FFAA1AFFA80EFFA303FF9E00FD9716FBA038F4A508C15D00A53E00A74035
+        B157EBF7EDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD0E8D406861C02A6
+        3B11FEA218FFA81DFFA820FFA921FFA920FFA91CFFA817FFA711FFA409FFA201
+        FF9D00FC9800F89300F38B16F29439EC9C09BC5700A33D00A63F40B35CE6F4E8
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF88C59000841900C85B03FFA306FFA00A
+        FFA10BFFA20CFFA20BFFA208FFA104FF9F01FF9C00FC9800FA9502F79309F492
+        10F09114EC8E31EC993DE59415BB5900A33B00A33C35AF53CFEAD2FFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFEDF6EF219031008F2100EE8700FC9900FB9800FC9900FD9A00FD9A
+        00FC9801FC9A08FA9A18FBA023F9A334F6A648F5AC53F4AE56F1AD5BEFAC5CEC
+        A94BE99F47E19219B85500A03800A33F13A036C2E3C6FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB3D9B6
+        007B1100A83500F59000F38F00F49000F69000F7930EF89922F8A240FCB22CDF
+        862DD9805AF7B65DF6B55BF3B15CF1AF5FEFAE61ECAB63EBAA67E9A957E59E4D
+        DA8C13AA44009D3400A23D0B9B2EB6DDBAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5CAB6200841600D66900EE
+        8800EC8501EE881FF2983EF4A74EF5AE57F6B450F1AA45CA76D2F1DD48D4855E
+        F2B062F1B161EDAD64ECAC66EBAA69E8A96BE6A86FE5A76AE3A359D68C1DA43E
+        00972C00A03C02982C98CF9CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFD9EBD90B7F1400982700E57C00E57B12E9883DEEA053
+        F0AB56F1AC56F2AD5DF6B63BDA868ED4A1FFFFFFDAF3E23FCC7667EEAF6BEEB0
+        69E9AB6CE8AA6FE6A970E5A873E3A776E1A677E0A56CD693219D36009124009E
+        3B0A982F9DCF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFF94C696007A0D00BA4900E07721E3874FEAA258ECA857EDA859EDA95DEFAC
+        5CEFAC3FBB63F4FAF5FFFFFFFFFFFFD2EED94FC57466E4A275EBB272E6AA74E4
+        A977E2A879E1A87CE0A67FDEA582DFA87BD69936A749009022009A3607952A85
+        C288FBFDFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF58A759008C1A
+        00D46629DE8459E5A159E7A35AE8A35CE9A65EE9A766F0B149D68681C083FFFF
+        FFFFFFFFFFFFFFFFFFFFECF7ED57BB6C6ADD9C7EE9B27BE2A97DE1A87FE0A881
+        DFA783DDA685DBA58BDCA891DCA948AD55008D1F00983600922764AE67FDFEFD
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF459D4500A52E24DA7D5BE29C5CE3
+        9E5DE4A060E6A262E6A464E7A56AEFB23DB35AE7F2E7FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFF4F9F459B2616ED79687E6B381E0A984DFA886DEA789DCA78BDBA7
+        8DDAA691DAA8A0DFB24DAE5A008A1B0095310092285CAD60FBFDFBFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF46A74C1DC9665EDE9A61DF9A61E09C64E19F66E2A168
+        E3A26EE8AA57D78D64B066FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF74BB786FCF8E90E5B48ADEAA8CDDAA8FDCA891DAA993DAA995D9A898D9
+        A9A5DCB16BBA7103891800912C0090294DA653EEF6EEFFFFFFFFFFFFFFFFFFFF
+        FFFF4FAF5A4FD28469DE9D6BE1A26AE0A069DF9E6BE09F6EE1A177EAB042BB65
+        C9E1C9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5FAF56DB6
+        7074CD8C99E4B792DDAB94DBAA96DAAA99DAAA9BD9AB9DD8AAA0D8ACB3DFBA7D
+        C08007891A008C25008D2645A24CECF5ECFFFFFFFFFFFFFFFFFFD8EAD88FC891
+        66BB734CBA665ACC8174E0A478E2A877E1A677E8AE5CB467FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FBF87FBE8069C17AA1
+        E2B79BDCAE9DDBAD9FDBADA1DAAEA4D9AEA5D9AEA7D8AEBADFBE93C993239531
+        008821008B26379E41D2E7D2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7F2E788C2
+        8858B56456C17274D99B56C87B92C592FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9CCB9C64BB6FA9E0B9A4DCB1
+        A4DBB0A7DAB1A9D9B1ACD9B2AED9B2AFD8B1C0DFC0AED6AC1C8F2900831B008A
+        27138B21C9E1C9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFEFDBEE1C269
+        B56B58AB5BE1EEE1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9ECB9E75C07EB0E0BCACDDB5ACDBB4AFDB
+        B4B1DBB5B3DBB5B6DBB6B7DBB7C5E2C5ABD5AA23932E00811700872447A34FFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFA9D0A964B468BAE1C0B5DDBAB5DCB8B7DCB9BADDBABC
+        DEBCBFDFBFC0E0C0CCE6CCC8E2C646A24B007C0F2A9537FFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFB5D7B563B264C0E1C2BFE0C1BDDDBDC0DFBFC1E1C2C4E2C4C6E3C6
+        C8E4C8D1E8D1D4EAD268B36C2C9532FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        BEDDBE66B267BCDEBCCAE5CAC5E2C5C8E4C8CAE4CACDE6CDCFE7CFD1E8D1E4F2
+        E6ACD5AB7FBB7EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFEEDF5DAD
+        5DC1E0C1D3E9D3CEE6CED0E7D0D2E8D2D8ECD8E3F1E598CC9B85C186FFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0EEE06CB46CCFE7CFDA
+        EDDAD6EBD6DEEFDEDFEEDF88C088A6D0A6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE6F1E664B064C7E3C7E6F3E6D2E9D2
+        7AB87AE1EFE1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFEBF4EB88C28875B97589C289F2F8F2FFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF}
+      Layout = blGlyphTop
+      ParentShowHint = False
+      ShowHint = True
+      Spacing = 3
+      OnClick = btn_okClick
+    end
+    object btn_sair: TSpeedButton
+      Left = 294
+      Top = 114
+      Width = 76
+      Height = 54
+      Hint = 'Sair'
+      Caption = '&Sair'
+      Flat = True
+      Glyph.Data = {
+        FE0A0000424DFE0A00000000000036000000280000001E0000001E0000000100
+        180000000000C80A0000120B0000120B00000000000000000000FFFFFFFFFFFF
+        C8C9E7797CDD8487EB878AEB878AEC878BEC888BED888BEE888BF0888BF0878B
+        F1878AF28789F38588F48587F58688F58688F58588F58688F68688F68688F587
+        89F4888BF3888CF2787BE18C8BCBF6F6F6FFFFFF0000FFFFFFC5C5EC4648DE3A
+        3BD22121C21919C21A1AC61A1ACA1A1ACD1A1AD11A1AD41A1AD71A1ADB1A1ADE
+        1A1AE01A1AE41A1AE71C1EE72023E92429EA282FEB2D34EC3139EC343FEE3944
+        EF3D4AF04F5CF64C54E77575CDFCFBF80000F3F3F94849DE2323C10101B10000
+        B70000BA0000BF0000C30000C60000CA0000CE0000D10000D50000D80000DB00
+        00DF0000E20001E30408E50A0FE60D15E7121AE81621E81A27EA1F2DEC2331EB
+        2535ED3E50F5434CE19494CB0000A9A9E91818CA0000AC0000B50000B80000BC
+        0000C00000C40000C70000CB0000CD0000CF0101D51212DD2727E12C2CE61F1F
+        E60B0CE50000E40309E51119E71820E91C26EA202BEA2431EC2937ED2D3DEE2D
+        3EEE3749F37377D800008C8CEB0000B30000AF0000B40000B80000BC0000C000
+        00C30000C60000C71919D27070E5BABAF3E3E3FBF6F6FEF9F9FEEFEFFED2D3FA
+        9C9DF54A4EED0C12E70E16E81C26EA202BEA2531EC2937ED2D3CEE3142EF3044
+        F36872E300008787E40000AD0000AF0000B40000B80000BB0000BF0000C10202
+        C46C6CE0E7E7FAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFB8BAF8363DEC0D18E8202BEA2431EC2937ED2D3CEE3142EF2F43F3606BE1
+        00008686E00000AB0000AF0000B30000B70000BB0000BD0909C1A1A1E9FFFFFF
+        FFFFFFFFFFFFFFFFFFFDFDFDECECF8E6E6F7F5F5FBFFFFFFFFFFFFFFFFFFFFFF
+        FFEBECFD535AEF111CE92430EC2836EC2C3BEE3141EF2F42F25F69DE00008686
+        DD0000A80000AD0000B20000B60000B80000BB9D9DE6FFFFFFFFFFFFFFFFFFF0
+        F0F99393E24040D41A1AD41313D72929DB6464E2C9C9F1FFFFFFFFFFFFFFFFFF
+        EFF0FE4B54EF1723EA2835ED2B3AEE3040EF2E41F15F69DB00008686D90000A4
+        0202AE0303B20202B50000B56666D5FFFFFFFFFFFFFFFFFFD3D3EF2F2FCB0000
+        CB0000D50000DA0000DE0000E10000E10707DB8484E6FFFFFEFFFFFFFFFFFFD3
+        D6FB2833EB212FEC2A39ED2E3EEE2C3FF15E67D800008585D60000A20D0DB00E
+        0EB40B0BB61C1CBFDCDCF6FFFFFFFFFFFFDFDFF32626C70000CB0000D20000D4
+        0000D80000DC0000E00101E30002E50000DF8385E7FFFFFFFFFFFFFFFFFF8086
+        F41623EA2936ED2D3CEE2A3CEF5D65D400008585D200009F1515B11616B50A0A
+        B56666D3FFFFFFFFFFFFFFFFFF6464D30E0ECB2020D31C1CD41313D50808D800
+        00DB0000DD0000E20304E40305E6090CE0C7C8F3FFFFFFFFFFFFCFD1FB222EEB
+        2431EC2A39EE2738EC5B63D300008585CF00009B1C1CB21C1CB61212B6A6A6E5
+        FFFFFFFFFFFFD9D9F22727C92323CF2929D32B2BD62C2CD92C2CDC2424DE1414
+        DE0303E00000E20406E40000E4696BE9FFFFFFFFFFFFF9F9FE414AED1B28EB27
+        35ED2433EA5A61D200008484CB0000982323B32222B62121B9C4C4EDFFFFFFFF
+        FFFFADADE82020C82D2DCF2F2FD23131D63232D93333DC3737DF3939E23131E4
+        1B1BE40404E40000E43335E6FAFAFDFFFFFFFFFFFF5B62F0141FEA2431ED202F
+        E8585FD100008484C80000962B2BB42929B72D2DBBD2D2F1FFFFFFFFFFFFA7A7
+        E72626C83434CE3636D23838D53939D83535D93535DD3C3CE14040E44343E73A
+        39E81313E62527E8F4F5FEFFFFFFFFFFFF666CF00E18E9202BEC1B29E5565DCF
+        00008484C40000933232B43131B83030B9C7C7EBFFFFFFFFFFFFB5B5EB2E2EC8
+        3C3CCF3E3ED23F3FD53D3DD75555DE5E5EE24444E04444E24747E64B4BE94444
+        EA5A5AEEFAFAFFFFFFFFFFFFFF5459EC0B14E81C25EB1622E35359CD00008383
+        C003038F3C3CB53D3DB93232B99E9EDBFFFFFFFFFFFFEFEFFA5959D13F3FCC48
+        48D23F3FD28C8CE6FAFAFEFFFFFFB5B5F24B4BE15050E35252E64949E7B2B2F6
+        FFFFFFFFFFFFE8E8F92124E40B10E7151CEA0F17E15054CB00008383BE06068C
+        4545B74545BA3F3FBB6464C4FAFAFBFFFFFFFFFFFFBCBCEC4343CA4D4DD04545
+        D1B0B0ECFFFFFFFFFFFFDEDEF85858E05757E25050E37A7AEBF9F9FEFFFFFFFF
+        FFFFBBBBEF0A0BE30306E50D12E7070CDD4C4FCA00008282BD08088A4C4CB74C
+        4CBB4C4CBE4646BABEBEE1FFFFFFFFFFFFFFFFFFA4A4E54F4FCE4C4CD0B0B0EB
+        FFFFFFFFFFFFDDDDF85F5FDE5454DE7373E6E5E5FBFFFFFFFFFFFFFBFBFA8888
+        E65656ED1010E50002E50002DC494AC800008282BC0B0B895555B95353BB5454
+        BE5050BF6868C0ECECF3FFFFFFFFFFFFFFFFFFB0B0E85050CEB4B4EBFFFFFFFF
+        FFFFDEDEF76161DD8E8EE8EFEFFCFFFFFFFFFFFFFFFFFFB6B6E46565E57878EE
+        5F5FEC0B0BE30000DA4445C700008282BC0E0E885D5DBB5B5BBC5C5CBE5D5DC2
+        5454BF8686C5F7F7F8FFFFFFFFFFFFECECF86262D0B5B5EAFFFFFFFFFFFFDDDD
+        F77272DEE9E9FAFFFFFFFFFFFFFFFFFFCDCDE76F6FDC7575EA7878E98282EC56
+        56E80000D34242C200008181BB1313896464BC6262BC6363BF6464C16666C55B
+        5BC18888C4EAEAEFFEFEFAB2B2DA5F5FCCBABAEAFFFFFFFFFFFFDFDFF77474DA
+        DCDCF0FFFFFFFFFFFDC3C3E07575D67979E67E7EE77F7FE78181E88A8AEB3232
+        D83E3EBE00008080B91B1B8C6D6DBE6969BE6A6ABF6C6CC26D6DC56E6EC86666
+        C57171BE7C7CBF6B6BC66B6BCFBEBEEAFFFFFFFFFFFFE2E2F77878DA8282CEB1
+        B1D59C9CD17676D58080E38484E38585E48787E58787E68E8EE87272DF4A4ABC
+        00008080B82929907575BF7070BE7171C07272C27373C57575C67676C97575CC
+        7474CD7A7AD07373CEC1C1EAFFFFFFFFFFFFE4E4F78383DA7F7FDA7979D57F7F
+        DA8888E18A8AE08B8BE18C8CE28E8EE38F8FE49393E58282E05858BC00008383
+        B93E3E9A7B7BC07676BE7777C17979C27B7BC57C7CC77D7DCA7F7FCC8080CE81
+        81CF7A7ACEC6C6EBFFFFFFFFFFFFE7E7F78A8AD98A8ADA8D8DDD8E8EDD8F8FDD
+        9191DF9292E09393E19595E19696E19999E19090E06767C000008A8ABE5858A8
+        8181C07E7EBF7F7FC28080C48181C68383C88585CA8686CB8888CE8989D08484
+        CFB0B0DAFFFFFDFFFFFFCACAE38C8CD59292D99494DA9595DB9696DD9999DE99
+        99DF9A9ADF9C9CDF9E9EDFA0A0E09D9DE08989CC0000A6A6CC7272B78484BF84
+        84C18787C48888C58989C78B8BC98C8CCA8E8ECD8F8FCF9090D09292D28D8DCC
+        A1A1C9AAAACC9292CD9898D89A9AD99B9BDA9D9DDB9E9EDC9F9FDCA1A1DDA2A2
+        DDA4A4DEA5A5DEA4A4DCAEAEE2B7B7DC0000DBDBE67B7BBB9A9AC98989C08B8B
+        C28E8EC58F8FC78F8FC99191CB9292CC9494CE9595CF9797D19898D39393D093
+        93D19B9BD79D9DD79F9FD8A0A0D9A2A2D9A3A3DBA4A4DBA6A6DBA7A7DBA8A8DB
+        A6A6DAB2B2DEC7C7E8BBBBDA0000FFFFFFB0B0D19393C9B3B3D5A5A5CDA0A0CC
+        A1A1CEA3A3D0A4A4D1A6A6D3A7A7D5A9A9D6ABABD8ACACD9AEAEDAB0B0DCB0B0
+        DCB2B2DDB4B4DEB5B5DEB7B7E0B8B8E0B9B9E0BABAE1BCBCE1BEBEE2D1D1EADF
+        DFF2AFAFD5EFEFF50000FFFFFFFEFEFCC0C0DCA0A0CFB6B6DBC1C1DFC3C3E0C5
+        C5E1C7C7E3C9C9E4CCCCE6CECEE6D0D0E8D1D1E9D3D3EAD4D4EBD7D7ECD9D9ED
+        DBDBEEDCDCEEDEDEEFDFDFF0E0E0F0E1E1F1E2E2F1E1E1F1CCCCE7B9B9DAE5E5
+        EDFFFFFF0000FFFFFFFFFFFFFFFFFFF1F1F7CDCDDEC8C8D7CACAD9CACAD9CBCB
+        D9CBCBD9CCCCD9CCCCD9CCCCD9CCCCD9CDCDDACDCDD9CDCDDACDCDDACECEDACE
+        CEDACECEDACECEDACECEDACECEDACECEDACACAD8DFDFECFAFAFCFFFFFFFFFFFF
+        0000}
+      Layout = blGlyphTop
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btn_sairClick
+    end
+    object lblValorResultado: TLabel
+      Left = 17
+      Top = 141
+      Width = 8
+      Height = 13
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object lblDescricaoResultado: TLabel
+      Left = 8
+      Top = 94
+      Width = 76
+      Height = 13
+      Caption = 'RESULTADO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 4
+      Top = 4
+      Width = 66
+      Height = 13
+      Caption = 'Observa'#231#245'es:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblResultadoParcial: TLabel
+      Left = 197
+      Top = 94
+      Width = 110
+      Height = 13
+      Caption = 'RESULT. PARCIAL'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Panel7: TPanel
+      Left = -78
+      Top = 87
+      Width = 633
+      Height = 1
+      BevelOuter = bvNone
+      Color = clNavy
+      ParentBackground = False
+      TabOrder = 1
+    end
+    object DBMemo1: TDBMemo
+      Left = 3
+      Top = 19
+      Width = 548
+      Height = 61
+      Color = 16644087
+      DataField = 'OBSERVACOES'
+      DataSource = dtsAvaliacaoPerfilGeral
+      ScrollBars = ssVertical
+      TabOrder = 0
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 555
+    Height = 108
+    Align = alTop
+    Color = 16312551
+    ParentBackground = False
+    TabOrder = 0
+    object lblCodigo: TLabel
+      Left = 5
+      Top = 3
+      Width = 14
+      Height = 13
+      Caption = 'ID:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label1: TLabel
+      Left = 155
+      Top = 3
+      Width = 91
+      Height = 13
+      Caption = 'Data de Avalia'#231#227'o:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label17: TLabel
+      Left = 373
+      Top = 2
+      Width = 47
+      Height = 13
+      Caption = 'Operador:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label30: TLabel
+      Left = 5
+      Top = 47
+      Width = 118
+      Height = 13
+      Caption = 'DADOS PRINCIPAIS'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 264
+      Top = 3
+      Width = 91
+      Height = 13
+      Caption = 'Hora de Avalia'#231#227'o:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 72
+      Top = 3
+      Width = 62
+      Height = 13
+      Caption = 'Question'#225'rio:'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label45: TLabel
+      Left = 5
+      Top = 65
+      Width = 30
+      Height = 13
+      Hint = 
+        'Ao preencher a situa'#231#227'o o sistema ignora a pontua'#231#227'o e insere no' +
+        ' cadastro de clientes a situa'#231#227'o definida'
+      Caption = 'Status'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object edtCodigo: TDBEdit
+      Left = 3
+      Top = 18
+      Width = 66
+      Height = 21
+      CharCase = ecUpperCase
+      Color = 15452591
+      Ctl3D = True
+      DataField = 'CODIGOREGISTRO'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 2
+    end
+    object wwDBDateTimePicker1: TwwDBDateTimePicker
+      Left = 155
+      Top = 18
+      Width = 106
+      Height = 21
+      CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+      CalendarAttributes.Font.Color = clWindowText
+      CalendarAttributes.Font.Height = -11
+      CalendarAttributes.Font.Name = 'Tahoma'
+      CalendarAttributes.Font.Style = []
+      Color = 15452591
+      DataField = 'DATA'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Epoch = 1950
+      ReadOnly = True
+      ShowButton = True
+      TabOrder = 4
+    end
+    object DBEdit24: TDBEdit
+      Left = 374
+      Top = 17
+      Width = 36
+      Height = 21
+      CharCase = ecUpperCase
+      Color = 15452591
+      Ctl3D = True
+      DataField = 'CODIGOUSUARIO'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object DBEdit6: TDBEdit
+      Left = 413
+      Top = 17
+      Width = 141
+      Height = 21
+      CharCase = ecUpperCase
+      Color = 15452591
+      Ctl3D = True
+      DataField = 'NomeUsuario'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 1
+    end
+    object Panel3: TPanel
+      Left = 121
+      Top = 53
+      Width = 434
+      Height = 1
+      BevelOuter = bvNone
+      Color = clNavy
+      ParentBackground = False
+      TabOrder = 6
+    end
+    object wwDBDateTimePicker2: TwwDBDateTimePicker
+      Left = 264
+      Top = 18
+      Width = 106
+      Height = 21
+      CalendarAttributes.Font.Charset = DEFAULT_CHARSET
+      CalendarAttributes.Font.Color = clWindowText
+      CalendarAttributes.Font.Height = -11
+      CalendarAttributes.Font.Name = 'Tahoma'
+      CalendarAttributes.Font.Style = []
+      Color = 15452591
+      DataField = 'HORA'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Epoch = 1950
+      ReadOnly = True
+      ShowButton = True
+      TabOrder = 5
+    end
+    object DBEdit1: TDBEdit
+      Left = 72
+      Top = 18
+      Width = 81
+      Height = 21
+      CharCase = ecUpperCase
+      Color = 15452591
+      Ctl3D = True
+      DataField = 'CODIGOQUESTIONARIO'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 3
+    end
+    object RxDBLookupCombo3: TRxDBLookupCombo
+      Left = 5
+      Top = 81
+      Width = 175
+      Height = 21
+      DropDownCount = 5
+      Color = 16644087
+      DataField = 'CODIGOSITUACAO'
+      DataSource = dtsAvaliacaoPerfilGeral
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      LookupField = 'CODIGO'
+      LookupDisplay = 'DESCRICAO'
+      LookupSource = dtsSituacao
+      ParentFont = False
+      TabOrder = 7
+      OnEnter = RxDBLookupCombo3Enter
+      OnExit = RxDBLookupCombo3Exit
+    end
+  end
+  object qryGeral: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    Left = 441
+    Top = 227
+  end
+  object qryAvaliacao: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      'SELECT A.DESCRICAO AS DESCRIACAOAVALIACAO, D.*'
+      '  FROM TABAVALIACAO A'
+      
+        'INNER JOIN TABAVALIACAODETALHE D ON (A.CODIGO = D.CODIGOAVALIACA' +
+        'O)'
+      ''
+      'WHERE 1 = 1'
+      ''
+      '--AND'
+      ''
+      ''
+      '--')
+    Left = 386
+    Top = 246
+    object qryAvaliacaoDESCRICAO: TIBStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      DisplayWidth = 50
+      FieldName = 'DESCRICAO'
+      Origin = '"TABAVALIACAODETALHE"."DESCRICAO"'
+      Size = 200
+    end
+    object qryAvaliacaoDESCRIACAOAVALIACAO: TIBStringField
+      DisplayWidth = 200
+      FieldName = 'DESCRIACAOAVALIACAO'
+      Origin = '"TABAVALIACAO"."DESCRICAO"'
+      Visible = False
+      Size = 200
+    end
+    object qryAvaliacaoCODIGOAVALIACAO: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CODIGOAVALIACAO'
+      Origin = '"TABAVALIACAODETALHE"."CODIGOAVALIACAO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Visible = False
+    end
+    object qryAvaliacaoID: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = '"TABAVALIACAODETALHE"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Visible = False
+    end
+    object qryAvaliacaoVALOR: TIBBCDField
+      DisplayWidth = 19
+      FieldName = 'VALOR'
+      Origin = '"TABAVALIACAODETALHE"."VALOR"'
+      Visible = False
+      Precision = 18
+      Size = 2
+    end
+  end
+  object updAvaliacaoPerfil: TIBUpdateSQL
+    RefreshSQL.Strings = (
+      'Select '
+      '  CODIGOREGISTRO,'
+      '  CODIGOAVALIACAO,'
+      '  VALOR'
+      'from TABAVALIACAOPERFIL '
+      'where'
+      '  CODIGOAVALIACAO = :CODIGOAVALIACAO and'
+      '  CODIGOREGISTRO = :CODIGOREGISTRO')
+    ModifySQL.Strings = (
+      'update TABAVALIACAOPERFIL'
+      'set'
+      '  CODIGOAVALIACAO = :CODIGOAVALIACAO,'
+      '  CODIGOREGISTRO = :CODIGOREGISTRO,'
+      '  VALOR = :VALOR'
+      'where'
+      '  CODIGOAVALIACAO = :OLD_CODIGOAVALIACAO and'
+      '  CODIGOREGISTRO = :OLD_CODIGOREGISTRO')
+    InsertSQL.Strings = (
+      'insert into TABAVALIACAOPERFIL'
+      '  (CODIGOAVALIACAO, CODIGOREGISTRO, VALOR)'
+      'values'
+      '  (:CODIGOAVALIACAO, :CODIGOREGISTRO, :VALOR)')
+    DeleteSQL.Strings = (
+      'delete from TABAVALIACAOPERFIL'
+      'where'
+      '  CODIGOAVALIACAO = :OLD_CODIGOAVALIACAO and'
+      '  CODIGOREGISTRO = :OLD_CODIGOREGISTRO')
+    Left = 295
+    Top = 231
+  end
+  object dtsAvaliacaoPerfil: TDataSource
+    DataSet = qryAvaliacaoPerfil
+    Left = 294
+    Top = 177
+  end
+  object qryAvaliacaoPerfil: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    AfterOpen = qryAvaliacaoPerfilAfterOpen
+    AfterPost = qryAvaliacaoPerfilAfterPost
+    AfterScroll = qryAvaliacaoPerfilAfterScroll
+    OnCalcFields = qryAvaliacaoPerfilCalcFields
+    DataSource = dtsAvaliacaoPerfilGeral
+    SQL.Strings = (
+      'select *  '
+      '   from TABAVALIACAOPERFIL'
+      'where CODIGOREGISTRO = :CODIGOREGISTRO')
+    UpdateObject = updAvaliacaoPerfil
+    Left = 295
+    Top = 124
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'CODIGOREGISTRO'
+        ParamType = ptUnknown
+      end>
+    object qryAvaliacaoPerfilDESCRICAO: TStringField
+      FieldKind = fkLookup
+      FieldName = 'DESCRICAO'
+      LookupDataSet = qryAvaliacao
+      LookupKeyFields = 'CODIGOAVALIACAO'
+      LookupResultField = 'DESCRIACAOAVALIACAO'
+      KeyFields = 'CODIGOAVALIACAO'
+      Size = 200
+      Lookup = True
+    end
+    object qryAvaliacaoPerfilDESCRICAORESULTADO: TStringField
+      DisplayWidth = 100
+      FieldKind = fkCalculated
+      FieldName = 'DESCRICAORESULTADO'
+      Size = 100
+      Calculated = True
+    end
+    object qryAvaliacaoPerfilCODIGOREGISTRO: TIntegerField
+      FieldName = 'CODIGOREGISTRO'
+      Origin = '"TABAVALIACAOPERFIL"."CODIGOREGISTRO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryAvaliacaoPerfilCODIGOAVALIACAO: TIntegerField
+      FieldName = 'CODIGOAVALIACAO'
+      Origin = '"TABAVALIACAOPERFIL"."CODIGOAVALIACAO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryAvaliacaoPerfilVALOR: TIBBCDField
+      FieldName = 'VALOR'
+      Origin = '"TABAVALIACAOPERFIL"."VALOR"'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object qryAvaliacaoCombo: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    BeforeOpen = qryAvaliacaoComboBeforeOpen
+    SQL.Strings = (
+      'SELECT A.DESCRICAO AS DESCRIACAOAVALIACAO, D.*'
+      '  FROM TABAVALIACAO A'
+      
+        'INNER JOIN TABAVALIACAODETALHE D ON (A.CODIGO = D.CODIGOAVALIACA' +
+        'O)'
+      ''
+      'WHERE 1 = 1'
+      ''
+      '--AND'
+      ''
+      ''
+      '--')
+    Left = 408
+    Top = 126
+    object IBBCDField1: TIBBCDField
+      DisplayLabel = 'Valor'
+      DisplayWidth = 6
+      FieldName = 'VALOR'
+      Origin = '"TABAVALIACAODETALHE"."VALOR"'
+      Precision = 18
+      Size = 2
+    end
+    object IBStringField1: TIBStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      DisplayWidth = 50
+      FieldName = 'DESCRICAO'
+      Origin = '"TABAVALIACAODETALHE"."DESCRICAO"'
+      Size = 200
+    end
+    object IBStringField2: TIBStringField
+      DisplayWidth = 200
+      FieldName = 'DESCRIACAOAVALIACAO'
+      Origin = '"TABAVALIACAO"."DESCRICAO"'
+      Visible = False
+      Size = 200
+    end
+    object IntegerField1: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CODIGOAVALIACAO'
+      Origin = '"TABAVALIACAODETALHE"."CODIGOAVALIACAO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Visible = False
+    end
+    object IntegerField2: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = '"TABAVALIACAODETALHE"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Visible = False
+    end
+  end
+  object dtsAvaliacaoCombo: TDataSource
+    DataSet = qryAvaliacaoCombo
+    Left = 411
+    Top = 175
+  end
+  object IBQuery1: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    Left = 505
+    Top = 227
+  end
+  object qryAvaliacaoPerfilGeral: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    BeforeOpen = qryAvaliacaoPerfilGeralBeforeOpen
+    BeforePost = qryAvaliacaoPerfilGeralBeforePost
+    SQL.Strings = (
+      'select *  '
+      '   from TABAVALIACAOPERFILGERAL'
+      ''
+      ''
+      'where 1 = 1'
+      ''
+      '--and'
+      ''
+      ''
+      '--')
+    UpdateObject = updAvaliacaoPerfilGeral
+    Left = 195
+    Top = 130
+    object qryAvaliacaoPerfilGeralNomeUsuario: TStringField
+      FieldKind = fkLookup
+      FieldName = 'NomeUsuario'
+      LookupDataSet = qryUsuario
+      LookupKeyFields = 'CODIGO'
+      LookupResultField = 'USERNAME'
+      KeyFields = 'CODIGOUSUARIO'
+      Lookup = True
+    end
+    object qryAvaliacaoPerfilGeralCODIGOORIGEM: TIntegerField
+      FieldName = 'CODIGOORIGEM'
+      Origin = '"TABAVALIACAOPERFILGERAL"."CODIGOORIGEM"'
+      Required = True
+    end
+    object qryAvaliacaoPerfilGeralCODIGOQUESTIONARIO: TIntegerField
+      FieldName = 'CODIGOQUESTIONARIO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."CODIGOQUESTIONARIO"'
+      Required = True
+    end
+    object qryAvaliacaoPerfilGeralCODIGOUSUARIO: TIntegerField
+      FieldName = 'CODIGOUSUARIO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."CODIGOUSUARIO"'
+    end
+    object qryAvaliacaoPerfilGeralDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"TABAVALIACAOPERFILGERAL"."DATA"'
+    end
+    object qryAvaliacaoPerfilGeralHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = '"TABAVALIACAOPERFILGERAL"."HORA"'
+    end
+    object qryAvaliacaoPerfilGeralTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."TIPO"'
+    end
+    object qryAvaliacaoPerfilGeralCODIGOREGISTRO: TIntegerField
+      FieldName = 'CODIGOREGISTRO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."CODIGOREGISTRO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryAvaliacaoPerfilGeralOBSERVACOES: TIBStringField
+      FieldName = 'OBSERVACOES'
+      Origin = '"TABAVALIACAOPERFILGERAL"."OBSERVACOES"'
+      Size = 100
+    end
+    object qryAvaliacaoPerfilGeralDATAFIM: TDateField
+      FieldName = 'DATAFIM'
+      Origin = '"TABAVALIACAOPERFILGERAL"."DATAFIM"'
+    end
+    object qryAvaliacaoPerfilGeralHORAFIM: TTimeField
+      FieldName = 'HORAFIM'
+      Origin = '"TABAVALIACAOPERFILGERAL"."HORAFIM"'
+    end
+    object qryAvaliacaoPerfilGeralRESULTADO: TIBBCDField
+      FieldName = 'RESULTADO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."RESULTADO"'
+      Precision = 18
+      Size = 2
+    end
+    object qryAvaliacaoPerfilGeralCODIGOSITUACAO: TIntegerField
+      FieldName = 'CODIGOSITUACAO'
+      Origin = '"TABAVALIACAOPERFILGERAL"."CODIGOSITUACAO"'
+    end
+  end
+  object dtsAvaliacaoPerfilGeral: TDataSource
+    DataSet = qryAvaliacaoPerfilGeral
+    Left = 196
+    Top = 184
+  end
+  object updAvaliacaoPerfilGeral: TIBUpdateSQL
+    RefreshSQL.Strings = (
+      'Select '
+      '  CODIGOORIGEM,'
+      '  CODIGOQUESTIONARIO,'
+      '  CODIGOUSUARIO,'
+      '  DATA,'
+      '  HORA,'
+      '  TIPO,'
+      '  CODIGOREGISTRO,'
+      '  OBSERVACOES,'
+      '  DATAFIM,'
+      '  HORAFIM,'
+      '  RESULTADO,'
+      '  CODIGOSITUACAO'
+      'from TABAVALIACAOPERFILGERAL '
+      'where'
+      '  CODIGOREGISTRO = :CODIGOREGISTRO')
+    ModifySQL.Strings = (
+      'update TABAVALIACAOPERFILGERAL'
+      'set'
+      '  CODIGOORIGEM = :CODIGOORIGEM,'
+      '  CODIGOQUESTIONARIO = :CODIGOQUESTIONARIO,'
+      '  CODIGOREGISTRO = :CODIGOREGISTRO,'
+      '  CODIGOSITUACAO = :CODIGOSITUACAO,'
+      '  CODIGOUSUARIO = :CODIGOUSUARIO,'
+      '  DATA = :DATA,'
+      '  DATAFIM = :DATAFIM,'
+      '  HORA = :HORA,'
+      '  HORAFIM = :HORAFIM,'
+      '  OBSERVACOES = :OBSERVACOES,'
+      '  RESULTADO = :RESULTADO,'
+      '  TIPO = :TIPO'
+      'where'
+      '  CODIGOREGISTRO = :OLD_CODIGOREGISTRO')
+    InsertSQL.Strings = (
+      'insert into TABAVALIACAOPERFILGERAL'
+      
+        '  (CODIGOORIGEM, CODIGOQUESTIONARIO, CODIGOREGISTRO, CODIGOSITUA' +
+        'CAO, CODIGOUSUARIO, '
+      '   DATA, DATAFIM, HORA, HORAFIM, OBSERVACOES, RESULTADO, TIPO)'
+      'values'
+      
+        '  (:CODIGOORIGEM, :CODIGOQUESTIONARIO, :CODIGOREGISTRO, :CODIGOS' +
+        'ITUACAO, '
+      
+        '   :CODIGOUSUARIO, :DATA, :DATAFIM, :HORA, :HORAFIM, :OBSERVACOE' +
+        'S, :RESULTADO, '
+      '   :TIPO)')
+    DeleteSQL.Strings = (
+      'delete from TABAVALIACAOPERFILGERAL'
+      'where'
+      '  CODIGOREGISTRO = :OLD_CODIGOREGISTRO')
+    Left = 197
+    Top = 238
+  end
+  object qryUsuario: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    SQL.Strings = (
+      'select CODIGO, USERNAME from TABUSUARIOS')
+    Left = 641
+    Top = 162
+    object qryUsuarioCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = '"TABUSUARIOS"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryUsuarioUSERNAME: TIBStringField
+      FieldName = 'USERNAME'
+      Origin = '"TABUSUARIOS"."USERNAME"'
+    end
+  end
+  object dtsUsuario: TDataSource
+    DataSet = qryUsuario
+    Left = 609
+    Top = 162
+  end
+  object qrySituacao: TIBQuery
+    Database = Dados.IBDatabase
+    Transaction = Dados.IBTransaction
+    BeforeOpen = qrySituacaoBeforeOpen
+    SQL.Strings = (
+      'select *  from TABSITUACAOPRODUTO'
+      'WHERE 1 = 1'
+      '--and'
+      ''
+      ''
+      'order by DESCRICAO')
+    Left = 74
+    Top = 225
+    object qrySituacaoCODIGO: TIntegerField
+      DisplayLabel = 'C'#243'digo'
+      DisplayWidth = 5
+      FieldName = 'CODIGO'
+      Origin = '"TABSITUACAOPRODUTO"."CODIGO"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qrySituacaoDESCRICAO: TIBStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      DisplayWidth = 30
+      FieldName = 'DESCRICAO'
+      Origin = '"TABSITUACAOPRODUTO"."DESCRICAO"'
+      Size = 200
+    end
+    object qrySituacaoAPLICACAO: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'APLICACAO'
+      Origin = '"TABSITUACAOPRODUTO"."APLICACAO"'
+      Visible = False
+    end
+    object qrySituacaoOPERACAO: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'OPERACAO'
+      Origin = '"TABSITUACAOPRODUTO"."OPERACAO"'
+      Visible = False
+    end
+    object qrySituacaoDIASREAVALIACAO: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'DIASREAVALIACAO'
+      Origin = '"TABSITUACAOPRODUTO"."DIASREAVALIACAO"'
+      Visible = False
+    end
+  end
+  object dtsSituacao: TDataSource
+    DataSet = qrySituacao
+    Left = 118
+    Top = 223
+  end
+end

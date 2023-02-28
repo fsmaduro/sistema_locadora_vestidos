@@ -1,0 +1,66 @@
+unit untControleVersao;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes;
+
+Type
+   TRecControle = record
+     Versao: String;
+     Data: TDateTime;
+   end;
+
+   TRecAlteracoes = record
+     Versao: String;
+     FormName: String;
+     ID: String;
+     Alteracoes: String;
+   end;
+
+   TControleVersao = class(TComponent)
+   Private
+      ArrAlteracoes : Array of TRecAlteracoes;
+      ArrControle : Array of TRecControle;
+   Public
+     constructor Create(AOwner: TComponent);
+     procedure AddAlteracao(iVersao, iFormName, iID, iAlteracao: String);
+     procedure AddControle(iVersao: String; iData: TDateTime);
+     function HtmlAlteracoes(iFormName: String): String;
+   end;
+
+implementation
+
+constructor TControleVersao.Create(AOwner: TComponent);
+begin
+  inherited;
+end;
+
+procedure TControleVersao.AddAlteracao(iVersao, iFormName, iID, iAlteracao: String);
+var
+  lPosArr: integer;
+begin
+  SetLength(ArrAlteracoes, length(ArrAlteracoes) + 1);
+  lPosArr := length(ArrAlteracoes) - 1;
+  ArrAlteracoes[lPosArr].Versao := iVersao;
+  ArrAlteracoes[lPosArr].FormName := iFormName;
+  ArrAlteracoes[lPosArr].ID := iID;
+  ArrAlteracoes[lPosArr].Alteracoes := iAlteracao;
+end;
+
+procedure TControleVersao.AddControle(iVersao: String; iData: TDateTime);
+var
+  lPosArr: integer;
+begin
+  SetLength(ArrControle, length(ArrControle) + 1);
+  lPosArr := length(ArrControle) - 1;
+  ArrControle[lPosArr].Versao := iVersao;
+  ArrControle[lPosArr].Data := iData;
+end;
+
+function TControleVersao.HtmlAlteracoes(iFormName: String): String;
+begin
+
+end;
+
+end.

@@ -1,0 +1,528 @@
+unit funcao;
+
+interface
+
+Uses
+  DBGrids, Mask, Classes, Controls, ExtCtrls, ComCtrls, CheckLst, Buttons,
+  WinTypes, SysUtils, Forms, Dialogs, StdCtrls, IniFiles, Messages,
+  Variants, cxGrid, dxPSCore, dxPrnPg,
+  dxPScxCommon, dxPScxGrid6Lnk, cxGridLevel,
+  cxClasses, cxControls, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxDBData, dxPSGlbl,  dxPSEngn,
+  dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns,
+  dxPSEdgePatterns, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  dxBase, cxDrawTextUtils, cxGridExportLink, ShellAPI,Graphics;
+
+  Function iif(Comparacao:Boolean;Verdadeiro:Variant; Falso:Variant):Variant;
+  function TrocaAcentos(Texto: string): string;
+  Function DataValida(Data:String): TDate;
+  Function E_Ano_Bissexto(Data : TDateTime): Boolean;
+  Function Data_Ultimo_Dia_Mes(Data : TDateTime): TDateTime;
+  function RemoveCaracter(Texto: string; Caracter: string): string;
+  Function SerialNumHD(FDrive:String) :String;
+  Function TRANSCREVER(serial_hd: String): String;
+  Function ApenasAlgarismos(Texto: string): string;
+  function ParametroLinhaComando(pParam: string): boolean;
+  procedure ImprimirGrid(iGrid: TcxGrid; Titulo: String; ExpandirGrupos: Boolean = True; ExpandirDetalhes: Boolean = False; RecolherApos: Boolean = False);
+  procedure ExportarGrid(iGrid: TcxGrid; RecolherApos: Boolean = False);
+  Procedure ExpandirGrid(iGrid: TcxGrid; Recolher: Boolean = False);
+  function AddZero(Variavel: string; Tamanho: integer): string;
+	function NomeDiaSemana(Dia:string):string;
+
+implementation
+
+var
+  _dxCompPrinterGrid: TdxComponentPrinter;
+  _dxCompPrinterCntLinkCnt: TdxGridReportLink;
+  _SaveDialog: TSaveDialog;
+
+Procedure ExportarGrid(iGrid: TcxGrid; RecolherApos: Boolean = False);
+var
+  sPath : string;
+begin
+  try
+    sPath := '';
+
+    if not Assigned(iGrid) then
+      Exit;
+
+    if not Assigned(_SaveDialog) then
+      _SaveDialog:= TSaveDialog.Create(nil);
+
+    with _SaveDialog do
+    begin
+      DefaultExt := 'txt';
+      FileName := '*.txt';
+      Filter :=
+         'Arquivo de Texto|*.txt|Microsoft Excel|*.xls|Arquivo XML|*.xml|A' +
+         'rquivo HTML|*.html|Todos os Arquivos (*.*)|*.*';
+      Title := 'Exportar Dados';
+      if Execute then
+        sPath := FileName;
+    end;
+
+    if sPath <> '' then
+    begin
+      if pos('.xls', sPath) > 0 then
+        ExportGridToExcel(sPath, iGrid, True, True, True)
+      else if pos('.xml', sPath) > 0 then
+        ExportGridToXML(sPath, iGrid, True, True)
+      else if pos('.html', sPath) > 0 then
+        ExportGridToHTML(sPath, iGrid, True, True)
+      else if pos('.txt', sPath) > 0 then
+        ExportGridToText(sPath, iGrid, True, True);
+
+      ShellExecute(0, 'open', PChar(sPath), nil, nil, SW_SHOW);
+    end;
+
+    if RecolherApos then
+      ExpandirGrid(iGrid,True);
+  Except
+    on e:exception do
+      ShowMessage('Erro 2688e777: '+E.Message);
+  end;
+
+
+end;
+
+Procedure ExpandirGrid(iGrid: TcxGrid; Recolher: Boolean = False);
+var
+  i, x: integer;
+begin
+
+  if not Assigned(iGrid) then
+      Exit;
+
+  for i := 0 to iGrid.Levels.Count - 1 do
+  begin
+    if Recolher then
+    begin
+      iGrid.Levels.Items[i].GridView.DataController.Groups.FullCollapse;
+      iGrid.Levels.Items[i].GridView.DataController.CollapseDetails;
+    end
+    else
+      iGrid.Levels.Items[i].GridView.DataController.Groups.FullExpand;
+  end;
+
+end;
+
+procedure ImprimirGrid(iGrid: TcxGrid; Titulo: String; ExpandirGrupos: Boolean = True; ExpandirDetalhes: Boolean = False; RecolherApos: Boolean = False);
+var
+  xBool: Boolean;
+begin
+  try
+    xBool := False;
+
+    if not Assigned(iGrid) then
+      Exit;
+
+    if not Assigned(_dxCompPrinterGrid) then
+    begin
+      xBool := True;
+      _dxCompPrinterGrid := TdxComponentPrinter.Create(nil);
+    end;
+
+    if not Assigned(_dxCompPrinterCntLinkCnt) then
+      _dxCompPrinterCntLinkCnt := TdxGridReportLink.Create(_dxCompPrinterGrid);
+
+    try
+      with _dxCompPrinterCntLinkCnt do
+      begin
+        if xBool then
+        begin
+          ComponentPrinter := _dxCompPrinterGrid;
+
+          PrinterPage.PageHeader.CenterTextAlignY := taTop;
+          PrinterPage.PageHeader.Font.Charset := DEFAULT_CHARSET;
+          PrinterPage.PageHeader.Font.Color := clBlack;
+          PrinterPage.PageHeader.Font.Name := 'Tahoma';
+          PrinterPage.PageHeader.LeftTextAlignY := taTop;
+          PrinterPage.PageHeader.RightTextAlignY := taTop;
+          PrinterPage.PageHeader.Font.Size := 9;
+          PrinterPage.PageHeader.Font.Style := [fsBold];
+
+          PrinterPage.DMPaper := 9;
+          PrinterPage.Footer := 6500;
+          PrinterPage.Header := 6500;
+          PrinterPage.Margins.Bottom := 7000;
+          PrinterPage.Margins.Left := 14000;
+          PrinterPage.Margins.Right := 10000;
+          PrinterPage.Margins.Top := 24300;
+          PrinterPage.Orientation := poLandscape;
+          PrinterPage.PageFooter.CenterTextAlignY := taBottom;
+          PrinterPage.PageFooter.LeftTextAlignY := taBottom;
+          PrinterPage.PageFooter.RightTextAlignY := taBottom;
+          PrinterPage.PageSize.X := 210000;
+          PrinterPage.PageSize.Y := 297000;
+          PrinterPage.ScaleMode := smFit;
+          ReportDocument.CreationDate := 40974.358674918980000000 ;
+          ShrinkToPageWidth := True;
+          OptionsFormatting.UseNativeStyles := True;
+          OptionsOnEveryPage.Footers := False;
+          OptionsOnEveryPage.FilterBar := False;
+          OptionsView.FilterBar := False;
+          BuiltIn := True;
+        end;
+
+        OptionsExpanding.ExpandGroupRows := ExpandirGrupos;
+        OptionsExpanding.ExpandMasterRows := ExpandirDetalhes;
+
+        PrinterPage.PageHeader.CenterTitle.Clear;
+        PrinterPage.PageHeader.CenterTitle.Add('ACHEI MEU VESTIDO');
+        PrinterPage.PageHeader.CenterTitle.Add(Titulo);
+
+        PrinterPage.PageFooter.leftTitle.Text := FormatDateTime('dd/MM/yyyy - hh:mm:ss', now);
+        PrinterPage.PageFooter.CenterTitle.Text := 'AMVSystem 1.0';
+        PrinterPage.PageFooter.RightTitle.Text := 'Página [Page #] de [Total Pages]';
+
+        Component := iGrid;
+      end;
+
+      with _dxCompPrinterGrid do
+      begin
+        if xBool then
+        begin
+          CurrentLink := _dxCompPrinterCntLinkCnt;
+          PreviewOptions.Caption := 'Visualizar Impress'#227'o';
+          PreviewOptions.WindowState := wsMaximized;
+          TimeFormat := 2;
+        end;
+        
+        Preview(True,_dxCompPrinterCntLinkCnt);
+      end;
+
+      if RecolherApos then
+        ExpandirGrid(iGrid,True);
+
+    finally
+    end;
+  Except
+    on e:exception do
+      ShowMessage('Erro 2377e887: '+E.Message);
+  end;
+end;
+
+function ParametroLinhaComando(pParam: string): boolean;
+var
+  i: integer;
+  vresult: boolean;
+begin
+  vresult := false;
+  if ParamCount > 0 then
+  begin
+    for i := 0 to ParamCount do
+    begin
+      if UPPERCASE(ParamStr(i)) = UpperCase(pParam) then
+      begin
+        vresult := true;
+        Break;
+      end;
+    end;
+  end;
+  result := vResult;
+end;
+
+Function TRANSCREVER(serial_hd: String): String;
+var
+  no, no2 : integer;
+begin
+  result := '';
+  no := 1;
+  no2 := Length(serial_hd);
+  while not (no = no2 + 1) do
+  begin
+    if Copy(serial_hd,no,1) = 'A' then
+      result := result + '1';
+    if Copy(serial_hd,no,1) = 'B' then
+      result := result + '2';
+    if Copy(serial_hd,no,1) = 'C' then
+      result := result + '3';
+
+    if Copy(serial_hd,no,1) = 'D' then
+      result := result + '3';
+    if Copy(serial_hd,no,1) = 'E' then
+      result := result + '6';
+    if Copy(serial_hd,no,1) = 'F' then
+      result := result + '1';
+
+    if Copy(serial_hd,no,1) = 'G' then
+      result := result + '4';
+    if Copy(serial_hd,no,1) = 'H' then
+      result := result + '5';
+    if Copy(serial_hd,no,1) = 'I' then
+      result := result + '4';
+
+    if Copy(serial_hd,no,1) = 'J' then
+      result := result + '6';
+    if Copy(serial_hd,no,1) = 'K' then
+      result := result + '8';
+    if Copy(serial_hd,no,1) = 'L' then
+      result := result + '4';
+
+    if Copy(serial_hd,no,1) = 'M' then
+      result := result + '7';
+    if Copy(serial_hd,no,1) = 'N' then
+      result := result + '5';
+    if Copy(serial_hd,no,1) = 'O' then
+      result := result + '9';
+
+    if Copy(serial_hd,no,1) = 'P' then
+      result := result + '4';
+    if Copy(serial_hd,no,1) = 'Q' then
+      result := result + '8';
+    if Copy(serial_hd,no,1) = 'R' then
+      result := result + '7';
+
+    if Copy(serial_hd,no,1) = 'S' then
+      result := result + '5';
+    if Copy(serial_hd,no,1) = 'T' then
+      result := result + '0';
+    if Copy(serial_hd,no,1) = 'U' then
+      result := result + '3';
+
+    if Copy(serial_hd,no,1) = 'V' then
+      result := result + '2';
+    if Copy(serial_hd,no,1) = 'W' then
+      result := result + '0';
+    if Copy(serial_hd,no,1) = 'X' then
+      result := result + '6';
+
+    if Copy(serial_hd,no,1) = 'Y' then
+      result := result + '0';
+    if Copy(serial_hd,no,1) = 'Z' then
+      result := result + '7';
+
+    if (Copy(serial_hd,no,1) = '1') or (Copy(serial_hd,no,1) = '2') or
+    (Copy(serial_hd,no,1) = '3') or (Copy(serial_hd,no,1) = '4') or
+    (Copy(serial_hd,no,1) = '5') or (Copy(serial_hd,no,1) = '6') or
+    (Copy(serial_hd,no,1) = '7') or (Copy(serial_hd,no,1) = '8') or
+    (Copy(serial_hd,no,1) = '9') or (Copy(serial_hd,no,1) = '0') then
+       result := result + Copy(serial_hd,no,1);
+
+    no := no + 1;
+  end;
+end;
+
+Function SerialNumHD(FDrive:String) :String;
+var
+  Serial:DWord;
+  DirLen,Flags: DWord;
+  DLabel : Array[0..11] of Char;
+begin
+  try
+    GetVolumeInformation(PChar(FDrive+':\'),dLabel,12,@Serial,DirLen,Flags,nil,0);
+    Result := IntToHex(Serial,8);
+  except
+    Result :='';
+  end;
+end;
+
+function RemoveCaracter(Texto: string; Caracter: string): string;
+var
+  x: integer;
+  letra: string;
+begin
+  result := '';
+  for x := 1 to length(texto) do
+  begin
+    letra := copy(texto, x, 1);
+    if (letra <> Caracter) then
+      Result := result + letra;
+  end;
+
+end;
+
+Function E_Ano_Bissexto(Data : TDateTime): Boolean;
+Var Ano, Mes, Dia : Word;
+Begin
+  DecodeDate(Data, Ano, Mes, Dia);
+  Result := (Ano mod 4 = 0) and ((Ano mod 100 <> 0) or (Ano mod 400 = 0));
+end;
+
+
+Function DataValida(Data:String): TDate;
+var
+  Dia: String;
+  Mes: String;
+  Ano: String;
+  StringCorrente: String;
+  AnoBissexto: boolean;
+  UltimoDiaMes: Integer;
+begin
+  StringCorrente := Data;
+  Dia := copy(StringCorrente, 1, pos('/', StringCorrente) - 1);
+  StringCorrente := copy(StringCorrente, pos('/', StringCorrente) + 1, length(StringCorrente));
+  Mes := copy(StringCorrente, 1, pos('/', StringCorrente) - 1);
+  Ano := copy(StringCorrente, pos('/', StringCorrente) + 1, length(StringCorrente));
+
+  AnoBissexto := E_Ano_Bissexto(StrToDate('01/01/'+Ano));
+
+  case StrToInt(Mes) of
+    1: UltimoDiaMes := 31;
+    2: begin
+         if AnoBissexto then
+           UltimoDiaMes := 29
+         else
+           UltimoDiaMes := 28;
+       end;
+    3: UltimoDiaMes := 31;
+    4: UltimoDiaMes := 30;
+    5: UltimoDiaMes := 31;
+    6: UltimoDiaMes := 30;
+    7: UltimoDiaMes := 31;
+    8: UltimoDiaMes := 31;
+    9: UltimoDiaMes := 30;
+    10: UltimoDiaMes := 31;
+    11: UltimoDiaMes := 30;
+    12: UltimoDiaMes := 31;
+  end;
+
+  if StrToInt(Dia) > UltimoDiaMes then
+    Dia := IntTostr(UltimoDiaMes);
+
+  Result := StrToDate(Dia+'/'+Mes+'/'+Ano);
+
+end;
+
+Function Data_Ultimo_Dia_Mes(Data : TDateTime): TDateTime;
+Var
+  Mes : Array [1..12] of Byte;
+  Dia : Integer;
+Begin
+  Mes[1] := 31;
+  Mes[2] := 0;
+  Mes[3] := 31;
+  Mes[4] := 30;
+  Mes[5] := 31;
+  Mes[6] := 30;
+  Mes[7] := 31;
+  Mes[8] := 31;
+  Mes[9] := 30;
+  Mes[10] := 31;
+  Mes[11] := 30;
+  Mes[12] := 31;
+  Dia := Mes[StrToInt(FormatDateTime('m', data))];
+  If (Dia = 0) Then
+    If E_Ano_Bissexto(Data) Then
+      Dia := 29
+    Else
+      Dia := 28;
+  Result := StrToDate(IntToStr(Dia)+ '/' + FormatDateTime('mm/yyyy', data));
+End;
+
+function iif(Comparacao:Boolean;Verdadeiro:Variant; Falso:Variant):Variant;
+begin
+  if Comparacao = true then
+    result := Verdadeiro
+  else
+    result := Falso;
+end;
+
+function TrocaAcentos(Texto: string): string;
+var
+  x: integer;
+  letra: string;
+begin
+  result := '';
+  for x := 1 to length(texto) do
+  begin
+    letra := copy(texto, x, 1);
+
+    if (letra = 'ã') or (letra = 'à') or (letra = 'á') or (letra = 'â') then
+      letra := 'a'
+    else
+      if (letra = 'Ã') or (letra = 'À') or (letra = 'Á') or (letra = 'Â') then
+        letra := 'A'
+      else
+        if (letra = 'é') or (letra = 'ê') then
+          letra := 'e'
+        else
+          if (letra = 'É') or (letra = 'Ê') then
+            letra := 'E'
+          else
+            if (letra = 'Í') then
+              letra := 'I'
+            else
+              if (letra = 'í') then
+                letra := 'i'
+              else
+                if (letra = 'õ') or (letra = 'ó') or (letra = 'ô') then
+                  letra := 'o'
+                else
+                  if (letra = 'Õ') or (letra = 'Ó') or (letra = 'Ô') then
+                    letra := 'O'
+                  else
+                    if (letra = 'Ú') then
+                      letra := 'U'
+                    else
+                      if (letra = 'ú') then
+                        letra := 'u'
+                      else
+                        if ((letra = 'ç')) then
+                          letra := 'c'
+                        else
+                          if (letra = 'Ç') then
+                            letra := 'C'
+                          else
+                            if (letra = 'º') then
+                              letra := 'o.'
+                            else
+                              if (letra = 'ª') then
+                                letra := 'a.'
+                              else
+                                if (letra = 'º') then
+                                  letra := 'o.';
+
+    Result := result + letra;
+  end;
+
+end;
+
+function ApenasAlgarismos(Texto: string): string;
+var
+  x: integer;
+  Letra: char;
+begin
+  result := '';
+  for x := 1 to length(Texto) do
+  begin
+    Letra := Texto[x];
+    if Letra in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] then
+      Result := result + letra;
+  end;
+end;
+
+function AddZero(Variavel: string; Tamanho: integer): string;
+begin
+  Result := '';
+  while Length(Variavel) < Tamanho do
+    Variavel := '0' + Variavel;
+
+  Result := Variavel;
+end;
+
+function NomeDiaSemana(Dia:string):string;
+var
+	NumeroDia:integer;
+begin
+	try
+		if  Length(trim(dia)) > 1 then
+			NumeroDia := DayOfWeek(StrtoDate(dia))
+		else
+			Numerodia := StrtoInt(Dia);
+
+		case numerodia of
+      1 : Result := 'Domingo';
+      2 : Result := 'Segunda';
+      3 : Result := 'Terça';
+      4 : Result := 'Quarta';
+      5 : Result := 'Quinta';
+      6 : Result := 'Sexta';
+      7 : Result := 'Sábado';
+		end;
+	except
+		Result  := '';
+	end;
+end;
+
+end.

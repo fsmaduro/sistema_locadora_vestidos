@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/08/18 21:51:24.000.160,=C:\Users\FábioSant'Anna\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/08/18 21:52:54.000.919,D:\COMPONENTES\ServiceAMV\untService.dfm=C:\Users\FábioSant'Anna\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2015/08/18 21:52:54.000.919,D:\COMPONENTES\ServiceAMV\untService.pas=C:\Users\FábioSant'Anna\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2015/08/18 21:53:01.000.858,D:\COMPONENTES\ServiceAMV\SeviceAMV.dproj=C:\Users\FábioSant'Anna\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2015/08/18 21:53:44.000.248,=D:\COMPONENTES\ServiceAMV\CardDAV.pas</Transaction>
+    <Transaction>2015/08/18 21:53:44.000.167,=D:\COMPONENTES\ServiceAMV\CalDAV.pas</Transaction>
+    <Transaction>2015/08/18 23:07:28.000.897,=D:\COMPONENTES\ServiceAMV\TZDB.pas</Transaction>
+    <Transaction>2015/08/18 23:07:50.000.737,D:\COMPONENTES\ServiceAMV\CardDAV.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

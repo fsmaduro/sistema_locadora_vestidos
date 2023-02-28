@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/03/07 09:31:40.430.pas,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_municipios.pas=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.pas</Transaction>
+    <Transaction>2015/03/07 09:31:40.430.dfm,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_municipios.dfm=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.dfm</Transaction>
+    <Transaction>2015/03/07 10:45:40.612.pas,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.pas=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_preferencia.pas</Transaction>
+    <Transaction>2015/03/07 10:45:40.612.dfm,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.dfm=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_preferencia.dfm</Transaction>
+    <Transaction>2015/03/07 11:09:36.639.pas,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.pas=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_Tipo_Foto.pas</Transaction>
+    <Transaction>2015/03/07 11:09:36.639.dfm,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.dfm=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_Tipo_Foto.dfm</Transaction>
+    <Transaction>2015/03/08 15:02:20.852.pas,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.pas=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_tipo_documento.pas</Transaction>
+    <Transaction>2015/03/08 15:02:20.852.dfm,F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_situacao_produto.dfm=F:\CLIENTES\AMVSytem\AMVSystem\form_cadastro_tipo_documento.dfm</Transaction>
+    <Transaction>2015/04/22 22:09:11.757.pas,F:\AMVSystem\AMVSystem\form_cadastro_Tipo_Foto.pas=F:\AMVSystem\AMVSystem\form_cadastro_banco.pas</Transaction>
+    <Transaction>2015/04/22 22:09:11.757.dfm,F:\AMVSystem\AMVSystem\form_cadastro_Tipo_Foto.dfm=F:\AMVSystem\AMVSystem\form_cadastro_banco.dfm</Transaction>
+    <Transaction>2015/05/21 19:05:44.071.pas,G:\AMVSystem\form_cadastro_preferencia.pas=G:\AMVSystem\form_cadastro_pedido_agenda.pas</Transaction>
+    <Transaction>2015/05/21 19:05:44.071.dfm,G:\AMVSystem\form_cadastro_preferencia.dfm=G:\AMVSystem\form_cadastro_pedido_agenda.dfm</Transaction>
+    <Transaction>2015/05/25 20:16:19.542.pas,C:\Projetos\AMVSystem\form_cadastro_banco.pas=C:\Projetos\AMVSystem\form_cadastro_Evento.pas</Transaction>
+    <Transaction>2015/05/25 20:16:19.542.dfm,C:\Projetos\AMVSystem\form_cadastro_banco.dfm=C:\Projetos\AMVSystem\form_cadastro_Evento.dfm</Transaction>
+    <Transaction>2015/05/25 20:35:57.103.pas,C:\Projetos\AMVSystem\form_cadastro_Evento.pas=C:\Projetos\AMVSystem\form_cadastro_Tipo_Convidado.pas</Transaction>
+    <Transaction>2015/05/25 20:35:57.103.dfm,C:\Projetos\AMVSystem\form_cadastro_Evento.dfm=C:\Projetos\AMVSystem\form_cadastro_Tipo_Convidado.dfm</Transaction>
+    <Transaction>2015/05/27 13:03:05.881.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untAcompanhaPedidoAgenda.pas</Transaction>
+    <Transaction>2015/05/27 13:03:05.881.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untAcompanhaPedidoAgenda.dfm</Transaction>
+    <Transaction>2015/06/01 22:16:59.651.pas,C:\Projetos\AMVSystem\untFiltroFinanceiros.pas=</Transaction>
+    <Transaction>2015/06/01 22:16:59.651.dfm,C:\Projetos\AMVSystem\untFiltroFinanceiros.dfm=</Transaction>
+    <Transaction>2015/06/02 22:15:17.157.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untConsultaProdutos.pas</Transaction>
+    <Transaction>2015/06/02 22:15:17.157.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untConsultaProdutos.dfm</Transaction>
+    <Transaction>2015/06/11 20:23:44.423.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untARARAS.pas</Transaction>
+    <Transaction>2015/06/11 20:23:44.423.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untARARAS.dfm</Transaction>
+    <Transaction>2015/06/11 20:32:25.776.pas,C:\Projetos\AMVSystem\projeto\Unit2.pas=C:\Projetos\AMVSystem\untARARA.pas</Transaction>
+    <Transaction>2015/06/11 20:32:25.776.dfm,C:\Projetos\AMVSystem\projeto\Unit2.dfm=C:\Projetos\AMVSystem\untARARA.dfm</Transaction>
+    <Transaction>2015/06/15 12:40:37.775.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\unt.pas</Transaction>
+    <Transaction>2015/06/15 12:40:37.775.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\unt.dfm</Transaction>
+    <Transaction>2015/06/15 12:40:48.619.pas,C:\Projetos\AMVSystem\unt.pas=C:\Projetos\AMVSystem\untAgenda.pas</Transaction>
+    <Transaction>2015/06/15 12:40:48.619.dfm,C:\Projetos\AMVSystem\unt.dfm=C:\Projetos\AMVSystem\untAgenda.dfm</Transaction>
+    <Transaction>2015/06/16 20:07:31.319.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untCadastroAgenda.pas</Transaction>
+    <Transaction>2015/06/16 20:07:31.319.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untCadastroAgenda.dfm</Transaction>
+    <Transaction>2015/06/17 16:54:46.810.pas,C:\Projetos\AMVSystem\form_cadastro_perfil.pas=C:\Projetos\AMVSystem\form_cadastro_prospect.pas</Transaction>
+    <Transaction>2015/06/17 16:54:46.810.dfm,C:\Projetos\AMVSystem\form_cadastro_perfil.dfm=C:\Projetos\AMVSystem\form_cadastro_prospect.dfm</Transaction>
+    <Transaction>2015/06/19 18:58:19.832.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untAgendarPedido.pas</Transaction>
+    <Transaction>2015/06/19 18:58:19.832.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untAgendarPedido.dfm</Transaction>
+    <Transaction>2015/08/18 21:46:32.758.pas,C:\Projetos\AMVSystem\util\CardDAV.pas=</Transaction>
+    <Transaction>2015/08/18 21:46:34.354.pas,C:\Projetos\AMVSystem\util\CalDAV.pas=</Transaction>
+    <Transaction>2015/08/24 11:48:16.530.pas,C:\Projetos\AMVSystem\projeto\Unit1.pas=C:\Projetos\AMVSystem\untConfigSincronismo.pas</Transaction>
+    <Transaction>2015/08/24 11:48:16.530.dfm,C:\Projetos\AMVSystem\projeto\Unit1.dfm=C:\Projetos\AMVSystem\untConfigSincronismo.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

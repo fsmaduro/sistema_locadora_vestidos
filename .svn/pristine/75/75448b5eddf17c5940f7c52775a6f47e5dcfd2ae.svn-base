@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{655b410e-4500-4141-bec0-719788453ee4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>AMVSYSTEM.exe</DCC_DependencyCheckOutputName>
+    <MainSource>AMVSYSTEM.dpr</MainSource>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Define>DEBUG</DCC_Define>
+    <DCC_DcuOutput>C:\DCUProjetos</DCC_DcuOutput>
+    <DCC_ObjOutput>C:\DCUProjetos</DCC_ObjOutput>
+    <DCC_HppOutput>C:\DCUProjetos</DCC_HppOutput>
+    <DCC_DcpOutput>C:\DCUProjetos</DCC_DcpOutput>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters><Parameters Name="RunParams">/scr</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">False</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">0</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1046</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName"></VersionInfoKeys><VersionInfoKeys Name="FileDescription"></VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName"></VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">AMVSYSTEM.dpr</Source></Source><Language><Language Name="RootDir">C:\Arquivos de programas\Borland\Delphi7\Bin\</Language></Language></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="AMVSYSTEM.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\etiq.pas">
+      <DesignClass>TQuickRep</DesignClass>
+      <Form>qr_etiq</Form>
+    </DCCReference>
+    <DCCReference Include="..\etiq_conj.pas">
+      <DesignClass>TQuickRep</DesignClass>
+      <Form>qr_etiq_conj</Form>
+    </DCCReference>
+    <DCCReference Include="..\Ext.pas" />
+    <DCCReference Include="..\form_acesso_sistema.pas">
+      <Form>acesso_sistema</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_aguarde.pas">
+      <Form>frmAguarde</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_alterar_senha.pas">
+      <Form>alterar_senha</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_aniversariantes.pas">
+      <Form>AniversariantesDia</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_buscar_nome.pas">
+      <Form>buscar_nome</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Avaliacao.pas">
+      <Form>cadastro_Avaliacao</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_banco.pas">
+      <Form>cadastro_Banco</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_comunidade.pas">
+      <Form>cadastro_comunidade</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_dizimista.pas">
+      <Form>cadastro_dizimista</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Evento.pas">
+      <Form>cadastro_evento</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_forma_pagamento.pas">
+      <Form>cadastro_forma_pagamento</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_municipios.pas">
+      <Form>cadastro_municipios</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_pedido_agenda.pas">
+      <Form>cadastro_pedido_agenda</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_perfil.pas">
+      <Form>cadastro_perfil</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_preferencia.pas">
+      <Form>cadastro_preferencia</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_produto.pas">
+      <Form>cadastro_produto</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_prospect.pas">
+      <Form>cadastro_prospect</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_questionario.pas">
+      <Form>cadastro_questionario</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Servicos.pas">
+      <Form>cadastro_Tipo_Servicos</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_situacao_produto.pas">
+      <Form>cadastro_situacao_produto</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Tipo_Convidado.pas">
+      <Form>cadastro_tipo_convidado</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_tipo_documento.pas">
+      <Form>cadastro_tipo_documento</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Tipo_Foto.pas">
+      <Form>cadastro_Tipo_Foto</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Tipo_Manequim.pas">
+      <Form>cadastro_Tipo_Manequim</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_Tipo_Perfil.pas">
+      <Form>cadastro_Tipo_Perfil</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_cadastro_usuarios.pas">
+      <Form>cadastro_usuarios</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_carregar_Foto.pas">
+      <Form>carregar_Foto</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_configuracoes.pas">
+      <Form>frmConfiguracoes</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_escolha.pas">
+      <Form>EscolhaUniversal</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_inserir_avaliacao.pas">
+      <Form>inserir_avaliacao</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_inserir_manequim.pas">
+      <Form>inserir_manequim</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_inserir_preferencias.pas">
+      <Form>inserir_preferencias</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_principal.pas">
+      <Form>principal</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_valor_universal.pas">
+      <Form>Valor_Universal</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_valor_universal_BD.pas">
+      <Form>Valor_Universal_BD</Form>
+    </DCCReference>
+    <DCCReference Include="..\form_visualizar_historico.pas">
+      <Form>visualizar_historico</Form>
+    </DCCReference>
+    <DCCReference Include="..\funcao.pas" />
+    <DCCReference Include="..\untAcompanhaContrato.pas">
+      <Form>frmAcompanhaContrato</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaFinanceiro.pas">
+      <Form>frmAcompanhaFinanceiro</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaHistoricoProduto.pas">
+      <Form>frmAcompanhaHistoricoProduto</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaOrcamento.pas">
+      <Form>frmAcompanhaOrcamento</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaOrdemServico.pas">
+      <Form>frmAcompanhaOrdemServico</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaPedidoAgenda.pas">
+      <Form>frmAcompanhaPedidoAgenda</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAcompanhaPrevistoRealizado.pas">
+      <Form>frmAcompanhaPrevistoRealizado</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAgenda.pas">
+      <Form>frmAgenda</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAgendarPedido.pas">
+      <Form>frmAgendarPedido</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAgendasDia.pas">
+      <Form>frmAgendasDia</Form>
+    </DCCReference>
+    <DCCReference Include="..\untaniversariante.pas">
+      <Form>frmAniversariante</Form>
+    </DCCReference>
+    <DCCReference Include="..\untApuracaoMensal.pas">
+      <Form>frmApuracaoMensal</Form>
+    </DCCReference>
+    <DCCReference Include="..\untARARA.pas">
+      <Form>frmARARA</Form>
+    </DCCReference>
+    <DCCReference Include="..\untARARAS.pas">
+      <Form>frmARARAS</Form>
+    </DCCReference>
+    <DCCReference Include="..\untArarasAgenda.pas">
+      <Form>frmArarasAgenda</Form>
+    </DCCReference>
+    <DCCReference Include="..\untAtendimento.pas">
+      <Form>frmAtendimento</Form>
+    </DCCReference>
+    <DCCReference Include="..\untBackup.pas">
+      <Form>frmBackup</Form>
+    </DCCReference>
+    <DCCReference Include="..\untCadastroAgenda.pas">
+      <Form>frmCadastroAgenda</Form>
+    </DCCReference>
+    <DCCReference Include="..\untCadastroCentroCusto.pas">
+      <Form>frmCadastroCentroCusto</Form>
+    </DCCReference>
+    <DCCReference Include="..\untCadastroExplicacao.pas">
+      <Form>frmCadastroExplicacao</Form>
+    </DCCReference>
+    <DCCReference Include="..\untCadastroPlanoContas.pas">
+      <Form>frmCadastroPlanoContas</Form>
+    </DCCReference>
+    <DCCReference Include="..\untClasseLembrete.pas" />
+    <DCCReference Include="..\untConfigPesquisa.pas">
+      <Form>frmConfigPesquisa</Form>
+    </DCCReference>
+    <DCCReference Include="..\untConfigSincronismo.pas">
+      <Form>frmConfigSincronismo</Form>
+    </DCCReference>
+    <DCCReference Include="..\untConsultaProdutos.pas">
+      <Form>frmConsultaProdutos</Form>
+    </DCCReference>
+    <DCCReference Include="..\untContrato.pas">
+      <Form>frmContrato</Form>
+    </DCCReference>
+    <DCCReference Include="..\untContratoTerceiros.pas">
+      <Form>frmContratoTerceiros</Form>
+    </DCCReference>
+    <DCCReference Include="..\untDados.pas">
+      <Form>Dados</Form>
+      <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
+    <DCCReference Include="..\untDtmRelatorios.pas">
+      <Form>frmDtmRelatorios</Form>
+    </DCCReference>
+    <DCCReference Include="..\untFiltroLog.pas">
+      <Form>frmFiltroLog</Form>
+    </DCCReference>
+    <DCCReference Include="..\untFinanceiro.pas">
+      <Form>frmFinanceiro</Form>
+    </DCCReference>
+    <DCCReference Include="..\untNotificacoes.pas">
+      <Form>frmNotificacoes</Form>
+    </DCCReference>
+    <DCCReference Include="..\untOrcamento.pas">
+      <Form>frmOrcamento</Form>
+    </DCCReference>
+    <DCCReference Include="..\untOrdemServico.pas">
+      <Form>frmOrdemServico</Form>
+    </DCCReference>
+    <DCCReference Include="..\untPesquisa.pas">
+      <Form>frmPesquisa</Form>
+    </DCCReference>
+    <DCCReference Include="..\untPrevisaoOrcamento.pas">
+      <Form>frmPrevisaoOrcamento</Form>
+    </DCCReference>
+    <DCCReference Include="..\untRelLog.pas">
+      <Form>frmRelLog</Form>
+    </DCCReference>
+    <DCCReference Include="untAbertura.pas">
+      <Form>frmAbertura</Form>
+    </DCCReference>
+  </ItemGroup>
+</Project>

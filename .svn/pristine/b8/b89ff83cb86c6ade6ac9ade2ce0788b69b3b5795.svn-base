@@ -1,0 +1,208 @@
+unit untAcompanhaHistoricoProduto;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, cxStyles, dxSkinsCore, dxSkinsDefaultPainters, dxSkinscxPCPainter,
+  cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, DB,
+  cxDBData, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxGDIPlusClasses, ExtCtrls, IBCustomDataSet, IBQuery, RxLookup, StdCtrls,
+  wwdbdatetimepicker, Menus, cxLookAndFeelPainters, cxButtons, cxCheckBox,
+  cxGridExportLink, ShellAPI, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd,
+  dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns,
+  dxPSCore, dxPScxCommon, dxPScxGrid6Lnk, DBCtrls;
+
+type
+  TfrmAcompanhaHistoricoProduto = class(TForm)
+    Panel1: TPanel;
+    Image1: TImage;
+    Panel2: TPanel;
+    dtsPerfil: TDataSource;
+    qryPerfil: TIBQuery;
+    qryPerfilCODIGO: TIntegerField;
+    qryPerfilNOME: TIBStringField;
+    cxButton2: TcxButton;
+    cxButton3: TcxButton;
+    cxButton5: TcxButton;
+    qryRegistros: TIBQuery;
+    dtsRegistros: TDataSource;
+    Panel3: TPanel;
+    grdPainel: TcxGrid;
+    grdPainelDBTableView1: TcxGridDBTableView;
+    grdPainelLevel1: TcxGridLevel;
+    Panel4: TPanel;
+    cxButton4: TcxButton;
+    Panel6: TPanel;
+    DBText1: TDBText;
+    Panel5: TPanel;
+    qryRegistrosDATAHORAINICIO: TDateTimeField;
+    qryRegistrosDATAHORAFINAL: TDateTimeField;
+    qryRegistrosTIPO: TIntegerField;
+    qryRegistrosCODIGOCLIENTE: TIntegerField;
+    qryRegistrosNOMECLIENTE: TIBStringField;
+    qryRegistrosCODIGOPRODUTO: TIntegerField;
+    qryRegistrosNOMEPRODUTO: TIBStringField;
+    qryRegistrosCODIGOREGISTRO: TIntegerField;
+    qryRegistrosOBSERVACOES: TMemoField;
+    grdPainelDBTableView1DATAHORAINICIO: TcxGridDBColumn;
+    grdPainelDBTableView1DATAHORAFINAL: TcxGridDBColumn;
+    grdPainelDBTableView1NOMETIPO: TcxGridDBColumn;
+    grdPainelDBTableView1NOMECLIENTE: TcxGridDBColumn;
+    grdPainelDBTableView1CODIGOPRODUTO: TcxGridDBColumn;
+    grdPainelDBTableView1NOMEPRODUTO: TcxGridDBColumn;
+    grdPainelDBTableView1CODIGOREGISTRO: TcxGridDBColumn;
+    grdPainelDBTableView1OBSERVACOES: TcxGridDBColumn;
+    qryRegistrosDATAINICIO: TDateField;
+    qryRegistrosDATAFIM: TDateField;
+    Label27: TLabel;
+    cbPerfil: TRxDBLookupCombo;
+    edtDtInicial: TwwDBDateTimePicker;
+    Label38: TLabel;
+    edtDtFinal: TwwDBDateTimePicker;
+    Label1: TLabel;
+    cxButton1: TcxButton;
+    qryRegistrosNOMETIPO: TIBStringField;
+    procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure qryRegistrosBeforeOpen(DataSet: TDataSet);
+    procedure cxButton1Click(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure Configuraes1Click(Sender: TObject);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
+  private
+    vDiasUrgente, vDiasAlerta, vDiasMuitoUrgente: Integer;
+    function Filtro(): String;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcompanhaHistoricoProduto: TfrmAcompanhaHistoricoProduto;
+
+implementation
+
+uses untdados, untDtmRelatorios, Funcao, untAcompanhaPedidoAgenda, untAgenda,
+  untContrato, untOrdemServico;
+
+const NomeMenu = 'HistricoProduto1';
+
+{$R *.dfm}
+
+procedure TfrmAcompanhaHistoricoProduto.FormActivate(Sender: TObject);
+begin
+  Try
+    dados.Log(1,copy(Caption,17,length(Caption)));
+  except
+  End;
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.Configuraes1Click(Sender: TObject);
+begin
+ dados.ShowConfig(frmAcompanhaHistoricoProduto);
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.cxButton1Click(Sender: TObject);
+begin
+  qryRegistros.Close;
+  qryRegistros.Open;
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.cxButton2Click(Sender: TObject);
+begin
+  ImprimirGrid(grdPainel,'Painel de Histórico de Produtos');
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.cxButton3Click(Sender: TObject);
+begin
+  ExportarGrid(grdPainel);
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.cxButton4Click(Sender: TObject);
+begin
+  Case qryRegistrosTIPO.AsInteger of
+  
+    1: begin
+
+         if Application.FindComponent('frmAgenda') = nil then
+           Application.CreateForm(TfrmAgenda, frmAgenda);
+
+         frmAgenda.Show;
+
+         frmAgenda.edtDtInicial.Date := qryRegistrosDATAINICIO.AsDateTime;
+         frmAgenda.edtDtFinal.Date := qryRegistrosDATAINICIO.AsDateTime;
+         frmAgenda.cxButton1.Click;
+
+         frmAgenda.cxScheduler1.GoToDate(qryRegistrosDATAINICIO.AsDateTime);
+
+       end;
+
+    2: begin
+         if Application.FindComponent('frmContrato') = Nil then
+           Application.CreateForm(TfrmContrato, frmContrato);
+
+         frmContrato.Show;
+
+         frmContrato.qryContrato.Locate('CODIGO',qryRegistrosCODIGOREGISTRO.AsInteger,[]);
+       end;
+
+    3: begin
+         if Application.FindComponent('frmOrdemServico') = Nil then
+           Application.CreateForm(TfrmOrdemServico, frmOrdemServico);
+
+         frmOrdemServico.pubCodigo := qryRegistrosCODIGOREGISTRO.AsInteger;
+
+         frmOrdemServico.Show;
+       end;
+  End;
+
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.cxButton5Click(Sender: TObject);
+begin
+  Close;
+end;
+
+function TfrmAcompanhaHistoricoProduto.Filtro(): String;
+var
+  vFiltro : String;
+  vCampoData : String;
+begin
+  if cbPerfil.KeyValue > 0 then
+    vFiltro := vFiltro + ' and CODIGOCLIENTE = '+VarToStr(cbPerfil.KeyValue);
+
+  if (edtDtInicial.Text <> '') and (edtDtFinal.Text <> '') then
+    vFiltro := vFiltro + ' and DATAINICIO between '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial.Date))+' and '+
+                 QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal.Date))
+  else if (edtDtInicial.Text <> '')  then
+    vFiltro := vFiltro + ' and DATAINICIO >= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtInicial.Date))
+  else if (edtDtFinal.Text <> '')  then
+    vFiltro := vFiltro + ' and DATAINICIO <= '+QuotedStr(FormatDateTime('mm/dd/yyyy', edtDtFinal.Date));
+
+  result := vFiltro;
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.FormShow(Sender: TObject);
+begin
+  TOP := 122;
+  LEFT := 0;
+  try
+    qryPerfil.Close;
+    qryPerfil.Open;
+  except
+    on E:Exception do
+      application.MessageBox(Pchar('Erro ao abrir consulta com banco de dados'+E.message),'ERRO',mb_OK+MB_ICONERROR);
+  end;
+end;
+
+procedure TfrmAcompanhaHistoricoProduto.qryRegistrosBeforeOpen(DataSet: TDataSet);
+begin
+  qryRegistros.SQL.Strings[qryRegistros.SQL.IndexOf('--AND')+1] := Filtro();
+end;
+
+end.

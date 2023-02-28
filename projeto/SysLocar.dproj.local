@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/10/24 19:47:44.150.pas,C:\Projetos\AMVSystem\form_cadastro_Tipo_Foto.pas=C:\Projetos\AMVSystem\form_cadastro_localizacao.pas</Transaction>
+    <Transaction>2016/10/24 19:47:44.150.dfm,C:\Projetos\AMVSystem\form_cadastro_Tipo_Foto.dfm=C:\Projetos\AMVSystem\form_cadastro_localizacao.dfm</Transaction>
+    <Transaction>2017/05/04 19:39:12.611.pas,C:\Projetos\SysLocar\projeto\Unit1.pas=C:\Projetos\SysLocar\untControleVersao.pas</Transaction>
+    <Transaction>2017/05/04 20:01:16.974.pas,C:\Projetos\SysLocar\projeto\Unit1.pas=C:\Projetos\SysLocar\versao.pas</Transaction>
+    <Transaction>2017/05/08 22:14:43.545.pas,C:\Projetos\SysLocar\projeto\Unit1.pas=C:\Projetos\SysLocar\untInfVersao.pas</Transaction>
+    <Transaction>2017/05/08 22:14:43.545.dfm,C:\Projetos\SysLocar\projeto\Unit1.dfm=C:\Projetos\SysLocar\untInfVersao.dfm</Transaction>
+    <Transaction>2017/05/09 18:40:48.225.pas,C:\Projetos\SysLocar\form_cadastro_comunidade.pas=</Transaction>
+    <Transaction>2017/05/09 18:40:48.225.dfm,C:\Projetos\SysLocar\form_cadastro_comunidade.dfm=</Transaction>
+    <Transaction>2017/05/09 18:40:56.526.pas,C:\Projetos\SysLocar\form_cadastro_dizimista.pas=</Transaction>
+    <Transaction>2017/05/09 18:40:56.526.dfm,C:\Projetos\SysLocar\form_cadastro_dizimista.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

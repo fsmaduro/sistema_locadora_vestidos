@@ -1,0 +1,167 @@
+unit untPesquisa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Buttons, ExtCtrls, StdCtrls, Grids, DBGrids, DB, IBCustomDataSet,
+  IBQuery, untDados, Funcao;
+
+type
+  TfrmPesquisa = class(TForm)
+    DBGrid1: TDBGrid;
+    qryPesquisar: TIBQuery;
+    dtsPesquisar: TDataSource;
+    Panel3: TPanel;
+    Edit1: TEdit;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    cmbFiltro: TComboBox;
+    Panel4: TPanel;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    procedure Edit1Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
+    procedure ft1KeyPress(Sender: TObject; var Key: Char);
+    procedure cmbFiltroExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPesquisa: TfrmPesquisa;
+  nome_tabela,
+  Campo_Codigo,
+  Campo_Nome,
+  Nome_Campo_Codigo,
+  Nome_Campo_Nome: String;
+  Resultado: Integer;
+  Resultado2 : String;
+
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmPesquisa.cmbFiltroExit(Sender: TObject);
+begin
+  Edit1Change(Self);
+end;
+
+procedure TfrmPesquisa.DBGrid1DblClick(Sender: TObject);
+begin
+  SpeedButton1.Click;
+end;
+
+procedure TfrmPesquisa.Edit1Change(Sender: TObject);
+begin
+  try
+    if Edit1.Text <> '' then
+    begin
+      Screen.Cursor := crHourGlass;
+      qryPesquisar.SQL.Text :=
+        'Select '+Campo_Codigo+' "'+Nome_Campo_Codigo+'", Upper('+Campo_Nome+') "'+Nome_Campo_Nome+'"'+
+        ' From ' + nome_tabela +
+        iif(cmbFiltro.ItemIndex = 0,' Where (Upper('+Campo_Nome+') Like :Consulta) ',' Where '+Campo_Codigo+' Like :Consulta')+
+        ' ORDER BY '+iif(cmbFiltro.ItemIndex = 0,Campo_Nome, Campo_Codigo);
+      qryPesquisar.ParamByName('Consulta').AsString := '%' + Edit1.Text + '%';
+
+      qryPesquisar.Open;
+
+      Screen.Cursor := crDefault;
+    end
+    else
+    begin
+      qryPesquisar.sql.Text :=
+        'Select '+Campo_Codigo+' "'+Nome_Campo_Codigo+'", Upper('+Campo_Nome+') "'+Nome_Campo_Nome+'"'+
+        ' From ' + nome_tabela + ' ORDER BY '+iif(cmbFiltro.ItemIndex = 0,Campo_Nome, Campo_Codigo);
+      qryPesquisar.Open;
+    end;
+  except
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmPesquisa.FormShow(Sender: TObject);
+begin
+  TOP := 0;
+  LEFT := 124;
+  Edit1.Clear;
+  qryPesquisar.sql.Text :=
+      'Select '+Campo_Codigo+' "'+Nome_Campo_Codigo+'", Upper('+Campo_Nome+') "'+Nome_Campo_Nome+'"'+
+      ' From ' + nome_tabela + ' ORDER BY '+iif(cmbFiltro.ItemIndex = 0,Campo_Nome, Campo_Codigo);
+  qryPesquisar.Open;
+  edit1.SetFocus;
+end;
+
+procedure TfrmPesquisa.SpeedButton1Click(Sender: TObject);
+begin
+
+   try
+     Resultado := qryPesquisar.FieldByName(Nome_Campo_Codigo).AsInteger;
+   except
+     Resultado2 := qryPesquisar.FieldByName(Nome_Campo_Codigo).Text;
+   end;
+
+   close;
+end;
+
+procedure TfrmPesquisa.SpeedButton2Click(Sender: TObject);
+begin
+  Resultado := 0;
+  Resultado2 := '';
+  Close;
+end;
+
+procedure TfrmPesquisa.DBGrid1TitleClick(Column: TColumn);
+var
+  order : String;
+begin
+  try
+    if Column.FieldName = 'Código' then
+      order := '1'
+    else
+      order := '2';
+    if Edit1.Text <> '' then
+    begin
+      Screen.Cursor := crHourGlass;
+      qryPesquisar.SQL.Text :=
+        'Select '+Campo_Codigo+' "'+Nome_Campo_Codigo+'", Upper('+Campo_Nome+') "'+Nome_Campo_Nome+'"'+
+        ' From ' + nome_tabela +
+        iif(cmbFiltro.ItemIndex = 0,' Where (Upper('+Campo_Nome+') Like :Consulta) ',' Where '+Campo_Codigo+' Like :Consulta')+
+        ' ORDER BY '+iif(cmbFiltro.ItemIndex = 0,Campo_Nome, Campo_Codigo);
+      qryPesquisar.ParamByName('Consulta').AsString := '%' + Edit1.Text + '%';
+
+      qryPesquisar.Open;
+
+      Screen.Cursor := crDefault;
+    end
+    else
+    begin
+      qryPesquisar.sql.Text :=
+        'Select '+Campo_Codigo+' "'+Nome_Campo_Codigo+'", Upper('+Campo_Nome+') "'+Nome_Campo_Nome+'"'+
+        ' From ' + nome_tabela + ' ORDER BY '+order;
+      qryPesquisar.Open;
+    end;
+  except
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmPesquisa.ft1KeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then
+    SpeedButton1Click(Self);
+
+  if cmbFiltro.itemindex = 1 then
+    if not (Key in ['0'..'9', #8]) then
+      Key := #0;
+end;
+
+end.

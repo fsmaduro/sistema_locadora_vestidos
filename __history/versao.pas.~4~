@@ -1,0 +1,33 @@
+unit versao;
+
+interface
+
+uses untControleVersao, funcao;
+
+   Procedure Inicializar();
+   Procedure Versionar();
+
+   procedure VR_1_0_0_2();
+
+implementation
+
+var
+   ControleVersao: TControleVersao;
+
+Procedure Inicializar();
+begin
+  ControleVersao := TControleVersao.Create(nil);
+end;
+
+Procedure Versionar();
+begin
+   VR_1_0_0_2();
+end;
+
+procedure VR_1_0_0_2();
+const cVersao = '1.0.0.2';
+begin
+   ControleVersao.AddAlteracao(cVersao,'')
+end;
+
+end.

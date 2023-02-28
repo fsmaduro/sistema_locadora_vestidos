@@ -1,0 +1,21 @@
+     Fundo de tela: $00C4FFFF
+Campos em destaque: $0093FFFF
+            Campos: $00D2FFFF
+     Barra Lateral: $0097FFFF
+
+     Topo Destaque: $0000F4F4
+
+   Capt Cód Painel: $0000DDDD
+  Label Cód Painel: clYellow
+
+Const
+  cCaption = 'CADASTRO DE AVALIAÇÃO';
+
+procedure Tcadastro_Avaliacao.FormCreate(Sender: TObject);
+begin
+  NomeMenu := 'Avaliao1';
+  CarregarImagem(Image1,'topo_painel.png');
+  Caption := CaptionTela(cCaption);
+end;
+
+ a.codigoagenda

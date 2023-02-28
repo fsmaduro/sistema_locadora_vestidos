@@ -1,0 +1,101 @@
+unit untMalaDireta;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, RxLookup, DB, IBCustomDataSet, IBQuery, Menus,
+  cxLookAndFeelPainters, cxButtons, untClasseLembrete, ACBrBase, ACBrSMS;
+
+type
+  TfrmMalaDireta = class(TForm)
+    Panel1: TPanel;
+    GroupBox1: TGroupBox;
+    mmLog: TMemo;
+    qryTipoPerfil: TIBQuery;
+    IntegerField1: TIntegerField;
+    qryTipoPerfilDESCRICAO: TIBStringField;
+    qryTipoPerfilTIPO: TIntegerField;
+    dtsTipoPerfil: TDataSource;
+    Label15: TLabel;
+    cbTipoPerfil: TRxDBLookupCombo;
+    qrySituacao: TIBQuery;
+    qrySituacaoCODIGO: TIntegerField;
+    qrySituacaoDESCRICAO: TIBStringField;
+    qrySituacaoAPLICACAO: TIntegerField;
+    qrySituacaoOPERACAO: TIntegerField;
+    qrySituacaoDIASREAVALIACAO: TIntegerField;
+    dtsSituacao: TDataSource;
+    Label45: TLabel;
+    cbStatus: TRxDBLookupCombo;
+    chbSMS: TCheckBox;
+    chbEmail: TCheckBox;
+    Label1: TLabel;
+    mmMensagem: TMemo;
+    btnIniciar: TcxButton;
+    ACBrSMS1: TACBrSMS;
+    IBQuery1: TIBQuery;
+    procedure FormShow(Sender: TObject);
+    procedure btnIniciarClick(Sender: TObject);
+  private
+    NotifX : Lembrete;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMalaDireta: TfrmMalaDireta;
+
+implementation
+
+uses untdados;
+
+{$R *.dfm}
+
+procedure TfrmMalaDireta.btnIniciarClick(Sender: TObject);
+var
+  lFiltro: String;
+begin
+  if not assigned(NotifX) then
+    NotifX := Lembrete.Create(True,frmMalaDireta,nil,IBQuery1,ACBrSMS1,mmLog,'00:00:10');
+
+  lFiltro := ' 1=1';
+
+  if cbTipoPerfil.KeyValue > 0 then
+     lFiltro := lFiltro + ' and CODIGOTIPOPERFIL = '+IntToStr(cbTipoPerfil.KeyValue);
+
+  if cbStatus.KeyValue > 0 then
+     lFiltro := lFiltro + ' and CODIGOSITUACAO = '+IntToStr(cbStatus.KeyValue);
+
+  if btnIniciar.Tag = 0 then
+     begin
+     mmLog.Clear;
+     NotifX.EnviarSMSMalaDireta := chbSMS.Checked;
+     NotifX.EnviarEmailMalaDireta := chbEmail.Checked;
+     NotifX.FiltroMalaDireta := lFiltro;
+     NotifX.MensagemMalaDireta := mmMensagem.Text;
+     NotifX.EnviarMalaDireta := True;
+     NotifX.Resume;
+     btnIniciar.Tag := 1;
+     btnIniciar.Caption := 'Sustender Envio';
+     end
+  else
+     begin
+     NotifX.Suspend;
+     btnIniciar.Tag := 0;
+     btnIniciar.Caption := 'Iniciar Envio';
+     end;
+
+end;
+
+procedure TfrmMalaDireta.FormShow(Sender: TObject);
+begin
+   qryTipoPerfil.Open;
+   qrySituacao.Open;
+
+   btnIniciar.Tag := 0;
+   btnIniciar.Caption := 'Iniciar Envio';
+end;
+
+end.

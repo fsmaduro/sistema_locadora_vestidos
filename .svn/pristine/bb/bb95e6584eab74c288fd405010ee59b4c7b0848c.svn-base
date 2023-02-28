@@ -1,0 +1,936 @@
+unit untClasseLembrete;
+
+interface
+
+uses
+  Classes, Windows, Messages, SysUtils, Variants, Controls, Forms,
+  Dialogs,ExtCtrls, IBQuery, db, untDados, ACBrSMS, IniFiles, ACBrSMSClass, funcao,
+
+  IdBaseComponent, IdMessage, IdComponent, IdTCPConnection, IdTCPClient,
+  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP, IdAttachmentFile, IdSASL,
+  IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL, IdIOHandlerStack, IdSSL, IdText,
+  IdSASLUserPass, IdSASLLogin,
+
+  IdReplySMTP,  IdEMailAddress, IdSASL_CRAM_MD5, IdUserPassProvider, IdSASLSKey,
+  IdAntiFreezeBase, IdAntiFreeze, IdSASLPlain, IdSASLOTP, IdSASLExternal,
+  IdSASLAnonymous, IdFtpCommon, IdCustomTransparentProxy, IdSocks;
+
+type
+  Lembrete = class(TThread)
+  private
+    _Form: TForm;
+    _Qry: TIBQuery;
+    _Panel: TPanel;
+    _SMS: TACBrSMS;
+
+    _Log: TStringList;
+
+    gIdSmtp: TIdSmtp; // conexao global de smtp, usada para mais de uma conexao simultanea e continua
+    gAutenticado: Boolean; // usada para saber se o usuario ja esta conectado e autenticado u nao no servidor
+    slArqHtml: TStringList;
+
+    vDiasAlertaPedido: Integer;
+    vLembrarAgenda    : Boolean;
+    vTempoLembrate    : TTime;
+    vLembrarAgendaSMS : Boolean;
+    vTempoLembrateSMS : TTime;
+    vModeloModem      : Integer;
+    vPortaModem       : String;
+    vVelocidadeModem  : Integer;
+    vTextoSMS         : TStringList;
+
+    vEnviarEmailAgenda: Boolean;
+    vEmail: String;
+    vAssunto: String;
+    vTexto: TStringList;
+    vUrlHtml: String;
+    vArquivo: String;
+    vSMTP: String;
+    vUsuarioID: String;
+    vSenha: String;
+    vResponderPara: String ;
+    vPorta: String;
+    vRequerAutenticacao: Boolean;
+    vUsarSSL: Boolean;
+    vMetodoSSL: integer;
+    vModoSSL: integer;
+    vUsarTipoTLS: integer;
+    vHost_Proxy: String;
+    vPorta_Proxy: String;
+    vUser_Proxy: String;
+    vSenha_Proxy: String;
+
+    vTextoOuHTML : integer;
+
+    procedure SetName;
+    function ProximoSinc(iNow: TTime; XTempo: String = '00:10:00'): TTime;
+    procedure EviarSMSAgendas;
+    Function AtivarModem: Boolean;
+    Function EnviarSMS(Numero: String; Texto: String): Boolean;
+    function EnviarEmailAutomatico( De: String;
+                                Para: String;
+                                ParaBcc: String;
+                                Assunto: String;
+                                Texto: String;
+                                TextoHtml: TStringList;
+                                Arquivo: String;
+                                SMTP: String;
+                                UsuarioID: String;
+                                Senha: String;
+                                ResponderPara: String = '';
+                                Porta: String = '587';
+                                RequerAutenticacao: Boolean = True;
+                                UsarSSL: Boolean = False;
+                                MetodoSSL: integer = 4;
+                                ModoSSL: integer = 1;
+                                UsarTipoTLS: integer = 1;
+                                Host_Proxy: String = '';
+                                Porta_Proxy: String = '';
+                                User_Proxy: String = '';
+                                Senha_Proxy: String = '';
+                                ManterConectado: Boolean = False;
+                                MsgLog: TStringList = nil): Boolean;
+
+    { Private declarations }
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(CreateSuspended: Boolean;
+                       Form: Tform;
+                       Panel : TPanel;
+                       Qry: TIBQuery;
+                       SMS: TACBrSMS);
+  end;
+
+type
+  TThreadNameInfo = record
+    FType: LongWord;     // must be 0x1000
+    FName: PChar;        // pointer to name (in user address space)
+    FThreadID: LongWord; // thread ID (-1 indicates caller thread)
+    FFlags: LongWord;    // reserved for future use, must be zero
+  end;
+
+implementation
+
+{ Important: Methods and properties of objects in visual components can only be
+  used in a method called using Synchronize, for example,
+
+      Synchronize(UpdateCaption);
+
+  and UpdateCaption could look like,
+
+    procedure Lembrete.UpdateCaption;
+    begin
+      Form1.Caption := 'Updated in a thread';
+    end; }
+
+{ Lembrete }
+
+procedure Lembrete.SetName;
+var
+  ThreadNameInfo: TThreadNameInfo;
+begin
+  ThreadNameInfo.FType := $1000;
+  ThreadNameInfo.FName := 'AutoExecute';
+  ThreadNameInfo.FThreadID := $FFFFFFFF;
+  ThreadNameInfo.FFlags := 0;
+
+  try
+    RaiseException( $406D1388, 0, sizeof(ThreadNameInfo) div sizeof(LongWord), @ThreadNameInfo );
+  except
+  end;
+end;
+
+constructor Lembrete.Create(CreateSuspended: Boolean;
+                       Form: TForm;
+                       Panel : TPanel;
+                       Qry: TIBQuery;
+                       SMS: TACBrSMS);
+begin
+  inherited Create (CreateSuspended);
+
+  _Form := Form;
+  _Panel := Panel;
+  _Qry := Qry;
+  _SMS := SMS;
+
+  _Log := TStringList.Create;
+
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+'LOG\') then
+    CreateDir(ExtractFilePath(Application.ExeName)+'LOG\');
+
+  vDiasAlertaPedido := Dados.ValorConfig('frmAcompanhaPedidoAgenda','DIASALERTA',30,tcInteiro).vcInteger;
+
+  vLembrarAgenda    := Dados.ValorConfig('principal','LEMBRARAGENDA',0,tcCheck).vcBoolean;
+
+  vTempoLembrate    := Dados.ValorConfig('principal','TempoLembrete',StrToTime('00:10:00'),tcHora).vcTime;
+
+  vLembrarAgendaSMS    := Dados.ValorConfig('principal','LEMBRARAGENDA_SMS',0,tcCheck).vcBoolean;
+
+  vTempoLembrateSMS    := Dados.ValorConfig('principal','TempoLembrete_SMS',StrToTime('23:59:00'),tcHora).vcTime;
+
+  vModeloModem      := Dados.ValorConfig('principal','MODELO_MODEM_SMS',0,tcCodigoLookup).vcInteger;
+
+  vPortaModem       := Dados.ValorConfig('principal','PORTA_MODEM_SMS','COM3',tcTexto).vcString;
+
+  vVelocidadeModem  := Dados.ValorConfig('principal','VELOCIDADE_MODEM_SMS',115200,tcInteiro).vcInteger;
+
+  vTextoSMS         := Dados.ValorConfig('principal','TEXTO_SMS','',tcMemo).vcMemo;
+
+  vEnviarEmailAgenda     := Dados.ValorConfig('principal','EMAIL_ENVIAR',0,tcCheck).vcBoolean;
+
+  vEmail                 := Dados.ValorConfig('principal','EMAIL_EMAIL','',tcTexto).vcString;
+
+  vAssunto               := Dados.ValorConfig('principal','EMAIL_ASSUNTO','',tcTexto).vcString;
+
+  vTextoOuHTML           := Dados.ValorConfig('principal','EMAIL_TEXTO_HTML',0,tcCodigoLookup).vcInteger;
+
+  vTexto                 := Dados.ValorConfig('principal','EMAIL_TEXTO','',tcMemo).vcMemo;
+
+  vURLHtml               := Dados.ValorConfig('principal','EMAIL_URL_HTML','',tcTexto).vcString;
+
+  vArquivo               := Dados.ValorConfig('principal','EMAIL_ARQUIVO','',tcTexto).vcString;
+
+  vSMTP                  := Dados.ValorConfig('principal','EMAIL_SMTP','',tcTexto).vcString;
+
+  vUsuarioID             := Dados.ValorConfig('principal','EMAIL_USUARIO_SMTP','',tcTexto).vcString;
+
+  vSenha                 := Dados.ValorConfig('principal','EMAIL_SENHA_SMTP','',tcTexto).vcString;
+
+  vResponderPara         := Dados.ValorConfig('principal','EMAIL_EMAIL_RESPOSTA','',tcTexto).vcString;
+
+  vPorta                 := Dados.ValorConfig('principal','EMAIL_PORTA_SMTP','584',tcTexto).vcString;
+
+  vRequerAutenticacao    := Dados.ValorConfig('principal','EMAIL_REQUER_AUTENTICACAO',True,tcCheck).vcBoolean;
+
+  vUsarSSL               := Dados.ValorConfig('principal','EMAIL_REQUER_AUTENTICACAO',False,tcCheck).vcBoolean;
+
+  vMetodoSSL             := Dados.ValorConfig('principal','EMAIL_METODO_SSL',4,tcCodigoLookup).vcInteger;
+
+  vModoSSL               := Dados.ValorConfig('principal','EMAIL_MODO_SSL',1,tcCodigoLookup,).vcInteger;
+
+  vUsarTipoTLS               := Dados.ValorConfig('principal','EMAIL_TIPO_TSL',1,tcCodigoLookup,).vcInteger;
+
+  vHost_Proxy                 := Dados.ValorConfig('principal','PROXY_HOST','',tcTexto).vcString;
+
+  vPorta_Proxy                := Dados.ValorConfig('principal','PROXY_PORTA','',tcTexto).vcString;
+
+  vUser_Proxy                 := Dados.ValorConfig('principal','PROXY_USUARIO','',tcTexto).vcString;
+
+  vSenha_Proxy                := Dados.ValorConfig('principal','PROXY_SENHA','',tcTexto).vcString;;
+
+
+
+  FreeOnTerminate := false;
+end;
+
+function Lembrete.ProximoSinc(iNow: TTime; XTempo: String = '00:10:00'): TTime;
+var
+  sTime: TTime;
+begin
+
+  sTime := StrToTimeDef(XTempo,0);
+
+  result := iNow + sTime;
+
+end;
+
+function Lembrete.AtivarModem: Boolean;
+begin
+  Result := True;
+  try
+    if not _SMS.Ativo then
+    begin
+      _SMS.Modelo       := TACBrSMSModelo(vModeloModem);
+      _SMS.Device.Porta := vPortaModem;
+      _SMS.Device.Baud  := vVelocidadeModem;
+      _SMS.Ativar;
+    end;
+  Except
+    on E: Exception do
+    begin
+      _Log.Add('Erro ao Ativar MODEL: '+e.Message);
+      Result := False;
+    end;
+  end;
+end;
+
+Function Lembrete.EnviarSMS(Numero: String; Texto: String): Boolean;
+var
+  IndiceMsgEnviada: String;
+begin
+  Result := True;
+  try
+
+    if not AtivarModem() then
+    begin
+      Result := False;
+      Exit;
+    end;
+
+//if frm'principal'.ACBrSMS1.BandejasSimCard > 1 then
+//  begin
+//    if rdgBandeja.ItemIndex = 0 then
+//      frm'principal'.ACBrSMS1.TrocarBandeja(simCard1)
+//    else
+//      frm'principal'.ACBrSMS1.TrocarBandeja(simCard2);
+//  end;
+
+    _SMS.QuebraMensagens := True;
+
+    _SMS.EnviarSMS(
+      Numero,
+      Texto,
+      IndiceMsgEnviada
+    );
+
+    _Log.Add(
+        '('+Numero+') '+
+        'Mensagem envida com sucesso. Indice: ' + IndiceMsgEnviada +
+        ' - Ultima resposta: ' +_SMS.UltimaResposta);
+
+    _SMS.Desativar;
+
+  except
+    on E: Exception do
+    begin
+      _Log.Add('('+Numero+') Erro ao Enviar SMS: '+e.Message);
+      _SMS.Desativar;
+      Result := False;
+    end;
+  end;
+end;
+
+procedure Lembrete.EviarSMSAgendas;
+var
+  xSL: TStringList;
+  i: Integer;
+  sLinha: String;
+  arrEnviados: Array of Integer;
+begin
+//  if not AtivarModem then
+//    Exit;
+
+  _Log.Clear;
+
+  SetLength(arrEnviados,0);
+
+  xSL := TStringList.Create;
+  try
+
+    _Qry.SQL.Text := 'Select '+
+                     ' a.codigo,p.nome,p.telcelular, a.data, a.hora '+
+                     ' from tabagenda a '+
+                     ' left join tabperfil p on a.idperfil = p.codigo '+
+                     ' where ((a.data < :DataFim) or ((a.data = :DataFim2) and (a.hora <= :HoraFim))) '+
+                     ' and a.data >= Current_Date '+
+                     ' and Coalesce(a.SMS_ENVIADO,0) = 0 '+
+                     ' and Coalesce(a.idpedidoagenda,0) > 0 ';
+    _Qry.ParamByName('DataFim').AsDateTime := ProximoSinc(now,FormatDateTime('hh:mm:ss',vTempoLembrateSMS));
+    _Qry.ParamByName('DataFim2').AsDateTime := ProximoSinc(now,FormatDateTime('hh:mm:ss',vTempoLembrateSMS));
+    _Qry.ParamByName('HoraFim').AsDateTime := ProximoSinc(now,FormatDateTime('hh:mm:ss',vTempoLembrateSMS));
+    _Qry.Open;
+
+    while not _Qry.Eof do
+    begin
+      xSl.Clear;
+
+      For i := 0 To vTextoSMS.Count - 1 do
+      begin
+        sLinha := vTextoSMS.Strings[i];
+        sLinha := TrocaAcentos(StringReplace(sLinha,'@@PERFIL@@',_Qry.FieldByName('Nome').Text,[rfReplaceAll,rfIgnoreCase]));
+        sLinha := TrocaAcentos(StringReplace(sLinha,'@@DATA@@',FormatDateTime('dd/MM/yyyy',_Qry.FieldByName('data').AsDateTime),[rfReplaceAll,rfIgnoreCase]));
+        sLinha := TrocaAcentos(StringReplace(sLinha,'@@HORA@@',FormatDateTime('hh:mm',_Qry.FieldByName('hora').AsDateTime),[rfReplaceAll,rfIgnoreCase]));
+        xSl.Add(sLinha);
+      end;
+
+      if EnviarSMS(_Qry.FieldByName('telcelular').Text,xSl.Text) then
+      begin
+        SetLength(arrEnviados,length(arrEnviados)+1);
+        arrEnviados[length(arrEnviados)-1] := _Qry.FieldByName('codigo').AsInteger;
+      end;
+
+      _Qry.Next;
+    end;
+
+    _Log.Add(IntToStr(Length(arrEnviados))+' Mensagens Enviadas');
+
+    try
+      For i := 0 to Length(arrEnviados) - 1 do
+      begin
+        _Qry.SQL.Text := 'update TABAGENDA set SMS_ENVIADO = 1 where codigo = :codigo';
+        _Qry.ParamByName('codigo').AsInteger := arrEnviados[i];
+        _Qry.ExecSQL;
+        _Qry.Transaction.CommitRetaining;
+      end;
+    Except
+      on E: Exception do
+        _Log.Add('Erro ao Gravar no Banco: '+e.Message);
+    end;
+
+  finally
+    _Log.SaveToFile(ExtractFilePath(Application.ExeName)+'LOG\SMS'+FormatDateTime('ddMMyyyyhhmmss', now)+'.txt');
+    FreeAndNil(xSL);
+  end;
+end;
+
+function Lembrete.EnviarEmailAutomatico( De: String;
+                                Para: String;
+                                ParaBcc: String;
+                                Assunto: String;
+                                Texto: String;
+                                TextoHtml: TStringList;
+                                Arquivo: String;
+                                SMTP: String;
+                                UsuarioID: String;
+                                Senha: String;
+                                ResponderPara: String = '';
+                                Porta: String = '587';
+                                RequerAutenticacao: Boolean = True;
+                                UsarSSL: Boolean = False;
+                                MetodoSSL: integer = 4;
+                                ModoSSL: integer = 1;
+                                UsarTipoTLS: integer = 1;
+                                Host_Proxy: String = '';
+                                Porta_Proxy: String = '';
+                                User_Proxy: String = '';
+                                Senha_Proxy: String = '';
+                                ManterConectado: Boolean = False;
+                                MsgLog: TStringList = nil): Boolean;
+var
+  arq: TextFile;
+  i: integer;
+  sNome, sEmail: string;
+  ListaArquivo: Array of String;
+  vIdMessage: TIdMessage;
+  TextoMsg: TIdText;
+  // enviar e-mail seguro
+  IdSSL: TIdSSLIOHandlerSocketOpenSSL;
+  IdSASLLog: TIdSASLLogin;
+  IdSASLMD5: TIdSASLCRAMMD5;
+  IdSASLKey: TIdSASLSKey;
+  IdSASLAnn: TIdSASLAnonymous;
+  IdSASLExt: TIdSASLExternal;
+  IdSASLOtp: TIdSASLOTP;
+  IdSASLPla: TIdSASLPlain;
+  IdUserPvd: TIdUserPassProvider;
+  IdIOHandlerSocket1 : TIdIOHandlerSocket;
+  IdSocksInfo1 : TIdSocksInfo;
+  // gravar log
+  viTentativasLogin: integer;
+  vsPara, vsParaBcc: string; // [RPB] 10/10/2013
+begin
+
+  if Assigned(MsgLog) then
+    MsgLog.Add('Iniciando configurações do servidor de e-mail: ' + Smtp);
+
+  Result := False;
+
+  if (UsuarioID = '') or
+     (Senha = '') or
+     (SMTP = '') or
+     (De = '') or
+     ((Para = '') and (ParaBcc = '')) then
+  begin
+    Exit;
+  end;
+
+  sNome  := ''; sEmail := '';
+
+  if (Pos('<', De) > 0) and (Pos('>', De) > 0) then
+  begin
+    sNome  := Trim(Copy(De, 1, Pos('<', De)-1));
+    sEmail := Trim(Copy(De, Pos('<', De)+1, Length(Copy(De, Pos('<', De)+1, Length(De)))-1));
+  end;
+
+  if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (01) do servidor de e-mail: ' + Smtp);
+
+  // o componente so sera criado se nao existir
+  if gIdSmtp = nil then
+    gIdSmtp := TIdSMTP.Create(nil)
+  ;
+
+  if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (02) do servidor de e-mail: ' + Smtp);
+
+  //gIdSmtp.OnStatus := DoStatusSmtp;
+  //gIdSmtp.OnFailedRecipient := OnStatusFalhaSmtp;
+
+  if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (03) do servidor de e-mail: ' + Smtp);
+
+  vIdMessage := TIdMessage.Create(nil);
+  IdSSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+
+  if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (04) do servidor de e-mail: ' + Smtp);
+
+  // mecanismos de seguranca usados no SSL
+  IdSASLLog := TIdSASLLogin.Create(nil);;
+  IdSASLMD5 := TIdSASLCRAMMD5.Create(nil);;
+  IdSASLKey := TIdSASLSKey.Create(nil);;
+  IdSASLAnn := TIdSASLAnonymous.Create(nil);;
+  IdSASLExt := TIdSASLExternal.Create(nil);;
+  IdSASLOtp := TIdSASLOTP.Create(nil);;
+  IdSASLPla := TIdSASLPlain.Create(nil);;
+
+  IdUserPvd := TIdUserPassProvider.Create(nil);
+
+  IdSocksInfo1 := TIdSocksInfo.create(nil);
+
+//  IdIOHandlerSocket1 := TIdIOHandlerSocket.Create(nil);
+
+  if Host_Proxy <> '' then
+  begin
+    IdIOHandlerSocket1.TransparentProxy:=IdSocksInfo1;
+    gIdSmtp.IOHandler := IdIOHandlerSocket1;
+    IdSocksInfo1.Host:= Host_Proxy; //the ip of the proxy
+    IdSocksInfo1.Port:= StrToIntDef(Porta_Proxy,80);
+    IdSocksInfo1.Username := User_Proxy;
+    IdSocksInfo1.Password := Senha_Proxy;
+  end;
+
+  try
+    if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (05) do servidor de e-mail: ' + Smtp);
+
+    // [RPB] 10/10/2013
+    Para := StringReplace(Para,',',';',[rfReplaceAll]);
+    ParaBcc := StringReplace(ParaBcc,',',';',[rfReplaceAll]);
+
+    vIdMessage.Recipients.Clear;
+    vIdMessage.CCList.Clear;
+    vIdMessage.FromList.Clear;
+
+    // se existir ";" na lista, o sistema registra todos os e-mails individualmente
+    // e nao todos na mesma linha como estava.
+    // Fazendo todos em uma linha quando ocorre o erro em um deles, o restante fica
+    // sem enviar.
+
+    if Assigned(MsgLog) then
+    MsgLog.Add('Conferindo parâmetros (06) do servidor de e-mail: ' + Smtp);
+
+    if (Copy(Para,1,1) = ';') then
+      Delete(Para,1,1);
+
+    if (Pos(';',Para)>0) then
+    begin
+      repeat
+        vsPara := Copy(Para,1,Pos(';',Para)-1);
+        if vsPara <> '' then
+        begin
+          vIdMessage.CCList.Add;
+          vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Address := vsPara; // Para quem vai
+          vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Name    := Copy(vsPara,1,Pos('@',vsPara)-1);
+          Delete(Para,1,Pos(';',Para)); // apaga o email anterior
+        end;
+      until Pos(';',Para) = 0;
+      // registra o ultimo e-mail, nao pego no bloco acima
+      if ((vsPara <> '') and (vsPara <> Para)) then
+      begin
+        vsPara := Para;
+        vIdMessage.CCList.Add;
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Address := vsPara; // Para quem vai
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Name    := Copy(vsPara,1,Pos('@',vsPara)-1);
+      end;
+    end
+    else
+      vIdMessage.Recipients.EMailAddresses := Para;
+
+    // [RPB] 10/10/2013
+    // monta lista de copias do e-mail
+
+    // se existir ";" na lista, o sistema registra todos os e-mails individualmente
+    // e nao todos na mesma linha como estava.
+    // Fazendo todos em uma linha quando ocorre o erro em um deles, o restante fica
+    // sem enviar.
+    if (Pos(';',ParaBcc)>0) then
+    begin
+      repeat
+        vsParaBcc := Copy(ParaBcc,1,Pos(';',ParaBcc)-1);
+        if vsParaBcc <> '' then
+        begin
+          vIdMessage.CCList.Add;
+          vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Address := vsParaBcc; // Para quem vai
+          vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Name    := Copy(vsParaBcc,1,Pos('@',vsParaBcc)-1);
+          Delete(ParaBcc,1,Pos(';',ParaBcc)); // apaga o email anterior
+        end;
+      until Pos(';',ParaBcc) = 0;
+      // registra o ultimo e-mail, nao pego no bloco acima
+      if ((vsParaBcc <> '') and (vsParaBcc <> ParaBcc)) then
+      begin
+        vsParaBcc := ParaBcc;
+        vIdMessage.CCList.Add;
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Address := vsParaBcc; // Para quem vai
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Name    := Copy(vsParaBcc,1,Pos('@',vsParaBcc)-1);
+      end;
+    end
+    else if (ParaBcc <> '') then
+      begin
+        vsParaBcc := ParaBcc;
+        vIdMessage.CCList.Add;
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Address := vsParaBcc; // Para quem vai
+        vIdMessage.CCList.Items[vIdMessage.CCList.Count-1].Name    := Copy(vsParaBcc,1,Pos('@',vsParaBcc)-1);
+      end;
+
+    if (vIdMessage.Recipients.Count = 0) then
+    begin
+      vIdMessage.Recipients.EMailAddresses := vIdMessage.CCList.Items[0].Address;
+      vIdMessage.CCList.Delete(0);
+    end;
+
+    if Assigned(MsgLog) then
+      MsgLog.Add('Conferindo parâmetros (07) do servidor de e-mail: ' + Smtp);
+
+    vIdMessage.FromList.Add;
+    vIdMessage.FromList.Items[0].Address := De;
+    if Trim(sNome) <> '' then
+      vIdMessage.FromList.Items[0].Name := sNome;
+
+    vIdMessage.From.Address := vIdMessage.From.Address;
+
+    vIdMessage.ReplyTo.Clear;
+    vIdMessage.ReplyTo.Add;
+    if ResponderPara <> '' then
+      vIdMessage.ReplyTo.Items[0].Address := ResponderPara
+    else
+      vIdMessage.ReplyTo.Items[0].Address := De;
+//    vIdMessage.ReplyTo.Items[0].Address := De; // quem recebe a mensagem de resposta
+    if Trim(sNome) <> '' then
+      vIdMessage.ReplyTo.Items[0].Name := vIdMessage.Recipients.Items[0].Name; // quem recebe a mensagem de resposta
+
+    vIdMessage.ReplyTo.EMailAddresses := vIdMessage.ReplyTo.EMailAddresses;
+
+    vIdMessage.Priority                  := mpHighest;
+    vIdMessage.Subject                   := Assunto;
+    vIdMessage.CharSet                   := 'iso-8859-1';
+    vIdMessage.Encoding                  := meMIME;
+    vIdMessage.ContentType               := 'multipart/mixed';
+
+    if Assigned(MsgLog) then
+      MsgLog.Add('Conferindo parâmetros (08) do servidor de e-mail: ' + Smtp);
+
+    if (Assigned(TextoHtml)) and (TextoHtml.Text <> '') then
+    begin
+      vIdMessage.Body.Assign(TextoHtml);
+      TextoMsg  := TidText.Create(vIdMessage.MessageParts, TextoHtml);
+      TextoMsg.ContentType := 'text/html';
+      TextoMsg.Body.Text   := TextoHtml.Text;
+    end
+    else
+      vIdMessage.Body.Text := Texto;
+
+    if Arquivo <> '' then
+    begin
+//      ListaArquivo:= TextoSplit(Arquivo, ';');
+      for i:= Low(ListaArquivo) to High(ListaArquivo) do
+      begin
+        TIdAttachmentFile.Create(vIdMessage.MessageParts, TFileName(ListaArquivo[i]));
+        //TIdAttachment.Create (vIdMessage.MessageParts,'c:\temp\arq.doc'); // Exemplo
+      end;
+    end;
+
+    if Assigned(MsgLog) then
+      MsgLog.Add('Conferindo parâmetros (09) do servidor de e-mail: ' + Smtp);
+
+    gIdSmtp.Host     := SMTP;
+    gIdSmtp.Username := UsuarioID;
+    gIdSmtp.Password := Senha;
+    gIdSmtp.Port     := StrToIntDef(iif(Porta = '', '587', Porta), 587);
+    gIdSmtp.ConnectTimeout := 20000;
+    gIdSmtp.ReadTimeout := 20000;
+
+    IdUserPvd.Username := gIdSmtp.Username;
+    IdUserPvd.Password := gIdSmtp.Password;
+
+    if Assigned(MsgLog) then
+      MsgLog.Add('Conferindo parâmetros (10) do servidor de e-mail: ' + Smtp);
+
+    // [RPB] 23/05/2013
+    // requer autenticacao
+    if RequerAutenticacao then
+      gIdSmtp.AuthType := atDefault
+    else
+      gIdSmtp.AuthType := atNone;
+
+    // [RPB] 27/05/2013
+    if UsarSSL then
+    begin
+      gIdSmtp.AuthType := atDefault;
+      gIdSmtp.IOHandler := IdSSL;
+      IdSASLLog.UserPassProvider := IdUserPvd;
+      IdSASLMD5.UserPassProvider := IdUserPvd;
+      IdSASLKey.UserPassProvider := IdUserPvd;
+      IdSASLOtp.UserPassProvider := IdUserPvd;
+      IdSASLPla.UserPassProvider := IdUserPvd;
+
+      gIdSmtp.SASLMechanisms.Clear;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLMD5;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLLog;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLKey;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLAnn;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLExt;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLOtp;
+      gIdSmtp.SASLMechanisms.Add.SASL := IdSASLPla;
+
+      // tipos de acesso a seguranca
+      // 1=utNoTLSSupport  2=utUseImplicitTLS  3=utUseRequireTLS  4=utUseExplicitTLS;
+      case UsarTipoTLS of
+        1: gIdSmtp.UseTLS := utNoTLSSupport;
+        2: gIdSmtp.UseTLS := utUseImplicitTLS;
+        3: gIdSmtp.UseTLS := utUseRequireTLS;
+        4: gIdSmtp.UseTLS := utUseExplicitTLS;
+      end;
+
+      IdSSL.Destination := gIdSmtp.Host+':'+IntToStr(gIdSmtp.Port);
+      IdSSL.Host := gIdSmtp.Host;
+      IdSSL.Port := gIdSmtp.Port;
+
+      // MetodoSSL: 1=sslvSSLv2  2=sslvSSLv23  3=sslvSSLv3  4=sslvTLSv1
+      case MetodoSSL of
+        1: IdSSL.SSLOptions.Method := sslvSSLv2;
+        2: IdSSL.SSLOptions.Method := sslvSSLv23;
+        3: IdSSL.SSLOptions.Method := sslvSSLv3;
+        4: IdSSL.SSLOptions.Method := sslvTLSv1;
+      end;
+
+      // ModoSSL: 1=sslmUnassigned  2=sslmClient  3=sslmServer  4=sslmBoth
+      case ModoSSL of
+        1: IdSSL.SSLOptions.Mode := sslmUnassigned;
+        2: IdSSL.SSLOptions.Mode := sslmClient;
+        3: IdSSL.SSLOptions.Mode := sslmServer;
+        4: IdSSL.SSLOptions.Mode := sslmBoth;
+      end;
+
+      IdSSL.SSLOptions.VerifyMode := [];
+      IdSSL.SSLOptions.VerifyDepth := 0;
+    end;
+
+    try
+      if Assigned(MsgLog) then
+        MsgLog.Add('Conectando servidor de e-mail: ' + Smtp);
+
+      try
+        if not gIdSmtp.Connected then
+        begin
+          viTentativasLogin := 1;
+          while not gIdSmtp.Connected do
+          begin
+            gIdSmtp.Connect;
+            if gIdSmtp.Connected then Continue;
+            if Assigned(MsgLog) then
+              MsgLog.Add('Não foi possível se conectar ao servidor. Tentando novamente: [ ' + IntToStr(viTentativasLogin) + '/3 ] ');
+            viTentativasLogin := viTentativasLogin + 1;
+            if viTentativasLogin > 3 then
+            begin
+              Result := False;
+              Exit;
+            end;
+          end;
+        end
+        else
+          Sleep(200); // tempo de espera para atualizar a conexao com o servidor
+      except
+        on E: Exception do
+        begin
+          if Assigned(MsgLog) then
+            MsgLog.Add('Erro de conexão ao servidor de e-mail: ' + Smtp);
+          if Assigned(MsgLog) then
+            MsgLog.Add( E.Message );
+          Result := False;
+          Exit;
+        end;
+      end;
+
+      // [RPB] 23/05/2013
+      if RequerAutenticacao then
+      begin
+        if Assigned(MsgLog) then
+        begin
+          MsgLog.Add('Autenticando usuário: ' + UsuarioId + ' no servidor de e-mail: ' + Smtp);
+          gAutenticado := gIdSmtp.Authenticate;
+        end;
+      end;
+
+      if gIdSmtp.Connected then
+        try
+          if Assigned(MsgLog) then
+            MsgLog.Add('Enviando e-mail, por favor aguarde um instante...');
+          gIdSmtp.Send(vIdMessage);
+          Result := True;
+          if Assigned(MsgLog) then
+            MsgLog.Add('E-Mail enviado com sucesso!');
+          Sleep(200);
+        except
+          on e:Exception do
+          begin
+            if Assigned(MsgLog) then
+            begin
+              MsgLog.Add('Falha ao tentar enviar E-Mail.');
+              MsgLog.Add( E.Message );
+            end;
+            Result := False;
+          end;
+        end
+      else
+      begin
+        Result := False;
+        if Assigned(MsgLog) then
+          MsgLog.Add('Não foi possível se conectar ao servidor de e-mail com as informações configuradas.');
+        Sleep(200);
+      end;
+
+    except
+      on E: Exception do
+      begin
+        if Assigned(MsgLog) then
+        begin
+          MsgLog.Add('Falha ao tentar enviar E-Mail.');
+          MsgLog.Add( E.Message );
+        end;
+        Result := False;
+      end;
+    end;
+  finally
+    // se for para manter conectado nao desconecta e nao libera
+    if not ManterConectado then
+    begin
+      if gIdSmtp.Connected then
+      begin
+        if Assigned(MsgLog) then
+          MsgLog.Add('Desconectando servidor: ' + Smtp);
+        gIdSmtp.Disconnect; // se conectado, desconecta
+      end;
+      FreeAndNil( gIdSmtp );
+    end
+    else
+    begin
+      if Assigned(MsgLog) then
+        MsgLog.Add('Conexao mantida no servidor: ' + Smtp);
+      Sleep(200);
+    end;
+
+    FreeAndNil( vIdMessage );
+    FreeAndNil( IdSSL );
+    FreeAndNil( IdSASLLog );
+    FreeAndNil( IdSASLMD5 );
+    FreeAndNil( IdSASLKey );
+    FreeAndNil( IdSASLAnn );
+    FreeAndNil( IdSASLExt );
+    FreeAndNil( IdSASLOtp );
+    FreeAndNil( IdSASLPla );
+    FreeAndNil( IdUserPvd );
+  end;
+end;
+
+
+procedure Lembrete.Execute;
+var
+  iTimeRefresh : tTime;
+begin
+  { Place thread code here }
+  SetName;
+  try
+    iTimeRefresh := StrToTime('00:00:00');
+
+    while (not Terminated) do
+    begin
+      if ((now >= ProximoSinc(iTimeRefresh)) or (TimeToStr(iTimeRefresh) = '00:00:00')) then
+      begin
+
+        _Qry.SQL.Text := 'select Sum(xCount) xCount from (  '#13+
+                         ' --Agendas para o dia      '#13+
+                         ' select Count(codigo) xCount '#13+
+                         ' from tabagenda ag             '#13+
+                         '  where ag.data = :datainicio and ag.hora >= :horainicio '#13+
+                         '  and Coalesce(ag.situacao,0) in (0,1,3) '#13+
+                         ' union                                   '#13+
+                         ' --Pedido de Agenda em Alerta            '#13+
+                         ' Select Count(distinct p.codigo)         '#13+
+                         ' from tabpedidoagendamento p             '#13+
+                         ' left join tabacompanhantespedidoagenda a on p.codigo = a.codigopedido '#13+
+                         ' where not Exists(Select ag.codigo from tabagenda ag where ag.idpedidoagenda = p.codigo and ag.idperfil = a.codigoperfil and ag.situacao <> 2) '#13+
+                         '   and p.dataevento - current_date <= :diasAlertaPedido '#13+
+                         '   and p.datacadastro <= :datapedido                    '#13+
+                         ' union                                                  '#13+
+                         ' --Produtos necessitando de serviço                    '#13+
+                         ' SELECT Count(*)                                        '#13+
+                         '  FROM VIEW_HISTORICOPRODUTO x                          '#13+
+                         ' WHERE X.TIPO = 2                                       '#13+
+                         '   and not exists(SELECT FIRST 1 1                      '#13+
+                         '                   FROM TABMOVIMENTACAOCONTRATO M       '#13+
+                         '                   INNER JOIN TABOS OS ON (M.CODIGOREGISTRO = OS.CODIGO )'#13+
+                         '                   WHERE M.CODIGO = X.CODIGOREGISTRO                     '#13+
+                         '                   AND M.TIPO = 5)                                       '#13+
+                         '   and x.DATAINICIO <= :datahistorico                                    '#13+
+                         ' union                                                                   '#13+
+                         ' --Parcelas a pagar em Atraso                                            '#13+
+                         ' Select count(*)                                                         '#13+
+                         ' from tabfinanceiro f                                                    '#13+
+                         ' left join tabfinanceirodetalhe fd on f.codigo = fd.codigo               '#13+
+                         ' left join TABSITUACAOPRODUTO s on fd.codigosituacao = s.codigo          '#13+
+                         ' where fd.datavencimento < :dataFinanceiroPagar                          '#13+
+                         '  and f.tipo = 1                                                         '#13+
+                         '  and coalesce(s.operacao,0) = 0                                         '#13+
+                         ' union                                                                   '#13+
+                         ' --Parcelas a receber em Atraso                                          '#13+
+                         ' Select count(*)                                                         '#13+
+                         ' from tabfinanceiro f                                                    '#13+
+                         ' left join tabfinanceirodetalhe fd on f.codigo = fd.codigo               '#13+
+                         ' left join TABSITUACAOPRODUTO s on fd.codigosituacao = s.codigo          '#13+
+                         ' where fd.datavencimento < :dataFinanceiroReceber                        '#13+
+                         '  and f.tipo = 2                                                         '#13+
+                         '  and coalesce(s.operacao,0) = 0                                         '#13+
+                         ' union                                                                   '#13+
+                         ' --Parcelas a pagar de hoje                                              '#13+
+                         ' Select count(*)                                                         '#13+
+                         ' from tabfinanceiro f                                                    '#13+
+                         ' left join tabfinanceirodetalhe fd on f.codigo = fd.codigo               '#13+
+                         ' left join TABSITUACAOPRODUTO s on fd.codigosituacao = s.codigo          '#13+
+                         ' where fd.datavencimento = :dataFinanceiroPagarHoje                      '#13+
+                         '  and f.tipo = 1                                                         '#13+
+                         '  and coalesce(s.operacao,0) = 0                                         '#13+
+                         ' union                                                                   '#13+
+                         ' --Parcelas a receber de hoje                                            '#13+
+                         ' Select count(*)                                                         '#13+
+                         ' from tabfinanceiro f                                                    '#13+
+                         ' left join tabfinanceirodetalhe fd on f.codigo = fd.codigo               '#13+
+                         ' left join TABSITUACAOPRODUTO s on fd.codigosituacao = s.codigo          '#13+
+                         ' where fd.datavencimento = :dataFinanceiroReceberHoje                    '#13+
+                         '  and f.tipo = 2                                                         '#13+
+                         '  and coalesce(s.operacao,0) = 0                                         '#13+
+                         '  )                                                                      ';
+
+//             'select Count(codigo) xCount '+
+//             ' from tabagenda ag '+
+//             ' where ag.data = :datainicio and ag.hora >= :horainicio '+
+//             ' and Coalesce(ag.situacao,0) in (0,1,3) ';
+
+        _Qry.ParamByName('datainicio').AsDateTime := now;
+        _Qry.ParamByName('horainicio').AsDateTime := now;
+        _Qry.ParamByName('datapedido').AsDateTime := now;
+        _Qry.ParamByName('datahistorico').AsDateTime := now;
+        _Qry.ParamByName('dataFinanceiroPagar').AsDateTime := now;
+        _Qry.ParamByName('dataFinanceiroReceber').AsDateTime := now;
+        _Qry.ParamByName('dataFinanceiroPagarHoje').AsDateTime := now;
+        _Qry.ParamByName('dataFinanceiroReceberHoje').AsDateTime := now;
+        _Qry.ParamByName('diasAlertaPedido').AsInteger := vDiasAlertaPedido;
+
+        _Qry.Open;
+
+        _Panel.Caption := IntToStr(_Qry.FieldByName('xCount').AsInteger)+' NOTIFICAÇÕES';
+
+        //Enviar SMS
+        if vLembrarAgendaSMS then
+          EviarSMSAgendas();
+
+        iTimeRefresh := now;
+      end;
+    end;
+  Except
+  end;
+  { Place thread code here }
+end;
+
+end.
